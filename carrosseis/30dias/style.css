@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose:     #C9566B;
+  --rose-dk:  #7A1535;
+  --gold:     #D4A96A;
+  --cream:    #FAF3EC;
+  --dark:     #120a0e;
+  --blush:    #F2C4CE;
+}
+
+/* ── PAGE ─────────────────────────────────────── */
+body {
+  background: var(--dark);
+  font-family: 'Lato', sans-serif;
+  color: #fff;
+  padding: 0 0 80px;
+}
+
+/* ── TOP BAR ──────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: #1a0d12;
+  border-bottom: 1px solid #3a1e28;
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 24px; flex-wrap: wrap;
+}
+.topbar h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--gold); flex: 1;
+}
+.topbar select {
+  background: #2a1520; color: var(--cream);
+  border: 1px solid #5a2535; border-radius: 3px;
+  padding: 8px 12px; font-size: 0.8rem; cursor: pointer;
+  max-width: 300px;
+}
+.topbar .btn {
+  background: var(--gold); color: #1a0d12;
+  font-weight: 700; font-size: 0.75rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 9px 20px; border: none; border-radius: 2px;
+  cursor: pointer; white-space: nowrap;
+}
+.topbar .btn:hover { opacity: .85; }
+.topbar .btn.outline {
+  background: transparent; color: var(--rose);
+  border: 1px solid var(--rose);
+}
+.topbar .btn.outline:hover { background: var(--rose); color: #fff; }
+
+/* ── CAROUSEL META ────────────────────────────── */
+.meta-bar {
+  background: #1e1018; padding: 20px 28px;
+  border-bottom: 1px solid #2e1820;
+  display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;
+}
+.meta-bar .badge {
+  font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 2px;
+}
+.badge.manha  { background: rgba(212,169,106,.18); color: var(--gold); border: 1px solid rgba(212,169,106,.35); }
+.badge.conteudo { background: rgba(120,80,180,.18); color: #c8a8f0; border: 1px solid rgba(120,80,180,.35); }
+.badge.cta    { background: rgba(201,86,107,.18); color: var(--blush); border: 1px solid rgba(201,86,107,.35); }
+
+.meta-bar .meta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; color: var(--cream); flex: 1; min-width: 200px;
+}
+.meta-caption {
+  background: #1a0f14; padding: 20px 28px;
+  border-bottom: 1px solid #2e1820;
+}
+.meta-caption p { font-size: 0.82rem; color: #c8b0b8; line-height: 1.75; max-width: 700px; }
+.meta-caption .tags { margin-top: 10px; color: var(--rose); font-size: 0.78rem; }
+
+/* ── CARDS GRID ───────────────────────────────── */
+.cards-grid {
+  display: flex; flex-wrap: wrap;
+  gap: 20px; padding: 28px;
+  justify-content: flex-start;
+}
+
+.card-wrap {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.card-num {
+  font-size: 0.6rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold);
+}
+
+/* ── CARD PREVIEW (scaled 1080→270) ───────────── */
+.card-preview {
+  width: 270px; height: 337.5px;
+  position: relative; overflow: hidden;
+  border-radius: 3px; cursor: pointer;
+  box-shadow: 0 6px 30px rgba(0,0,0,.5);
+  transition: transform .2s, box-shadow .2s;
+}
+.card-preview:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.7);
+}
+.card-scale {
+  transform: scale(0.25);
+  transform-origin: top left;
+  width: 1080px; height: 1350px;
+  position: absolute; top: 0; left: 0;
+  pointer-events: none;
+}
+
+.card-preview .dl-btn {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,.65); color: var(--gold);
+  font-size: 0.6rem; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 5px 10px;
+  border: 1px solid rgba(212,169,106,.4);
+  border-radius: 2px; cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background .2s;
+}
+.card-preview .dl-btn:hover { background: var(--gold); color: #1a0d12; }
+
+/* ── CARD FULL SIZE (1080×1350) ─────────────────
+   LAYOUT FIXO: 60% foto (top) + 40% texto (bottom)
+   ─────────────────────────────────────────────── */
+.card {
+  width: 1080px;
+  height: 1350px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Lato', sans-serif;
+  position: relative;
+}
+
+/* ZONA DA FOTO — 60% = 810px */
+.card-photo {
+  width: 1080px;
+  height: 810px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.card-photo .foto-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.18);
+  border: 1px dashed rgba(255,255,255,.12);
+  padding: 20px 40px;
+  border-radius: 4px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+/* número do card no canto da foto */
+.card-photo .card-index {
+  position: absolute; top: 28px; right: 36px;
+  font-size: 22px; letter-spacing: 3px; color: rgba(255,255,255,.35);
+  text-transform: uppercase;
+}
+/* marca d'água do perfil */
+.card-photo .watermark {
+  position: absolute; bottom: 20px; left: 36px;
+  font-size: 19px; letter-spacing: 3px;
+  color: rgba(255,255,255,.4); text-transform: uppercase;
+}
+
+/* ZONA DO TEXTO — 40% = 540px */
+.card-text {
+  width: 1080px;
+  height: 540px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 52px 80px 44px;
+  position: relative;
+}
+.card-text .line-top {
+  display: block; width: 60px; height: 3px;
+  background: var(--gold); margin-bottom: 28px;
+}
+.card-text .titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 62px;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+.card-text .subtitulo {
+  font-size: 30px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.card-text .brand-bottom {
+  position: absolute; bottom: 28px; right: 52px;
+  font-size: 18px; letter-spacing: 3px;
+  text-transform: uppercase; opacity: .45;
+}
+
+/* ── TEMAS DE COR (foto zone) ─────────────────── */
+
+/* MANHÃ — sunrise quente */
+.card.manha .card-photo {
+  background: linear-gradient(160deg, #3D1A00 0%, #7A3010 35%, #B05030 65%, #D4714A 100%);
+}
+.card.manha .card-text {
+  background: linear-gradient(180deg, #1E0A04 0%, #2A100A 100%);
+  color: var(--cream);
+}
+.card.manha .card-text .titulo { color: #FFE8D8; }
+.card.manha .card-text .subtitulo { color: #D4A88A; }
+.card.manha .card-text .line-top { background: #D4714A; }
+.card.manha .card-text .brand-bottom { color: #D4714A; }
+
+/* manhã card 1 = capa especial */
+.card.manha.capa .card-photo {
+  background: linear-gradient(140deg, #5C2000 0%, #9C3A14 40%, #D46030 70%, #E88050 100%);
+}
+.card.manha.capa .card-text { background: linear-gradient(180deg, #2A0C00 0%, #3D1408 100%); }
+.card.manha.capa .card-text .titulo { font-size: 72px; color: #fff; }
+
+/* CONTEÚDO — editorial frio */
+.card.conteudo .card-photo {
+  background: linear-gradient(150deg, #0E0818 0%, #1A0E2A 40%, #2A1040 70%, #3A1855 100%);
+}
+.card.conteudo .card-text {
+  background: linear-gradient(180deg, #0A0614 0%, #120A1E 100%);
+  color: var(--cream);
+}
+.card.conteudo .card-text .titulo { color: #E8D8FF; }
+.card.conteudo .card-text .subtitulo { color: #A890C8; }
+.card.conteudo .card-text .line-top { background: #9870C8; }
+.card.conteudo .card-text .brand-bottom { color: #9870C8; }
+
+.card.conteudo.capa .card-photo {
+  background: linear-gradient(140deg, #0E0420 0%, #200A38 40%, #380E58 70%, #4A1870 100%);
+}
+.card.conteudo.capa .card-text .titulo { font-size: 72px; color: #fff; }
+
+/* CTA — rose/wine profundo */
+.card.cta .card-photo {
+  background: linear-gradient(150deg, #1A040E 0%, #3D0E20 40%, #6B1535 70%, #8B2040 100%);
+}
+.card.cta .card-text {
+  background: linear-gradient(180deg, #120008 0%, #1E0412 100%);
+  color: var(--cream);
+}
+.card.cta .card-text .titulo { color: var(--blush); }
+.card.cta .card-text .subtitulo { color: #D0A0B0; }
+.card.cta .card-text .line-top { background: var(--rose); }
+.card.cta .card-text .brand-bottom { color: var(--rose); }
+
+.card.cta.capa .card-photo {
+  background: linear-gradient(140deg, #250010 0%, #500020 40%, #8B1535 70%, #AA2040 100%);
+}
+.card.cta.capa .card-text .titulo { font-size: 72px; color: #fff; }
+
+/* card 10 = CTA especial */
+.card.card-cta-final .card-photo {
+  background: linear-gradient(150deg, #3D0E20 0%, #7A1535 50%, #AA2040 100%);
+}
+.card.card-cta-final .card-text {
+  background: linear-gradient(180deg, #5A0E20 0%, #8B1535 100%);
+}
+.card.card-cta-final .card-text .titulo { color: #FFE8EC; font-size: 56px; }
+.card.card-cta-final .card-text .subtitulo { color: rgba(255,255,255,.85); }
+.card.card-cta-final .card-text .line-top { background: var(--gold); }
+.card.card-cta-final .pill {
+  display: inline-block;
+  background: var(--gold); color: #1a0d12;
+  font-weight: 900; font-size: 38px;
+  letter-spacing: 6px; text-transform: uppercase;
+  padding: 16px 48px; border-radius: 3px;
+  margin-top: 20px; align-self: flex-start;
+}
+
+/* ── STATUS BAR ───────────────────────────────── */
+#status {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1e0f15; border-top: 1px solid #3a1e28;
+  padding: 12px 24px; font-size: 0.78rem;
+  color: var(--gold); text-align: center;
+  display: none; z-index: 200;
+}
+#status.on { display: block; }
+
+/* ── PROGRESS ─────────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--gold);
+  width: 0; transition: width .3s;
+  z-index: 300;
+}

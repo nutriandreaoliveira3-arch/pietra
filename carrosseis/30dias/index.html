@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emagrecimento Blindado — 30 Carrosséis</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+
+<!-- ── TOP BAR ──────────────────────────────────── -->
+<div class="topbar">
+  <h1>Emagrecimento Blindado · 30 Carrosséis</h1>
+  <select id="carousel-select" onchange="loadCarrossel(this.value)">
+    <option value="">— Selecione um carrossel —</option>
+  </select>
+  <button class="btn outline" onclick="downloadAll()">⬇ Baixar 10 cards (PNG)</button>
+  <button class="btn" onclick="downloadAllCarrosseis()">⬇ Baixar TODOS os 30</button>
+</div>
+
+<!-- ── META INFO ─────────────────────────────────── -->
+<div class="meta-bar" id="meta-bar">
+  <span class="badge" id="meta-badge">—</span>
+  <div class="meta-title" id="meta-title">Selecione um carrossel para começar</div>
+</div>
+<div class="meta-caption" id="meta-caption" style="display:none">
+  <p id="meta-legenda"></p>
+  <div class="tags" id="meta-hashtags"></div>
+</div>
+
+<!-- ── CARDS GRID ─────────────────────────────────── -->
+<div class="cards-grid" id="cards-grid"></div>
+
+<!-- ── HIDDEN RENDER ZONE (tamanho real) ─────────── -->
+<div id="render-zone" style="position:fixed;left:-9999px;top:0;pointer-events:none;"></div>
+
+<!-- ── STATUS ─────────────────────────────────────── -->
+<div id="status"></div>
+<div id="progress-bar"></div>
+
+<script>
+// ── INIT ──────────────────────────────────────────────
+const select = document.getElementById('carousel-select');
+const cardsGrid = document.getElementById('cards-grid');
+const renderZone = document.getElementById('render-zone');
+const statusEl = document.getElementById('status');
+const progressEl = document.getElementById('progress-bar');
+
+let currentCarrossel = null;
+
+// Populate select
+CARROSSEIS.forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c.id;
+  const tipoLabel = c.tipo === 'manha' ? '🌅 Manhã' : c.tipo === 'conteudo' ? '📚 Conteúdo' : '🌙 CTA';
+  opt.textContent = `${c.id} · ${tipoLabel} — ${c.nome}`;
+  select.appendChild(opt);
+});
+
+// Auto-load first
+loadCarrossel('01');
+select.value = '01';
+
+// ── LOAD CARROSSEL ────────────────────────────────────
+function loadCarrossel(id) {
+  if (!id) return;
+  const c = CARROSSEIS.find(x => x.id === id);
+  if (!c) return;
+  currentCarrossel = c;
+
+  // Meta bar
+  const badge = document.getElementById('meta-badge');
+  badge.textContent = c.tipo === 'manha' ? '🌅 Manhã' : c.tipo === 'conteudo' ? '📚 Conteúdo' : '🌙 CTA Noite';
+  badge.className = 'badge ' + c.tipo;
+  document.getElementById('meta-title').textContent = `${c.id}. ${c.nome}`;
+
+  const captionEl = document.getElementById('meta-caption');
+  captionEl.style.display = 'block';
+  document.getElementById('meta-legenda').innerHTML = c.legenda.replace(/\n/g,'<br>');
+  document.getElementById('meta-hashtags').textContent = c.hashtags;
+
+  // Render grid
+  cardsGrid.innerHTML = '';
+  c.cards.forEach((card, i) => {
+    const num = i + 1;
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+
+    const numLabel = document.createElement('div');
+    numLabel.className = 'card-num';
+    numLabel.textContent = `Card ${num} / 10`;
+
+    const preview = document.createElement('div');
+    preview.className = 'card-preview';
+
+    const scaleWrap = document.createElement('div');
+    scaleWrap.className = 'card-scale';
+    scaleWrap.id = `card-preview-${c.id}-${num}`;
+    scaleWrap.appendChild(buildCard(c, card, num));
+
+    const dlBtn = document.createElement('button');
+    dlBtn.className = 'dl-btn';
+    dlBtn.textContent = '⬇ PNG';
+    dlBtn.onclick = (e) => { e.stopPropagation(); downloadCard(c, card, num, dlBtn); };
+
+    preview.appendChild(scaleWrap);
+    preview.appendChild(dlBtn);
+    wrap.appendChild(numLabel);
+    wrap.appendChild(preview);
+    cardsGrid.appendChild(wrap);
+  });
+}
+
+// ── BUILD CARD (1080×1350) ────────────────────────────
+function buildCard(c, card, num) {
+  const isCapa = num === 1;
+  const isCTA  = num === 10;
+
+  const el = document.createElement('div');
+  el.className = `card ${c.tipo}${isCapa ? ' capa' : ''}${isCTA ? ' card-cta-final' : ''}`;
+
+  // ── PHOTO ZONE (60%) ──
+  const photoZone = document.createElement('div');
+  photoZone.className = 'card-photo';
+
+  const fotoLabel = document.createElement('div');
+  fotoLabel.className = 'foto-label';
+  fotoLabel.textContent = '[ Espaço para foto ]';
+
+  const cardIdx = document.createElement('div');
+  cardIdx.className = 'card-index';
+  cardIdx.textContent = `${num < 10 ? '0'+num : num} / 10`;
+
+  const wm = document.createElement('div');
+  wm.className = 'watermark';
+  wm.textContent = '@emagrecimentoblindado';
+
+  photoZone.appendChild(fotoLabel);
+  photoZone.appendChild(cardIdx);
+  photoZone.appendChild(wm);
+
+  // ── TEXT ZONE (40%) ──
+  const textZone = document.createElement('div');
+  textZone.className = 'card-text';
+
+  const lineTop = document.createElement('span');
+  lineTop.className = 'line-top';
+
+  const titulo = document.createElement('div');
+  titulo.className = 'titulo';
+  titulo.textContent = card.titulo;
+
+  const sub = document.createElement('div');
+  sub.className = 'subtitulo';
+
+  const brand = document.createElement('div');
+  brand.className = 'brand-bottom';
+  brand.textContent = '@emagrecimentoblindado';
+
+  textZone.appendChild(lineTop);
+  textZone.appendChild(titulo);
+
+  if (card.pill) {
+    // CTA com pill BLINDADO
+    const pill = document.createElement('div');
+    pill.className = 'pill';
+    pill.textContent = 'BLINDADO';
+    sub.textContent = 'e entre para o Grupo VIP gratuito agora.';
+    textZone.appendChild(pill);
+    textZone.appendChild(sub);
+  } else {
+    sub.textContent = card.subtitulo;
+    textZone.appendChild(sub);
+  }
+
+  textZone.appendChild(brand);
+
+  el.appendChild(photoZone);
+  el.appendChild(textZone);
+
+  return el;
+}
+
+// ── DOWNLOAD SINGLE CARD ──────────────────────────────
+async function downloadCard(c, card, num, btn) {
+  const filename = `carrossel_${c.id}_${c.tipo}_card_${num < 10 ? '0'+num : num}.png`;
+
+  if (btn) { btn.textContent = '⏳'; btn.style.pointerEvents = 'none'; }
+  setStatus(`Gerando ${filename}…`);
+
+  // Build full-size card in render zone
+  renderZone.innerHTML = '';
+  const fullCard = buildCard(c, card, num);
+  renderZone.appendChild(fullCard);
+
+  await sleep(80);
+
+  try {
+    const canvas = await html2canvas(fullCard, {
+      scale: 1, width: 1080, height: 1350,
+      useCORS: true, allowTaint: true,
+      backgroundColor: null, logging: false,
+      windowWidth: 1080, windowHeight: 1350,
+    });
+
+    canvas.toBlob(blob => {
+      triggerDownload(blob, filename);
+      if (btn) { btn.textContent = '✓'; setTimeout(() => { btn.textContent = '⬇ PNG'; btn.style.pointerEvents = ''; }, 2500); }
+      clearStatus();
+    }, 'image/png');
+  } catch(e) {
+    console.error(e);
+    if (btn) { btn.textContent = '⚠'; btn.style.pointerEvents = ''; }
+    setStatus('Erro: ' + e.message);
+  }
+}
+
+// ── DOWNLOAD ALL CARDS OF CURRENT CARROSSEL ───────────
+async function downloadAll() {
+  if (!currentCarrossel) { alert('Selecione um carrossel primeiro.'); return; }
+  const c = currentCarrossel;
+  setStatus(`Iniciando download do carrossel ${c.id}…`);
+
+  for (let i = 0; i < c.cards.length; i++) {
+    const num = i + 1;
+    setProgress((i / c.cards.length) * 100);
+    await downloadCard(c, c.cards[i], num, null);
+    await sleep(300);
+  }
+
+  setProgress(100);
+  setStatus(`✓ Carrossel ${c.id} baixado! (10 cards)`);
+  setTimeout(clearStatus, 4000);
+}
+
+// ── DOWNLOAD ALL 30 CARROSSÉIS ────────────────────────
+async function downloadAllCarrosseis() {
+  const confirmed = confirm(`Você tem certeza?\n\nIsso vai gerar e baixar 300 arquivos PNG (30 carrosséis × 10 cards).\n\nRecomendamos baixar um carrossel por vez para não sobrecarregar o navegador.`);
+  if (!confirmed) return;
+
+  for (let ci = 0; ci < CARROSSEIS.length; ci++) {
+    const c = CARROSSEIS[ci];
+    setStatus(`Carrossel ${c.id}/30: ${c.nome}`);
+    select.value = c.id;
+    loadCarrossel(c.id);
+    await sleep(200);
+
+    for (let i = 0; i < c.cards.length; i++) {
+      const num = i + 1;
+      setProgress(((ci * 10 + i) / 300) * 100);
+      await downloadCard(c, c.cards[i], num, null);
+      await sleep(250);
+    }
+  }
+  setProgress(100);
+  setStatus('✓ Todos os 300 cards baixados!');
+  setTimeout(clearStatus, 6000);
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function setStatus(msg) {
+  statusEl.textContent = msg;
+  statusEl.classList.add('on');
+}
+function clearStatus() {
+  statusEl.classList.remove('on');
+  progressEl.style.width = '0';
+}
+function setProgress(pct) {
+  progressEl.style.width = pct + '%';
+}
+</script>
+</body>
+</html>
