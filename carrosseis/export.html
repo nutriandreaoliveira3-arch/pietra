@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emagrecimento Blindado — Export PNG</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+  /* ── RESET & PAGE ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rose:      #C9566B;
+    --rose-dk:   #8B2E42;
+    --blush:     #F2C4CE;
+    --gold:      #D4A96A;
+    --gold-dk:   #B8862C;
+    --cream:     #FAF3EC;
+    --charcoal:  #2C2C2C;
+  }
+  body {
+    background: #120a0e;
+    font-family: 'Lato', sans-serif;
+    padding: 40px 24px 80px;
+    color: #fff;
+  }
+
+  /* ── HEADER ───────────────────────────────────── */
+  .page-header { text-align: center; margin-bottom: 48px; }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .page-header p { color: #9e8080; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ── DOWNLOAD ALL ─────────────────────────────── */
+  .btn-all {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 52px;
+    background: var(--gold);
+    color: #1a0d12;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .btn-all:hover { opacity: .85; }
+
+  /* ── SLIDE WRAPPER ────────────────────────────── */
+  .slide-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 52px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .slide-preview {
+    /* Scale 1080x1350 → display at 270x337.5 */
+    position: relative;
+    width: 270px;
+    height: 337.5px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.6);
+  }
+  .slide-preview .scale-wrap {
+    transform: scale(0.25);
+    transform-origin: top left;
+    width: 1080px;
+    height: 1350px;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .slide-info { max-width: 320px; padding-top: 8px; }
+  .slide-info .label {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .slide-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: #f5e8ea;
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+  .slide-info p { font-size: 0.78rem; color: #9e8080; line-height: 1.65; margin-bottom: 16px; }
+  .btn-dl {
+    background: transparent;
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 9px 22px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-dl:hover { background: var(--rose); color: #fff; }
+  .btn-dl.loading { opacity: .5; pointer-events: none; }
+
+  /* ── STATUS BAR ───────────────────────────────── */
+  #status-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #1e0f15;
+    border-top: 1px solid #3a1e28;
+    padding: 12px 24px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    display: none;
+    text-align: center;
+  }
+  #status-bar.visible { display: block; }
+
+  /* ════════════════════════════════════════════════
+     SLIDES — 1080 × 1350 real size
+  ════════════════════════════════════════════════ */
+  .s { width: 1080px; height: 1350px; position: relative;
+       display: flex; flex-direction: column;
+       justify-content: center; align-items: center;
+       text-align: center; padding: 90px 80px; }
+
+  /* corners */
+  .s .tl, .s .br {
+    position: absolute; width: 110px; height: 110px;
+    border-style: solid; border-color: rgba(212,169,106,.4);
+  }
+  .s .tl { top: 40px; left: 40px; border-width: 2px 0 0 2px; }
+  .s .br { bottom: 40px; right: 40px; border-width: 0 2px 2px 0; }
+
+  .s .brand {
+    position: absolute; bottom: 44px; left: 50px;
+    font-size: 18px; letter-spacing: 4px; text-transform: uppercase; opacity: .45;
+  }
+  .s .num {
+    position: absolute; bottom: 44px; right: 50px;
+    font-size: 18px; letter-spacing: 3px; opacity: .4; text-transform: uppercase;
+  }
+  .s .line { display: block; width: 80px; height: 3px; background: var(--gold); margin: 32px auto; }
+
+  /* ── SLIDE 1 — CAPA ──────────────────────────── */
+  #s1 { background: linear-gradient(158deg,#1A0D12 0%,#3D1525 45%,#5E1F35 100%); color: var(--cream); }
+  #s1 .eyebrow {
+    font-size: 22px; letter-spacing: 7px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 36px;
+  }
+  #s1 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 88px; font-weight: 900; line-height: 1.15; color: #fff;
+  }
+  #s1 h2 em { font-style: italic; color: var(--blush); }
+  #s1 .sub {
+    margin-top: 36px; font-size: 22px; letter-spacing: 5px;
+    text-transform: uppercase; color: #c8a8b0;
+  }
+
+  /* ── SLIDE 2 — DOR ───────────────────────────── */
+  #s2 { background: linear-gradient(160deg,#fdf4f7 0%,#f0dde4 100%); color: var(--charcoal); }
+  #s2 .tl, #s2 .br { border-color: rgba(201,86,107,.3); }
+  #s2 .brand, #s2 .num { color: var(--rose-dk); }
+  #s2 .icon { font-size: 80px; margin-bottom: 30px; line-height: 1; }
+  #s2 h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 68px; font-weight: 700; color: var(--rose-dk); line-height: 1.2; margin-bottom: 28px;
+  }
+  #s2 p { font-size: 34px; line-height: 1.7; color: #5a4a50; max-width: 860px; }
+
+  /* ── SLIDE 3 — PROBLEMA ──────────────────────── */
+  #s3 { background: linear-gradient(150deg,#221318 0%,#2e1820 100%); color: var(--cream); }
+  #s3 .tag {
+    display: inline-block; background: rgba(201,86,107,.22);
+    color: var(--blush); font-size: 20px; letter-spacing: 5px;
+    text-transform: uppercase; padding: 14px 34px; border-radius: 3px;
+    margin-bottom: 36px; border: 1px solid rgba(201,86,107,.35);
+  }
+  #s3 h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 66px; font-weight: 600; color: var(--blush); line-height: 1.2; margin-bottom: 28px;
+  }
+  #s3 p { font-size: 32px; line-height: 1.72; color: #c8b5bb; max-width: 880px; }
+
+  /* ── SLIDE 4 — QUEBRA DE CRENÇA ──────────────── */
+  #s4 { background: linear-gradient(150deg,#faf3ec 0%,#ecdcc0 100%); color: var(--charcoal); }
+  #s4 .tl, #s4 .br { border-color: rgba(184,134,44,.4); }
+  #s4 .brand, #s4 .num { color: var(--gold-dk); }
+  #s4 .myth {
+    display: inline-block; background: var(--gold-dk); color: #fff;
+    font-size: 20px; letter-spacing: 5px; text-transform: uppercase;
+    padding: 14px 36px; border-radius: 3px; margin-bottom: 34px;
+  }
+  #s4 h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px; font-weight: 700; color: var(--gold-dk); line-height: 1.2; margin-bottom: 26px;
+  }
+  #s4 p { font-size: 32px; line-height: 1.7; color: #5c4e3a; max-width: 870px; }
+
+  /* ── SLIDE 5 — ORIENTAÇÃO PRÁTICA ────────────── */
+  #s5 { background: linear-gradient(150deg,#4a0e20 0%,#7a1535 100%); color: var(--cream);
+        align-items: flex-start; padding: 90px 100px; }
+  #s5 .step-head {
+    font-size: 20px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 36px; align-self: flex-start;
+  }
+  #s5 h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 62px; font-weight: 700; color: #fff; line-height: 1.2;
+    margin-bottom: 40px; text-align: left;
+  }
+  #s5 ul { list-style: none; width: 100%; text-align: left; }
+  #s5 ul li {
+    font-size: 30px; color: #f0cdd5; padding: 18px 0 18px 50px;
+    border-bottom: 1px solid rgba(255,255,255,.1); position: relative; line-height: 1.55;
+  }
+  #s5 ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 28px; }
+  #s5 .tl, #s5 .br { border-color: rgba(212,169,106,.35); }
+
+  /* ── SLIDE 6 — IMPACTO EMOCIONAL ─────────────── */
+  #s6 { background: #fdf8f4; color: var(--charcoal); }
+  #s6 .tl, #s6 .br { border-color: rgba(201,86,107,.3); }
+  #s6 .brand, #s6 .num { color: #b08090; }
+  #s6 .qmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 220px; color: var(--blush);
+    line-height: .65; margin-bottom: 20px; display: block; font-style: italic;
+  }
+  #s6 blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; font-style: italic; font-weight: 600;
+    line-height: 1.35; color: var(--rose-dk); max-width: 860px;
+  }
+
+  /* ── SLIDE 7 — CTA ───────────────────────────── */
+  #s7 { background: linear-gradient(158deg,#6B0F25 0%,#A01E3A 50%,#C9566B 100%); color: #fff; }
+  #s7 .tl, #s7 .br { border-color: rgba(255,255,255,.25); }
+  #s7 .brand, #s7 .num { color: rgba(255,255,255,.5); }
+  #s7 h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 66px; font-weight: 700; line-height: 1.25; margin-bottom: 36px;
+  }
+  #s7 .pill {
+    display: inline-block; background: var(--gold);
+    color: #1a0d12; font-weight: 700; font-size: 42px;
+    letter-spacing: 5px; text-transform: uppercase;
+    padding: 24px 70px; border-radius: 3px; margin: 10px 0 28px;
+  }
+  #s7 p { font-size: 30px; color: rgba(255,255,255,.75); line-height: 1.65; max-width: 820px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Emagrecimento Blindado</h1>
+  <p>Carrossel 1 · 7 slides · 1080 × 1350 px</p>
+</div>
+
+<button class="btn-all" onclick="downloadAll()">⬇ Baixar todos os 7 slides</button>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDES (gerados em tamanho real, escalados no CSS)
+══════════════════════════════════════════════════ -->
+
+<!-- SLIDE 1 — CAPA -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s1">
+        <div class="tl"></div><div class="br"></div>
+        <div class="eyebrow">Emagrecimento Blindado</div>
+        <h2>Você não é<br><em>fraca.</em><br>Você está<br>exausta.</h2>
+        <span class="line"></span>
+        <div class="sub">E isso muda agora</div>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">01 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 1 · Capa</div>
+    <h3>"Você não é fraca. Você está exausta."</h3>
+    <p>Frase de impacto imediato. Quebra a culpa logo na capa e gera identificação antes mesmo de abrir o carrossel.</p>
+    <button class="btn-dl" onclick="downloadSlide('s1','slide-1.png',this)">⬇ Baixar slide-1.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 2 — DOR -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s2">
+        <div class="tl"></div><div class="br"></div>
+        <div class="icon">😔</div>
+        <h3>Você já tentou<br>de tudo…</h3>
+        <span class="line"></span>
+        <p>Dieta, academia, shake, cortar carboidrato, contar caloria. Começou animada. Durou algumas semanas. E voltou tudo de uma vez — mais o dobro da frustração.</p>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">02 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 2 · Dor Principal</div>
+    <h3>"Você já tentou de tudo…"</h3>
+    <p>Nomeia o ciclo de recomeços e a frustração acumulada — a dor central dessa mulher.</p>
+    <button class="btn-dl" onclick="downloadSlide('s2','slide-2.png',this)">⬇ Baixar slide-2.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 3 — PROBLEMA -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s3">
+        <div class="tl"></div><div class="br"></div>
+        <div class="tag">O problema real</div>
+        <h3>Seu corpo aprendeu<br>a se defender de você</h3>
+        <span class="line"></span>
+        <p>Cada dieta restritiva ensina seu organismo a guardar mais gordura na próxima vez. Isso não é fraqueza — é biologia. Seu metabolismo está em modo de sobrevivência, não de emagrecer.</p>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">03 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 3 · Explicação do Problema</div>
+    <h3>"Seu corpo aprendeu a se defender de você"</h3>
+    <p>Explica o ciclo de restrição→compulsão em linguagem simples, tirando a culpa e criando curiosidade pelo método.</p>
+    <button class="btn-dl" onclick="downloadSlide('s3','slide-3.png',this)">⬇ Baixar slide-3.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 4 — QUEBRA DE CRENÇA -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s4">
+        <div class="tl"></div><div class="br"></div>
+        <div class="myth">Mito derrubado</div>
+        <h3>Não é falta de<br>força de vontade.</h3>
+        <span class="line"></span>
+        <p>Quem fica com fome toda tarde às 16h não é gulosa — tem cortisol elevado. Quem come tudo à noite não tem fraqueza — tem serotonina desregulada. O seu corpo pede o que o sistema hormonal manda.</p>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">04 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 4 · Quebra de Crença</div>
+    <h3>"Não é falta de força de vontade."</h3>
+    <p>Transforma a culpa em explicação hormonal — gera alívio e autoridade ao mesmo tempo.</p>
+    <button class="btn-dl" onclick="downloadSlide('s4','slide-4.png',this)">⬇ Baixar slide-4.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 5 — ORIENTAÇÃO PRÁTICA -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s5">
+        <div class="tl"></div><div class="br"></div>
+        <div class="step-head">Faça hoje mesmo</div>
+        <h3>3 mudanças que<br>quebram o ciclo</h3>
+        <ul>
+          <li>Coma proteína logo de manhã — antes do café</li>
+          <li>Não pule refeições: fome extrema vira compulsão à noite</li>
+          <li>Durma pelo menos 7h — privação de sono aumenta a fome em 24%</li>
+        </ul>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">05 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 5 · Orientação Prática</div>
+    <h3>"3 mudanças que quebram o ciclo"</h3>
+    <p>Entrega valor real e imediato — salva e compartilha. Aumenta o alcance orgânico.</p>
+    <button class="btn-dl" onclick="downloadSlide('s5','slide-5.png',this)">⬇ Baixar slide-5.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 6 — IMPACTO EMOCIONAL -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s6">
+        <div class="tl"></div><div class="br"></div>
+        <span class="qmark">"</span>
+        <blockquote>Você merece se olhar no espelho e gostar do que vê. Não amanhã. Agora.</blockquote>
+        <span class="line"></span>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">06 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 6 · Frase de Impacto</div>
+    <h3>"Você merece se olhar no espelho e gostar do que vê."</h3>
+    <p>Frase emocional que provoca reflexão e aumenta o tempo de retenção no carrossel — ideal para salvar.</p>
+    <button class="btn-dl" onclick="downloadSlide('s6','slide-6.png',this)">⬇ Baixar slide-6.png</button>
+  </div>
+</div>
+
+<!-- SLIDE 7 — CTA -->
+<div class="slide-row">
+  <div class="slide-preview">
+    <div class="scale-wrap">
+      <div class="s" id="s7">
+        <div class="tl"></div><div class="br"></div>
+        <h3>Quer entender como<br>blindar seu<br>emagrecimento?</h3>
+        <div class="pill">BLINDADO</div>
+        <span class="line"></span>
+        <p>Comente <strong>BLINDADO</strong> aqui embaixo e eu te mando o link do nosso Grupo VIP gratuito — onde você vai receber o método completo, sem dieta maluca.</p>
+        <div class="brand">@emagrecimentoblindado</div>
+        <div class="num">07 / 07</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-info">
+    <div class="label">Slide 7 · CTA</div>
+    <h3>"Comente BLINDADO para entrar no Grupo VIP"</h3>
+    <p>CTA direto com palavra-gatilho para automação de DM. Gera comentários e impulsiona o alcance orgânico do post.</p>
+    <button class="btn-dl" onclick="downloadSlide('s7','slide-7.png',this)">⬇ Baixar slide-7.png</button>
+  </div>
+</div>
+
+<!-- ══ LEGENDA + HASHTAGS ══════════════════════════ -->
+<div style="max-width:720px;margin:60px auto 0;background:#1e0f15;border-radius:4px;padding:28px 32px;border-left:3px solid var(--rose)">
+  <div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Legenda do Post</div>
+  <p style="font-size:.88rem;line-height:1.8;color:#d8c0c8">
+    Quantas vezes você recomeçou e parou de novo? 😔<br><br>
+    Eu sei como é. Você não é fraca. Você está exausta de um método que nunca foi feito para o seu corpo.<br><br>
+    Seu organismo não é seu inimigo — ele só precisa de estratégia, não de punição.<br><br>
+    💬 <strong style="color:var(--rose)">Comente BLINDADO</strong> e eu te mando o link do nosso Grupo VIP gratuito — onde você vai aprender o método que blinda o seu emagrecimento de vez.
+  </p>
+  <div style="margin-top:14px;color:var(--rose);font-size:.82rem;line-height:2">
+    #emagrecimentoblindado #emagrecerfeminino #dieta #perderpeso #saudefeminina
+  </div>
+  <div style="margin-top:12px;font-size:.75rem;color:#8a7080;font-style:italic">
+    🖼 Sugestão de imagem: fundo escuro rosê com textura sutil de seda ou veludo — transmite elegância e seriedade sem parecer clínico.
+  </div>
+</div>
+
+<div id="status-bar">⏳ Gerando imagem…</div>
+
+<!-- ══ JAVASCRIPT ══════════════════════════════════ -->
+<script>
+  const status = document.getElementById('status-bar');
+
+  function showStatus(msg) {
+    status.textContent = msg;
+    status.classList.add('visible');
+  }
+  function hideStatus() {
+    status.classList.remove('visible');
+  }
+
+  async function downloadSlide(id, filename, btn) {
+    btn.classList.add('loading');
+    btn.textContent = '⏳ Gerando…';
+    showStatus('Gerando ' + filename + '…');
+
+    const el = document.getElementById(id);
+
+    try {
+      const canvas = await html2canvas(el, {
+        scale: 1,          // elemento já está em 1080×1350 real
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false,
+        width: 1080,
+        height: 1350,
+        windowWidth: 1080,
+        windowHeight: 1350,
+      });
+
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+        btn.classList.remove('loading');
+        btn.textContent = '✓ Baixado!';
+        setTimeout(() => { btn.textContent = '⬇ Baixar ' + filename; }, 3000);
+        hideStatus();
+      }, 'image/png');
+    } catch(e) {
+      console.error(e);
+      btn.classList.remove('loading');
+      btn.textContent = '⬇ Tentar novamente';
+      showStatus('Erro ao gerar imagem. Verifique o console.');
+    }
+  }
+
+  async function downloadAll() {
+    const slides = [
+      ['s1','slide-1.png'], ['s2','slide-2.png'], ['s3','slide-3.png'],
+      ['s4','slide-4.png'], ['s5','slide-5.png'], ['s6','slide-6.png'],
+      ['s7','slide-7.png'],
+    ];
+    for (let i = 0; i < slides.length; i++) {
+      const [id, name] = slides[i];
+      showStatus(`Gerando ${name} (${i+1}/7)…`);
+      const btn = document.querySelector(`[onclick*="${id}"]`);
+      await downloadSlide(id, name, btn);
+      await new Promise(r => setTimeout(r, 600)); // pequena pausa entre downloads
+    }
+    showStatus('✓ Todos os 7 slides baixados!');
+    setTimeout(hideStatus, 4000);
+  }
+</script>
+</body>
+</html>
