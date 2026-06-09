@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compositor de Fotos — Emagrecimento Blindado</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #f5e8d0; font-family: 'Georgia', serif; }
+
+.topbar {
+  background: #111;
+  border-bottom: 2px solid #d4a64a;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.topbar h1 { font-size: 18px; color: #e0b95b; letter-spacing: 0.08em; }
+.topbar p { font-size: 13px; color: #8c6c28; flex: 1; }
+
+.btn {
+  background: #d4a64a; color: #111; border: none;
+  padding: 10px 22px; font-size: 14px; font-weight: bold;
+  cursor: pointer; letter-spacing: 0.05em;
+}
+.btn:hover { background: #e0b95b; }
+.btn.outline { background: transparent; color: #d4a64a; border: 1px solid #d4a64a; }
+.btn.outline:hover { background: #d4a64a22; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.instructions {
+  background: #1c1c1c;
+  border-left: 3px solid #d4a64a;
+  padding: 14px 24px;
+  margin: 20px 32px;
+  font-size: 13px;
+  color: #c6922e;
+  line-height: 1.7;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px 32px 60px;
+}
+
+.card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card-num {
+  font-size: 12px;
+  color: #8c6c28;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-preview {
+  position: relative;
+}
+
+/* Scaled container: actual card is 1080×1350, shown at ~220px wide */
+.card-scale {
+  width: 216px;
+  height: 270px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #2a2a2a;
+}
+.card-scale .card {
+  width: 1080px;
+  height: 1350px;
+  transform-origin: top left;
+  transform: scale(0.2);
+  position: absolute;
+  top: 0; left: 0;
+}
+
+/* ── CARD BASE ─────────────────────────── */
+.card {
+  width: 1080px;
+  height: 1350px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Georgia', serif;
+  background: #111;
+}
+
+/* PHOTO ZONE */
+.card-photo {
+  width: 1080px;
+  height: 810px;
+  position: relative;
+  overflow: hidden;
+}
+.card-photo .photo-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.card-photo .photo-grad {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+.card.manha .photo-grad {
+  background: linear-gradient(to bottom, rgba(8,6,2,0.45) 0%, rgba(22,14,4,0.2) 50%, rgba(52,32,8,0.75) 100%),
+              radial-gradient(ellipse at left, rgba(0,0,0,0.55) 0%, transparent 60%),
+              radial-gradient(ellipse at top, rgba(0,0,0,0.5) 0%, transparent 55%);
+}
+.card.conteudo .photo-grad {
+  background: linear-gradient(to bottom, rgba(6,4,12,0.5) 0%, rgba(18,10,32,0.2) 50%, rgba(42,22,68,0.78) 100%),
+              radial-gradient(ellipse at left, rgba(0,0,0,0.55) 0%, transparent 60%),
+              radial-gradient(ellipse at top, rgba(0,0,0,0.5) 0%, transparent 55%);
+}
+.card.cta .photo-grad {
+  background: linear-gradient(to bottom, rgba(8,2,4,0.5) 0%, rgba(24,6,12,0.2) 50%, rgba(60,14,28,0.78) 100%),
+              radial-gradient(ellipse at left, rgba(0,0,0,0.55) 0%, transparent 60%),
+              radial-gradient(ellipse at top, rgba(0,0,0,0.5) 0%, transparent 55%);
+}
+/* No photo — gradient fill */
+.card.manha .card-photo { background: linear-gradient(to bottom, rgb(8,6,2), rgb(22,14,4), rgb(52,32,8)); }
+.card.conteudo .card-photo { background: linear-gradient(to bottom, rgb(6,4,12), rgb(18,10,32), rgb(42,22,68)); }
+.card.cta .card-photo { background: linear-gradient(to bottom, rgb(8,2,4), rgb(24,6,12), rgb(60,14,28)); }
+
+/* Eyebrow */
+.eyebrow {
+  position: absolute;
+  top: 247px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Arial', sans-serif;
+  font-size: 34px;
+  font-weight: normal;
+  letter-spacing: 0.12em;
+  color: #e0b95b;
+  white-space: nowrap;
+  text-shadow: 1px 1px 0 #c6922e;
+}
+.eyebrow-line {
+  position: absolute;
+  top: 294px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.eyebrow-line::before, .eyebrow-line::after {
+  content: '';
+  display: block;
+  width: 62px;
+  height: 2px;
+  background: #d4a64a;
+}
+.eyebrow-line .dot {
+  width: 8px; height: 5px;
+  background: #e0b95b;
+  margin: 0 2px;
+}
+
+/* Watermark + index */
+.watermark {
+  position: absolute;
+  bottom: 52px; left: 42px;
+  font-family: 'Arial', sans-serif;
+  font-size: 21px;
+  color: #8c6c28;
+}
+.card-index {
+  position: absolute;
+  top: 28px; right: 42px;
+  font-family: 'Arial', sans-serif;
+  font-size: 21px;
+  color: #8c6c28;
+}
+
+/* L-corners */
+.corner {
+  position: absolute;
+  pointer-events: none;
+}
+.corner-tl {
+  top: 40px; left: 40px;
+  width: 100px; height: 100px;
+  border-top: 3px solid #e0b95b;
+  border-left: 3px solid #e0b95b;
+}
+.corner-tl::after {
+  content: '';
+  position: absolute;
+  top: 7px; left: 7px;
+  width: 83px; height: 83px;
+  border-top: 2px solid #c6922e;
+  border-left: 2px solid #c6922e;
+}
+.corner-br {
+  bottom: calc(1350px - 810px + 40px); right: 40px;
+  width: 100px; height: 100px;
+  border-bottom: 3px solid #e0b95b;
+  border-right: 3px solid #e0b95b;
+}
+.corner-br::after {
+  content: '';
+  position: absolute;
+  bottom: 7px; right: 7px;
+  width: 83px; height: 83px;
+  border-bottom: 2px solid #c6922e;
+  border-right: 2px solid #c6922e;
+}
+
+/* Separador duplo */
+.separator {
+  position: absolute;
+  top: 807px; left: 0;
+  width: 1080px;
+}
+.separator .sep1 {
+  height: 3px;
+  background: #c6922e;
+}
+.separator .sep2 {
+  height: 4px;
+  background: #e0b95b;
+  margin-top: 1px;
+}
+
+/* TEXT ZONE */
+.card-text {
+  position: absolute;
+  top: 815px; left: 0;
+  width: 1080px;
+  height: 535px;
+  padding: 50px 80px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.card.manha .card-text { background: linear-gradient(to bottom, #111111, #1c140c); }
+.card.conteudo .card-text { background: linear-gradient(to bottom, #111111, #16121e); }
+.card.cta .card-text { background: linear-gradient(to bottom, #111111, #180a10); }
+
+.line-top {
+  display: block;
+  width: 100px; height: 5px;
+  background: #e0b95b;
+  margin-bottom: 22px;
+  flex-shrink: 0;
+}
+.titulo {
+  font-family: 'Georgia', serif;
+  font-size: 100px;
+  font-weight: bold;
+  color: #fffcf6;
+  line-height: 1.1;
+  text-shadow: 2px 2px 0 #281c08;
+  flex-shrink: 0;
+}
+.titulo.med { font-size: 88px; }
+.titulo.sml { font-size: 76px; }
+.sep-line {
+  display: block;
+  width: 60px; height: 2px;
+  background: #c6922e;
+  margin: 16px 0;
+  flex-shrink: 0;
+}
+.subtitulo {
+  font-family: 'Arial', sans-serif;
+  font-size: 41px;
+  color: #f5e8d0;
+  line-height: 1.35;
+  flex-shrink: 0;
+}
+.pill {
+  display: inline-block;
+  background: #e0b95b;
+  color: #111;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 46px;
+  font-weight: bold;
+  padding: 12px 28px;
+  border-radius: 3px;
+  margin-bottom: 14px;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+.brand-bottom {
+  position: absolute;
+  bottom: 44px; right: 80px;
+  font-family: 'Arial', sans-serif;
+  font-size: 21px;
+  color: #d4a64a;
+}
+
+/* Drop zone overlay */
+.drop-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 216px; height: 162px; /* 60% of scaled height */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  transition: background 0.2s;
+  z-index: 10;
+}
+.drop-overlay:hover { background: rgba(212,166,74,0.18); }
+.drop-overlay.drag-over { background: rgba(212,166,74,0.35); }
+.drop-text {
+  color: #d4a64a;
+  font-size: 11px;
+  text-align: center;
+  pointer-events: none;
+  line-height: 1.5;
+}
+.drop-text span { display: block; font-size: 22px; margin-bottom: 4px; }
+
+/* Buttons row */
+.btn-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.btn-row .btn { font-size: 12px; padding: 6px 12px; flex: 1; }
+
+/* Status */
+#status {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #1c1c1c; border: 1px solid #d4a64a;
+  color: #e0b95b; padding: 10px 24px;
+  font-size: 14px; display: none;
+  z-index: 100;
+}
+#status.on { display: block; }
+#progress { position: fixed; bottom: 0; left: 0; height: 3px; background: #d4a64a; width: 0; transition: width 0.2s; z-index: 200; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>EMAGRECIMENTO BLINDADO — Compositor de Fotos</h1>
+  <p>Arraste sua foto para cada card. Depois clique ⬇ PNG para exportar.</p>
+  <button class="btn outline" id="btn-apply-all">📷 Aplicar 1 foto em todos</button>
+  <button class="btn" id="btn-dl-all">⬇ Baixar todos (10 cards)</button>
+</div>
+
+<div class="instructions">
+  <strong>Como usar:</strong>
+  Clique na zona cinza (parte de cima de cada card) e selecione a foto — ou arraste a imagem direto para o card.
+  A foto preencherá a zona da foto (60% superior). Ajuste com o slider de posição vertical se necessário.
+  Quando satisfeita, clique ⬇ PNG para exportar cada card em 1080×1350px.
+</div>
+
+<div class="cards-grid" id="cards-grid"></div>
+
+<div id="render-zone" style="position:fixed;left:-9999px;top:0;pointer-events:none;"></div>
+<div id="status"></div>
+<div id="progress"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const CARROSSEL = {
+  id: "faztudocerto",
+  tipo: "conteudo",
+  nome: "Você faz tudo certo e não emagrece",
+  cards: [
+    { t: "VOCÊ FAZ\nTUDO CERTO.", s: "E mesmo assim, a balança não move." },
+    { t: "Você acorda cedo.", s: "Come menos do que todo mundo.\nE seu corpo parece ignorar." },
+    { t: "Segue a dieta.", s: "Corta o pão. Corta o doce.\nCorta tudo. E nada muda." },
+    { t: "Faz exercício.", s: "Se esforça mais do que amigas que emagrecem\nsem fazer metade." },
+    { t: "E mesmo assim.", s: "O peso não sai. As roupas continuam apertando.\nA frustração cresce." },
+    { t: "A culpa não é\nsua.", s: "Depois dos 35, o corpo muda por dentro.\nOs hormônios mudam as regras." },
+    { t: "O que funcionava\nantes...", s: "...pode ser exatamente o que sabota\nvocê hoje." },
+    { t: "Não é força\nde vontade.", s: "É estratégia. Seu corpo precisa de uma\nabordagem diferente agora." },
+    { t: "Existe uma saída.", s: "E ela começa entendendo o que realmente\nestá acontecendo dentro de você." },
+    { t: "Quer entender\no método?", s: "Comente BLINDADO.", pill: true, cta: true },
+  ]
+};
+
+// ── PHOTO STORE ───────────────────────────────────────────────────────────────
+const photoStore = {}; // cardIndex → dataURL
+
+// ── BUILD GRID ────────────────────────────────────────────────────────────────
+const grid = document.getElementById('cards-grid');
+
+CARROSSEL.cards.forEach((card, i) => {
+  const num = i + 1;
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap';
+
+  const numLabel = document.createElement('div');
+  numLabel.className = 'card-num';
+  numLabel.textContent = `Card ${num} / 10`;
+
+  const preview = document.createElement('div');
+  preview.className = 'card-preview';
+
+  const scaleWrap = document.createElement('div');
+  scaleWrap.className = 'card-scale';
+
+  const cardEl = buildCard(card, num, null);
+  cardEl.id = `card-el-${num}`;
+  scaleWrap.appendChild(cardEl);
+
+  // Drop overlay (on top of scaled card, covers photo zone)
+  const overlay = document.createElement('div');
+  overlay.className = 'drop-overlay';
+  overlay.id = `drop-${num}`;
+  overlay.innerHTML = `<div class="drop-text"><span>📷</span>Clique para<br>adicionar foto</div>`;
+
+  overlay.addEventListener('click', () => triggerFileInput(num));
+  overlay.addEventListener('dragover', e => { e.preventDefault(); overlay.classList.add('drag-over'); });
+  overlay.addEventListener('dragleave', () => overlay.classList.remove('drag-over'));
+  overlay.addEventListener('drop', e => {
+    e.preventDefault();
+    overlay.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) applyPhoto(num, file);
+  });
+
+  preview.appendChild(scaleWrap);
+  preview.appendChild(overlay);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const dlBtn = document.createElement('button');
+  dlBtn.className = 'btn';
+  dlBtn.textContent = '⬇ PNG';
+  dlBtn.onclick = () => exportCard(num, dlBtn);
+
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn outline';
+  clearBtn.textContent = '✕ Limpar';
+  clearBtn.onclick = () => clearPhoto(num);
+
+  btnRow.appendChild(dlBtn);
+  btnRow.appendChild(clearBtn);
+
+  wrap.appendChild(numLabel);
+  wrap.appendChild(preview);
+  wrap.appendChild(btnRow);
+  grid.appendChild(wrap);
+});
+
+// ── BUILD CARD DOM ────────────────────────────────────────────────────────────
+function buildCard(card, num, photoDataURL) {
+  const tipo = CARROSSEL.tipo;
+  const el = document.createElement('div');
+  el.className = `card ${tipo}`;
+
+  // Photo zone
+  const photo = document.createElement('div');
+  photo.className = 'card-photo';
+
+  if (photoDataURL) {
+    const img = document.createElement('img');
+    img.className = 'photo-img';
+    img.src = photoDataURL;
+    photo.appendChild(img);
+  }
+
+  const grad = document.createElement('div');
+  grad.className = 'photo-grad';
+  photo.appendChild(grad);
+
+  const eyebrow = document.createElement('div');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'EMAGRECIMENTO  BLINDADO';
+  photo.appendChild(eyebrow);
+
+  const eyeLine = document.createElement('div');
+  eyeLine.className = 'eyebrow-line';
+  eyeLine.innerHTML = '<div class="dot"></div>';
+  photo.appendChild(eyeLine);
+
+  const wm = document.createElement('div');
+  wm.className = 'watermark';
+  wm.textContent = '@emagrecimentoblindado';
+  photo.appendChild(wm);
+
+  const idx = document.createElement('div');
+  idx.className = 'card-index';
+  idx.textContent = `${num < 10 ? '0'+num : num} / 10`;
+  photo.appendChild(idx);
+
+  // L-corners
+  ['corner corner-tl', 'corner corner-br'].forEach(cls => {
+    const c = document.createElement('div');
+    c.className = cls;
+    photo.appendChild(c);
+  });
+
+  el.appendChild(photo);
+
+  // Separator
+  const sep = document.createElement('div');
+  sep.className = 'separator';
+  sep.innerHTML = '<div class="sep1"></div><div class="sep2"></div>';
+  el.appendChild(sep);
+
+  // Text zone
+  const text = document.createElement('div');
+  text.className = 'card-text';
+
+  const lineTop = document.createElement('span');
+  lineTop.className = 'line-top';
+  text.appendChild(lineTop);
+
+  const titulo = document.createElement('div');
+  const tlen = card.t.replace(/\n/g,' ').length;
+  titulo.className = 'titulo' + (tlen > 26 ? ' sml' : tlen > 14 ? ' med' : '');
+  titulo.innerHTML = card.t.replace(/\n/g,'<br>');
+  text.appendChild(titulo);
+
+  const sepLine = document.createElement('span');
+  sepLine.className = 'sep-line';
+  text.appendChild(sepLine);
+
+  if (card.pill) {
+    const pill = document.createElement('div');
+    pill.className = 'pill';
+    pill.textContent = 'BLINDADO';
+    text.appendChild(pill);
+    const sub = document.createElement('div');
+    sub.className = 'subtitulo';
+    sub.textContent = 'e entre para o Grupo VIP gratuito.';
+    text.appendChild(sub);
+  } else {
+    const sub = document.createElement('div');
+    sub.className = 'subtitulo';
+    sub.innerHTML = card.s.replace(/\n/g,'<br>');
+    text.appendChild(sub);
+  }
+
+  const brand = document.createElement('div');
+  brand.className = 'brand-bottom';
+  brand.textContent = '@emagrecimentoblindado';
+  text.appendChild(brand);
+
+  el.appendChild(text);
+  return el;
+}
+
+// ── FILE INPUT ────────────────────────────────────────────────────────────────
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = 'image/*';
+document.body.appendChild(fileInput);
+let pendingCardNum = null;
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0] && pendingCardNum !== null)
+    applyPhoto(pendingCardNum, fileInput.files[0]);
+  fileInput.value = '';
+});
+function triggerFileInput(num) { pendingCardNum = num; fileInput.click(); }
+
+// ── APPLY PHOTO ───────────────────────────────────────────────────────────────
+function applyPhoto(num, file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataURL = e.target.result;
+    photoStore[num] = dataURL;
+    rebuildCard(num);
+    const ov = document.getElementById(`drop-${num}`);
+    if (ov) ov.style.opacity = '0';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearPhoto(num) {
+  delete photoStore[num];
+  rebuildCard(num);
+  const ov = document.getElementById(`drop-${num}`);
+  if (ov) ov.style.opacity = '1';
+}
+
+function rebuildCard(num) {
+  const old = document.getElementById(`card-el-${num}`);
+  if (!old) return;
+  const card = CARROSSEL.cards[num - 1];
+  const newEl = buildCard(card, num, photoStore[num] || null);
+  newEl.id = `card-el-${num}`;
+  old.replaceWith(newEl);
+}
+
+// ── APPLY 1 PHOTO TO ALL ──────────────────────────────────────────────────────
+document.getElementById('btn-apply-all').onclick = () => {
+  pendingCardNum = '__all__';
+  fileInput.click();
+};
+fileInput.addEventListener('change', () => {}, false); // already handled above
+
+const origChange = fileInput.onchange;
+fileInput.onchange = () => {
+  if (!fileInput.files[0]) return;
+  if (pendingCardNum === '__all__') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const dataURL = e.target.result;
+      for (let i = 1; i <= 10; i++) {
+        photoStore[i] = dataURL;
+        rebuildCard(i);
+        const ov = document.getElementById(`drop-${i}`);
+        if (ov) ov.style.opacity = '0';
+      }
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else if (pendingCardNum !== null) {
+    applyPhoto(pendingCardNum, fileInput.files[0]);
+  }
+  fileInput.value = '';
+  pendingCardNum = null;
+};
+
+// ── EXPORT CARD ───────────────────────────────────────────────────────────────
+const renderZone = document.getElementById('render-zone');
+
+async function exportCard(num, btn) {
+  const card = CARROSSEL.cards[num - 1];
+  const filename = `carrossel_${CARROSSEL.id}_card_${num < 10 ? '0'+num : num}.png`;
+
+  if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+  setStatus(`Gerando ${filename}…`);
+
+  renderZone.innerHTML = '';
+  const fullCard = buildCard(card, num, photoStore[num] || null);
+  fullCard.style.position = 'absolute';
+  renderZone.appendChild(fullCard);
+
+  // Wait for image to load if present
+  if (photoStore[num]) {
+    await new Promise(r => {
+      const img = fullCard.querySelector('img');
+      if (!img) { r(); return; }
+      if (img.complete) r(); else { img.onload = r; img.onerror = r; }
+    });
+  }
+  await sleep(120);
+
+  try {
+    const canvas = await html2canvas(fullCard, {
+      scale: 1, width: 1080, height: 1350,
+      useCORS: true, allowTaint: true,
+      backgroundColor: '#111111', logging: false,
+      windowWidth: 1080, windowHeight: 1350,
+    });
+    canvas.toBlob(blob => {
+      triggerDownload(blob, filename);
+      if (btn) { btn.textContent = '✓'; btn.disabled = false; setTimeout(() => btn.textContent = '⬇ PNG', 2500); }
+      clearStatus();
+    }, 'image/png');
+  } catch(e) {
+    console.error(e);
+    setStatus('Erro: ' + e.message);
+    if (btn) { btn.textContent = '⚠'; btn.disabled = false; }
+  }
+}
+
+// ── EXPORT ALL ────────────────────────────────────────────────────────────────
+document.getElementById('btn-dl-all').onclick = async () => {
+  const prog = document.getElementById('progress');
+  for (let i = 1; i <= 10; i++) {
+    prog.style.width = ((i-1)/10*100) + '%';
+    await exportCard(i, null);
+    await sleep(350);
+  }
+  prog.style.width = '100%';
+  setStatus('✓ Todos os 10 cards exportados!');
+  setTimeout(() => { clearStatus(); prog.style.width = '0'; }, 5000);
+};
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function setStatus(msg) {
+  const s = document.getElementById('status');
+  s.textContent = msg; s.classList.add('on');
+}
+function clearStatus() {
+  document.getElementById('status').classList.remove('on');
+}
+</script>
+</body>
+</html>
