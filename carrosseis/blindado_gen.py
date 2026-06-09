@@ -13,8 +13,7 @@ def _f(path, size):
     try: return ImageFont.truetype(path, size)
     except: return ImageFont.load_default()
 
-F_EYE   = _f(f"{FONTS}/liberation/LiberationSans-Regular.ttf",  34)
-F_TTL   = _f(f"{FONTS}/dejavu/DejaVuSerif-Bold.ttf",           128)
+F_TTL   =_f(f"{FONTS}/dejavu/DejaVuSerif-Bold.ttf",           128)
 F_TTL_M = _f(f"{FONTS}/dejavu/DejaVuSerif-Bold.ttf",           104)
 F_TTL_S = _f(f"{FONTS}/dejavu/DejaVuSerif-Bold.ttf",            88)
 F_SUB   = _f(f"{FONTS}/liberation/LiberationSans-Regular.ttf",   41)
