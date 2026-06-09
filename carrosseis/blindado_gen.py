@@ -114,18 +114,6 @@ def draw_card(tipo: str, card: dict, num: int, total: int = 10) -> Image.Image:
     ]:
         draw.line(pts, fill=col, width=lw)
 
-    # Eyebrow
-    ey = "EMAGRECIMENTO  BLINDADO"
-    eb = draw.textbbox((0,0), ey, font=F_EYE)
-    ex = (W-(eb[2]-eb[0]))//2
-    draw.text((ex+1,250), ey, font=F_EYE, fill=C["amber"])
-    draw.text((ex,  247), ey, font=F_EYE, fill=C["gold_hi"])
-
-    mid = W//2
-    draw.line([(mid-70,294),(mid-8,294)],  fill=C["gold"], width=2)
-    draw.rectangle([mid-4,292,mid+4,297],  fill=C["gold_hi"])
-    draw.line([(mid+8,294),(mid+70,294)],  fill=C["gold"], width=2)
-
     # Watermark / index
     draw.text((P+2, PHOTO_H-52), "@emagrecimentoblindado", font=F_MICRO, fill=C["dim_gold"])
     idx = f"{'0'+str(num) if num<10 else num} / {total}"
