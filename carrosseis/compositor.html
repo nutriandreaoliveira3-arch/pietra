@@ -3,702 +3,646 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compositor de Fotos — Emagrecimento Blindado</title>
+<title>Compositor — Emagrecimento Blindado</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0a0a0a; color: #f5e8d0; font-family: 'Georgia', serif; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold:   #d4a64a;
+  --goldhx: #e0b95b;
+  --amber:  #c6922e;
+  --dark:   #8c6c28;
+  --black:  #111111;
+  --bg:     #0d0d0d;
+  --card-bg:#161616;
+  --cream:  #f5e8d0;
+  --white:  #fffcf6;
+}
+body { background: var(--bg); color: var(--cream); font-family: Arial, sans-serif; min-height: 100vh; }
 
+/* ── TOPBAR ── */
 .topbar {
   background: #111;
-  border-bottom: 2px solid #d4a64a;
-  padding: 16px 32px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
+  border-bottom: 2px solid var(--gold);
+  padding: 14px 28px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
 }
-.topbar h1 { font-size: 18px; color: #e0b95b; letter-spacing: 0.08em; }
-.topbar p { font-size: 13px; color: #8c6c28; flex: 1; }
-
+.topbar h1 { font-size: 15px; color: var(--goldhx); letter-spacing: 0.1em; flex: 1; }
 .btn {
-  background: #d4a64a; color: #111; border: none;
-  padding: 10px 22px; font-size: 14px; font-weight: bold;
-  cursor: pointer; letter-spacing: 0.05em;
+  background: var(--gold); color: #111; border: none;
+  padding: 9px 20px; font-size: 13px; font-weight: bold;
+  cursor: pointer; letter-spacing: 0.05em; white-space: nowrap;
 }
-.btn:hover { background: #e0b95b; }
-.btn.outline { background: transparent; color: #d4a64a; border: 1px solid #d4a64a; }
-.btn.outline:hover { background: #d4a64a22; }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:hover { background: var(--goldhx); }
+.btn.out { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.btn.out:hover { background: #d4a64a18; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
 
-.instructions {
-  background: #1c1c1c;
-  border-left: 3px solid #d4a64a;
-  padding: 14px 24px;
-  margin: 20px 32px;
-  font-size: 13px;
-  color: #c6922e;
-  line-height: 1.8;
+/* ── LAYOUT ── */
+.layout { display: flex; gap: 0; min-height: calc(100vh - 52px); }
+
+/* ── LEFT PANEL ── */
+.panel {
+  width: 320px; flex-shrink: 0;
+  background: var(--card-bg);
+  border-right: 1px solid #222;
+  display: flex; flex-direction: column;
+  padding: 24px 20px;
+  gap: 20px;
+  position: sticky; top: 0; height: calc(100vh - 52px); overflow-y: auto;
 }
-.instructions strong { color: #e0b95b; }
+.panel-title { font-size: 11px; color: var(--dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
 
+/* ── UPLOAD ZONE ── */
+.upload-zone {
+  border: 2px dashed var(--amber);
+  border-radius: 4px;
+  background: #1a1208;
+  min-height: 180px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+  text-align: center;
+  padding: 20px;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--goldhx);
+  background: #221808;
+}
+.upload-zone.has-photo {
+  border-style: solid;
+  border-color: var(--gold);
+}
+.upload-icon { font-size: 40px; line-height: 1; }
+.upload-label { font-size: 13px; color: var(--goldhx); font-weight: bold; }
+.upload-hint  { font-size: 11px; color: var(--dark); line-height: 1.6; }
+
+.upload-preview-wrap {
+  width: 100%; display: none; flex-direction: column; gap: 8px;
+}
+.upload-preview-wrap.visible { display: flex; }
+.upload-preview-img {
+  width: 100%; max-height: 200px;
+  object-fit: contain; background: #0a0a0a;
+  border: 1px solid #2a2a2a;
+  display: block;
+}
+.upload-preview-name { font-size: 10px; color: var(--dark); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.choose-btn {
+  background: var(--gold); color: #111; border: none;
+  padding: 10px 24px; font-size: 14px; font-weight: bold;
+  cursor: pointer; letter-spacing: 0.06em; width: 100%;
+}
+.choose-btn:hover { background: var(--goldhx); }
+
+/* ── APPLY OPTIONS ── */
+.apply-row { display: flex; flex-direction: column; gap: 8px; }
+.apply-btn {
+  background: #1e1408; color: var(--gold); border: 1px solid var(--amber);
+  padding: 9px 14px; font-size: 12px; font-weight: bold;
+  cursor: pointer; text-align: left; letter-spacing: 0.04em;
+}
+.apply-btn:hover { background: #2a1c0a; border-color: var(--goldhx); }
+.apply-btn small { display: block; font-size: 10px; color: var(--dark); font-weight: normal; margin-top: 2px; }
+
+/* ── CONTROLS ── */
+.controls-section { display: flex; flex-direction: column; gap: 10px; }
+.ctrl-row { display: flex; align-items: center; gap: 8px; }
+.ctrl-label { font-size: 10px; color: var(--dark); text-transform: uppercase; letter-spacing: .06em; width: 64px; flex-shrink: 0; }
+.ctrl-row input[type=range] { flex: 1; accent-color: var(--gold); cursor: pointer; }
+.ctrl-val { font-size: 11px; color: var(--amber); width: 38px; text-align: right; flex-shrink: 0; }
+.ctrl-reset { font-size: 11px; color: #444; background: none; border: 1px solid #2a2a2a; cursor: pointer; padding: 2px 6px; }
+.ctrl-reset:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid #222; margin: 0; }
+
+/* ── CARD SELECT ── */
+.card-select-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+}
+.cs-btn {
+  background: #1a1a1a; border: 1px solid #2a2a2a; color: var(--dark);
+  font-size: 10px; padding: 5px 2px; cursor: pointer; text-align: center;
+}
+.cs-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cs-btn.active { background: #2a1c08; border-color: var(--gold); color: var(--goldhx); }
+.cs-btn.has-photo { border-color: var(--amber); color: var(--amber); }
+.cs-all { grid-column: span 5; font-size: 11px; padding: 7px; }
+
+/* ── MAIN GRID ── */
+.main { flex: 1; padding: 24px; overflow-y: auto; }
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 28px;
-  padding: 20px 32px 80px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
 }
 
-.card-wrap { display: flex; flex-direction: column; gap: 8px; }
-.card-num { font-size: 11px; color: #8c6c28; letter-spacing: 0.08em; text-transform: uppercase; }
+.card-wrap { display: flex; flex-direction: column; gap: 6px; }
+.card-num { font-size: 10px; color: var(--dark); letter-spacing: .08em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+.card-has-photo { font-size: 9px; color: var(--amber); display: none; }
+.card-has-photo.on { display: block; }
 
-.card-preview { position: relative; }
-
-/* Scaled container: card is 1080×1350, shown at 260px wide = scale 0.2407 */
+/* Card scale */
 .card-scale {
-  width: 260px;
-  height: 325px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #2a2a2a;
-  cursor: pointer;
+  width: 240px; height: 300px;
+  overflow: hidden; position: relative;
+  border: 1px solid #222; cursor: pointer;
+  transition: border-color .15s;
 }
-.card-scale .card {
-  width: 1080px;
-  height: 1350px;
+.card-scale:hover { border-color: var(--gold); }
+.card-scale.selected { border: 2px solid var(--goldhx); }
+.card-scale .card-inner {
+  width: 1080px; height: 1350px;
   transform-origin: top left;
-  transform: scale(0.2407);
-  position: absolute;
-  top: 0; left: 0;
+  transform: scale(0.2222);
+  position: absolute; top: 0; left: 0;
 }
 
-/* ── CARD BASE ───────────────────────── */
-.card {
-  width: 1080px;
-  height: 1350px;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Georgia', serif;
-  background: #111;
+/* ── CARD INNER STYLES (1080×1350) ── */
+.card-inner {
+  position: relative; overflow: hidden;
+  font-family: 'Georgia', serif; background: #111;
 }
-
-/* PHOTO ZONE */
-.card-photo {
-  width: 1080px;
-  height: 810px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/*
-  REGRA GLOBAL — FOTOS DA ESPECIALISTA
-  object-fit: contain  →  foto completa, sem cortes
-  Nunca cover. Nunca zoom automático. Nunca cortar rosto.
-*/
-.card-photo .photo-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;       /* SEMPRE contain — foto inteira visível */
-  object-position: center center;
-  display: block;
-  transform-origin: center center;
-}
-
-.card-photo .photo-grad {
-  position: absolute; inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-.card.manha .photo-grad {
-  background: linear-gradient(to bottom, rgba(8,6,2,0.3) 0%, rgba(22,14,4,0.1) 40%, rgba(52,32,8,0.72) 100%),
-              radial-gradient(ellipse at left, rgba(0,0,0,0.5) 0%, transparent 55%),
-              radial-gradient(ellipse at top, rgba(0,0,0,0.38) 0%, transparent 50%);
-}
-.card.conteudo .photo-grad {
-  background: linear-gradient(to bottom, rgba(6,4,12,0.3) 0%, rgba(18,10,32,0.1) 40%, rgba(42,22,68,0.75) 100%),
-              radial-gradient(ellipse at left, rgba(0,0,0,0.5) 0%, transparent 55%),
-              radial-gradient(ellipse at top, rgba(0,0,0,0.38) 0%, transparent 50%);
-}
-.card.cta .photo-grad {
-  background: linear-gradient(to bottom, rgba(8,2,4,0.3) 0%, rgba(24,6,12,0.1) 40%, rgba(60,14,28,0.75) 100%),
-              radial-gradient(ellipse at left, rgba(0,0,0,0.5) 0%, transparent 55%),
-              radial-gradient(ellipse at top, rgba(0,0,0,0.38) 0%, transparent 50%);
-}
-/* No photo — gradient fill */
-.card.manha   .card-photo { background: linear-gradient(to bottom, rgb(8,6,2),   rgb(22,14,4), rgb(52,32,8)); }
-.card.conteudo .card-photo { background: linear-gradient(to bottom, rgb(6,4,12),  rgb(18,10,32), rgb(42,22,68)); }
-.card.cta      .card-photo { background: linear-gradient(to bottom, rgb(8,2,4),   rgb(24,6,12), rgb(60,14,28)); }
-
-/* Watermark + index — acima do gradiente */
-.watermark {
-  position: absolute;
-  bottom: 52px; left: 42px;
-  font-family: 'Arial', sans-serif;
-  font-size: 21px;
-  color: #8c6c28;
-  z-index: 2;
-}
-.card-index {
-  position: absolute;
-  top: 28px; right: 42px;
-  font-family: 'Arial', sans-serif;
-  font-size: 21px;
-  color: #8c6c28;
-  z-index: 2;
-}
-
-/* L-corners */
-.corner { position: absolute; pointer-events: none; z-index: 2; }
-.corner-tl {
-  top: 40px; left: 40px;
-  width: 100px; height: 100px;
-  border-top: 3px solid #e0b95b;
-  border-left: 3px solid #e0b95b;
-}
-.corner-tl::after {
-  content: '';
-  position: absolute;
-  top: 7px; left: 7px;
-  width: 83px; height: 83px;
-  border-top: 2px solid #c6922e;
-  border-left: 2px solid #c6922e;
-}
-.corner-br {
-  bottom: calc(1350px - 810px + 40px); right: 40px;
-  width: 100px; height: 100px;
-  border-bottom: 3px solid #e0b95b;
-  border-right: 3px solid #e0b95b;
-}
-.corner-br::after {
-  content: '';
-  position: absolute;
-  bottom: 7px; right: 7px;
-  width: 83px; height: 83px;
-  border-bottom: 2px solid #c6922e;
-  border-right: 2px solid #c6922e;
-}
-
-/* Separador duplo */
-.separator { position: absolute; top: 807px; left: 0; width: 1080px; z-index: 2; }
-.separator .sep1 { height: 3px; background: #c6922e; }
-.separator .sep2 { height: 4px; background: #e0b95b; margin-top: 1px; }
-
-/* TEXT ZONE */
-.card-text {
-  position: absolute;
-  top: 815px; left: 0;
-  width: 1080px; height: 535px;
-  padding: 50px 80px 40px;
-  display: flex; flex-direction: column; gap: 0;
-}
-.card.manha    .card-text { background: linear-gradient(to bottom, #111111, #1c140c); }
-.card.conteudo .card-text { background: linear-gradient(to bottom, #111111, #16121e); }
-.card.cta      .card-text { background: linear-gradient(to bottom, #111111, #180a10); }
-
-.line-top { display: block; width: 100px; height: 5px; background: #e0b95b; margin-bottom: 22px; flex-shrink: 0; }
-.titulo {
-  font-family: 'Georgia', serif;
-  font-size: 100px; font-weight: bold;
-  color: #fffcf6; line-height: 1.1;
-  text-shadow: 2px 2px 0 #281c08; flex-shrink: 0;
-}
-.titulo.med { font-size: 88px; }
-.titulo.sml { font-size: 76px; }
-.sep-line { display: block; width: 60px; height: 2px; background: #c6922e; margin: 16px 0; flex-shrink: 0; }
-.subtitulo { font-family: 'Arial', sans-serif; font-size: 41px; color: #f5e8d0; line-height: 1.35; flex-shrink: 0; }
-.pill {
-  display: inline-block;
-  background: #e0b95b; color: #111;
-  font-family: 'Arial Black', sans-serif;
-  font-size: 46px; font-weight: bold;
-  padding: 12px 28px; border-radius: 3px;
-  margin-bottom: 14px; align-self: flex-start; flex-shrink: 0;
-}
-.brand-bottom {
-  position: absolute; bottom: 44px; right: 80px;
-  font-family: 'Arial', sans-serif; font-size: 21px; color: #d4a64a;
-}
-
-/* ── DROP OVERLAY ─────────────────────── */
-.drop-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 260px; height: 195px; /* 60% of scaled preview height */
-  cursor: pointer;
+.photo-zone {
+  width: 1080px; height: 810px;
+  position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.28);
-  border: 2px dashed #d4a64a44;
-  transition: background 0.2s, border-color 0.2s;
-  z-index: 10;
 }
-.drop-overlay:hover { background: rgba(212,166,74,0.14); border-color: #d4a64a88; }
-.drop-overlay.drag-over { background: rgba(212,166,74,0.3); border-color: #e0b95b; }
-.drop-overlay.has-photo { background: transparent; border-color: transparent; }
-.drop-overlay.has-photo:hover { background: rgba(212,166,74,0.08); border-color: #d4a64a44; }
-.drop-text { color: #d4a64a; font-size: 11px; text-align: center; pointer-events: none; line-height: 1.6; }
-.drop-text span { display: block; font-size: 26px; margin-bottom: 4px; }
+/* contain — nunca cover, nunca corta */
+.photo-zone .foto {
+  position: absolute;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform-origin: center center;
+  display: block;
+}
+.photo-zone .grad {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+.card-inner.manha    .photo-zone { background: linear-gradient(to bottom,rgb(8,6,2),rgb(22,14,4),rgb(52,32,8)); }
+.card-inner.conteudo .photo-zone { background: linear-gradient(to bottom,rgb(6,4,12),rgb(18,10,32),rgb(42,22,68)); }
+.card-inner.cta      .photo-zone { background: linear-gradient(to bottom,rgb(8,2,4),rgb(24,6,12),rgb(60,14,28)); }
+.card-inner.manha    .grad { background: linear-gradient(to bottom,rgba(8,6,2,.3) 0%,rgba(22,14,4,.08) 45%,rgba(52,32,8,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
+.card-inner.conteudo .grad { background: linear-gradient(to bottom,rgba(6,4,12,.3) 0%,rgba(18,10,32,.08) 45%,rgba(42,22,68,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
+.card-inner.cta      .grad { background: linear-gradient(to bottom,rgba(8,2,4,.3) 0%,rgba(24,6,12,.08) 45%,rgba(60,14,28,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
 
-/* ── CONTROLS PANEL ───────────────────── */
-.controls-panel {
-  background: #161616;
-  border: 1px solid #2a2a2a;
-  border-top: none;
-  padding: 10px 12px;
-  display: none;
-  flex-direction: column;
-  gap: 7px;
-}
-.controls-panel.visible { display: flex; }
-.ctrl-row {
-  display: flex; align-items: center; gap: 8px;
-}
-.ctrl-label {
-  font-size: 10px; color: #8c6c28; letter-spacing: 0.06em;
-  width: 52px; flex-shrink: 0; text-transform: uppercase;
-}
-.ctrl-row input[type=range] {
-  flex: 1; accent-color: #d4a64a;
-  height: 3px; cursor: pointer;
-}
-.ctrl-val { font-size: 10px; color: #c6922e; width: 36px; text-align: right; flex-shrink: 0; }
-.ctrl-reset { font-size: 10px; color: #8c6c28; cursor: pointer; padding: 2px 6px; border: 1px solid #2a2a2a; background: none; }
-.ctrl-reset:hover { color: #d4a64a; border-color: #d4a64a; }
+.wm  { position:absolute; bottom:52px; left:42px; font-family:Arial,sans-serif; font-size:21px; color:#8c6c28; z-index:2; }
+.idx { position:absolute; top:28px; right:42px; font-family:Arial,sans-serif; font-size:21px; color:#8c6c28; z-index:2; }
+.corner { position:absolute; pointer-events:none; z-index:2; }
+.ctlc { top:40px; left:40px; width:100px; height:100px; border-top:3px solid #e0b95b; border-left:3px solid #e0b95b; }
+.ctlc::after { content:''; position:absolute; top:7px; left:7px; width:83px; height:83px; border-top:2px solid #c6922e; border-left:2px solid #c6922e; }
+.cbrc { bottom:calc(540px+40px); right:40px; width:100px; height:100px; border-bottom:3px solid #e0b95b; border-right:3px solid #e0b95b; }
+.cbrc::after { content:''; position:absolute; bottom:7px; right:7px; width:83px; height:83px; border-bottom:2px solid #c6922e; border-right:2px solid #c6922e; }
+.sep { position:absolute; top:807px; left:0; width:1080px; z-index:2; }
+.sep .s1 { height:3px; background:#c6922e; }
+.sep .s2 { height:4px; background:#e0b95b; margin-top:1px; }
+.text-zone { position:absolute; top:815px; left:0; width:1080px; height:535px; padding:50px 80px 40px; display:flex; flex-direction:column; }
+.card-inner.manha    .text-zone { background:linear-gradient(to bottom,#111,#1c140c); }
+.card-inner.conteudo .text-zone { background:linear-gradient(to bottom,#111,#16121e); }
+.card-inner.cta      .text-zone { background:linear-gradient(to bottom,#111,#180a10); }
+.line-top { display:block; width:100px; height:5px; background:#e0b95b; margin-bottom:22px; flex-shrink:0; }
+.ttl { font-family:Georgia,serif; font-size:100px; font-weight:bold; color:#fffcf6; line-height:1.1; text-shadow:2px 2px 0 #281c08; flex-shrink:0; }
+.ttl.med { font-size:88px; }
+.ttl.sml { font-size:76px; }
+.sep-ln { display:block; width:60px; height:2px; background:#c6922e; margin:16px 0; flex-shrink:0; }
+.sub { font-family:Arial,sans-serif; font-size:41px; color:#f5e8d0; line-height:1.35; flex-shrink:0; }
+.pill-el { display:inline-block; background:#e0b95b; color:#111; font-family:'Arial Black',sans-serif; font-size:46px; font-weight:bold; padding:12px 28px; border-radius:3px; margin-bottom:14px; align-self:flex-start; flex-shrink:0; }
+.brand { position:absolute; bottom:44px; right:80px; font-family:Arial,sans-serif; font-size:21px; color:#d4a64a; }
 
-/* ── BUTTONS ─────────────────────────── */
-.btn-row { display: flex; gap: 6px; margin-top: 4px; }
-.btn-row .btn { font-size: 11px; padding: 6px 10px; flex: 1; }
+/* download row */
+.dl-row { display:flex; gap:5px; }
+.dl-row .btn { font-size:11px; padding:6px 10px; flex:1; }
 
-/* ── STATUS ──────────────────────────── */
-#status {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-  background: #1c1c1c; border: 1px solid #d4a64a;
-  color: #e0b95b; padding: 10px 24px; font-size: 14px;
-  display: none; z-index: 100;
-}
-#status.on { display: block; }
-#progress { position: fixed; bottom: 0; left: 0; height: 3px; background: #d4a64a; width: 0; transition: width 0.2s; z-index: 200; }
+/* status */
+#status { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#1c1c1c; border:1px solid var(--gold); color:var(--goldhx); padding:10px 24px; font-size:13px; display:none; z-index:200; pointer-events:none; }
+#status.on { display:block; }
+#prog { position:fixed; bottom:0; left:0; height:3px; background:var(--gold); width:0; transition:width .2s; z-index:300; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <h1>EMAGRECIMENTO BLINDADO — Compositor de Fotos</h1>
-  <p>Foto sempre completa · Sem cortes automáticos · Controles manuais de zoom e posição</p>
-  <button class="btn outline" id="btn-apply-all">📷 Aplicar 1 foto em todos</button>
-  <button class="btn" id="btn-dl-all">⬇ Baixar todos (10 cards)</button>
+  <h1>EMAGRECIMENTO BLINDADO · Compositor de Fotos</h1>
+  <button class="btn out" id="btn-dl-all">⬇ Baixar todos os 10 cards</button>
 </div>
 
-<div class="instructions">
-  <strong>Regra global:</strong> A foto da especialista é sempre exibida <strong>completa e sem cortes</strong>. Rosto, testa, cabelo e braços nunca são cortados automaticamente.<br>
-  — Clique ou arraste a foto na zona superior de cada card.<br>
-  — Use os controles de <strong>Zoom</strong>, <strong>Vertical</strong> e <strong>Horizontal</strong> para ajuste fino depois de inserir.<br>
-  — O estado padrão é sempre <strong>foto inteira visível</strong> (contain). Nenhum texto fica sobre o rosto.
+<div class="layout">
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="panel">
+
+    <div>
+      <div class="panel-title">📷 Foto da Especialista</div>
+    </div>
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="upload-zone">
+      <div class="upload-icon">📷</div>
+      <div class="upload-label">Arraste a foto aqui</div>
+      <div class="upload-hint">ou clique para escolher</div>
+      <button class="choose-btn" id="choose-btn" onclick="event.stopPropagation(); fileInput.click()">Escolher Foto</button>
+    </div>
+
+    <!-- Preview da foto carregada -->
+    <div class="upload-preview-wrap" id="upload-preview-wrap">
+      <img class="upload-preview-img" id="upload-preview-img" src="" alt="preview">
+      <div class="upload-preview-name" id="upload-preview-name"></div>
+      <button class="choose-btn" onclick="fileInput.click()" style="padding:7px;font-size:12px;">↺ Trocar foto</button>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Aplicar para -->
+    <div>
+      <div class="panel-title" style="margin-bottom:8px">Aplicar foto em</div>
+      <div class="apply-row">
+        <button class="apply-btn" id="btn-apply-all-cards">
+          ✦ Todos os 10 cards
+          <small>Mesma foto em todos os cards do carrossel</small>
+        </button>
+        <button class="apply-btn" id="btn-apply-selected">
+          ▶ Card selecionado
+          <small id="selected-hint">Selecione um card na grade ao lado</small>
+        </button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Controles -->
+    <div class="controls-section">
+      <div class="panel-title" style="margin-bottom:4px">Ajuste fino</div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Zoom</span>
+        <input type="range" id="ctrl-zoom" min="50" max="300" step="1" value="100">
+        <span class="ctrl-val" id="val-zoom">100%</span>
+        <button class="ctrl-reset" onclick="resetCtrl('zoom',100)">↺</button>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Vertical</span>
+        <input type="range" id="ctrl-posY" min="0" max="100" step="0.5" value="50">
+        <span class="ctrl-val" id="val-posY">50%</span>
+        <button class="ctrl-reset" onclick="resetCtrl('posY',50)">↺</button>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Horizontal</span>
+        <input type="range" id="ctrl-posX" min="0" max="100" step="0.5" value="50">
+        <span class="ctrl-val" id="val-posX">50%</span>
+        <button class="ctrl-reset" onclick="resetCtrl('posX',50)">↺</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Seleção rápida de card -->
+    <div>
+      <div class="panel-title" style="margin-bottom:8px">Cards</div>
+      <div class="card-select-grid" id="card-select-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- ── MAIN GRID ── -->
+  <div class="main">
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+
 </div>
 
-<div class="cards-grid" id="cards-grid"></div>
 <div id="render-zone" style="position:fixed;left:-9999px;top:0;pointer-events:none;"></div>
 <div id="status"></div>
-<div id="progress"></div>
+<div id="prog"></div>
+<input type="file" id="fileInput" accept="image/*" style="display:none">
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── DATA ─────────────────────────────────────────────────────────────────────
 const CARROSSEL = {
   id: "faztudocerto", tipo: "conteudo",
-  nome: "Você faz tudo certo e não emagrece",
   cards: [
-    { t: "VOCÊ FAZ\nTUDO CERTO.", s: "E mesmo assim,\na balança não move." },
-    { t: "Você acorda\ncedo.", s: "Come menos do que todo mundo.\nE seu corpo parece ignorar." },
-    { t: "Segue a dieta.", s: "Corta o pão. Corta o doce.\nCorta tudo. E nada muda." },
-    { t: "Faz exercício.", s: "Se esforça mais do que amigas\nque emagrecem sem fazer metade." },
-    { t: "E mesmo assim.", s: "O peso não sai. As roupas continuam\napertando. A frustração cresce." },
-    { t: "A culpa não\né sua.", s: "Depois dos 35, o corpo muda por dentro.\nOs hormônios mudam as regras." },
-    { t: "O que funcionava\nantes...", s: "...pode ser exatamente o que\nsabota você hoje." },
-    { t: "Não é força\nde vontade.", s: "É estratégia. Seu corpo precisa de\numa abordagem diferente agora." },
-    { t: "Existe\numa saída.", s: "E ela começa entendendo o que realmente\nestá acontecendo dentro de você." },
-    { t: "Quer entender\no método?", s: "Comente BLINDADO.", pill: true, cta: true },
+    { t:"VOCÊ FAZ\nTUDO CERTO.", s:"E mesmo assim,\na balança não move." },
+    { t:"Você acorda\ncedo.", s:"Come menos do que todo mundo.\nE seu corpo parece ignorar." },
+    { t:"Segue a dieta.", s:"Corta o pão. Corta o doce.\nCorta tudo. E nada muda." },
+    { t:"Faz exercício.", s:"Se esforça mais do que amigas\nque emagrecem sem fazer metade." },
+    { t:"E mesmo assim.", s:"O peso não sai. As roupas continuam\napertando. A frustração cresce." },
+    { t:"A culpa não\né sua.", s:"Depois dos 35, o corpo muda por dentro.\nOs hormônios mudam as regras." },
+    { t:"O que funcionava\nantes...", s:"...pode ser exatamente o que\nsabota você hoje." },
+    { t:"Não é força\nde vontade.", s:"É estratégia. Seu corpo precisa de\numa abordagem diferente agora." },
+    { t:"Existe\numa saída.", s:"E ela começa entendendo o que realmente\nestá acontecendo dentro de você." },
+    { t:"Quer entender\no método?", s:"Comente BLINDADO.", pill:true, cta:true },
   ]
 };
 
-// ── PHOTO + TRANSFORM STATE ───────────────────────────────────────────────────
-// photoStore[num] = { dataURL, zoom, posX, posY }
-const photoStore = {};
-
-const SCALE = 0.2407; // preview scale
-
-// Default transform: zoom=100%, posX=50%, posY=50% (centered, contain)
-function defaultTransform() { return { zoom: 100, posX: 50, posY: 50 }; }
-
-// ── BUILD GRID ────────────────────────────────────────────────────────────────
-const grid = document.getElementById('cards-grid');
-
-CARROSSEL.cards.forEach((card, i) => {
-  const num = i + 1;
-  const wrap = document.createElement('div');
-  wrap.className = 'card-wrap';
-
-  const numLabel = document.createElement('div');
-  numLabel.className = 'card-num';
-  numLabel.textContent = `Card ${num} / 10`;
-
-  const preview = document.createElement('div');
-  preview.className = 'card-preview';
-
-  const scaleWrap = document.createElement('div');
-  scaleWrap.className = 'card-scale';
-  const cardEl = buildCard(card, num, null, defaultTransform());
-  cardEl.id = `card-el-${num}`;
-  scaleWrap.appendChild(cardEl);
-
-  // Drop overlay
-  const overlay = document.createElement('div');
-  overlay.className = 'drop-overlay';
-  overlay.id = `drop-${num}`;
-  overlay.innerHTML = `<div class="drop-text"><span>📷</span>Clique para<br>adicionar foto<br><small style="opacity:.6">Foto exibida completa</small></div>`;
-  overlay.addEventListener('click', () => triggerFileInput(num));
-  overlay.addEventListener('dragover', e => { e.preventDefault(); overlay.classList.add('drag-over'); });
-  overlay.addEventListener('dragleave', () => overlay.classList.remove('drag-over'));
-  overlay.addEventListener('drop', e => {
-    e.preventDefault(); overlay.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) applyPhoto(num, file);
-  });
-
-  preview.appendChild(scaleWrap);
-  preview.appendChild(overlay);
-
-  // Controls panel
-  const controls = buildControls(num);
-  controls.id = `ctrl-${num}`;
-
-  const btnRow = document.createElement('div');
-  btnRow.className = 'btn-row';
-  const dlBtn = document.createElement('button');
-  dlBtn.className = 'btn'; dlBtn.textContent = '⬇ PNG';
-  dlBtn.onclick = () => exportCard(num, dlBtn);
-  const clearBtn = document.createElement('button');
-  clearBtn.className = 'btn outline'; clearBtn.textContent = '✕ Limpar';
-  clearBtn.onclick = () => clearPhoto(num);
-  btnRow.appendChild(dlBtn);
-  btnRow.appendChild(clearBtn);
-
-  wrap.appendChild(numLabel);
-  wrap.appendChild(preview);
-  wrap.appendChild(controls);
-  wrap.appendChild(btnRow);
-  grid.appendChild(wrap);
-});
-
-// ── BUILD CONTROLS ────────────────────────────────────────────────────────────
-function buildControls(num) {
-  const panel = document.createElement('div');
-  panel.className = 'controls-panel';
-
-  const sliders = [
-    { key: 'zoom',  label: 'Zoom',       min: 50, max: 300, step: 1,  unit: '%',  def: 100 },
-    { key: 'posY',  label: 'Vertical',   min: 0,  max: 100, step: 0.5, unit: '%', def: 50  },
-    { key: 'posX',  label: 'Horizontal', min: 0,  max: 100, step: 0.5, unit: '%', def: 50  },
-  ];
-
-  sliders.forEach(s => {
-    const row = document.createElement('div');
-    row.className = 'ctrl-row';
-
-    const label = document.createElement('span');
-    label.className = 'ctrl-label';
-    label.textContent = s.label;
-
-    const input = document.createElement('input');
-    input.type = 'range'; input.min = s.min; input.max = s.max;
-    input.step = s.step; input.value = s.def;
-    input.id = `ctrl-${num}-${s.key}`;
-
-    const val = document.createElement('span');
-    val.className = 'ctrl-val';
-    val.id = `val-${num}-${s.key}`;
-    val.textContent = s.def + s.unit;
-
-    const reset = document.createElement('button');
-    reset.className = 'ctrl-reset'; reset.textContent = '↺';
-    reset.title = 'Resetar';
-    reset.onclick = () => { input.value = s.def; val.textContent = s.def + s.unit; applyTransform(num); };
-
-    input.addEventListener('input', () => {
-      val.textContent = parseFloat(input.value).toFixed(s.step < 1 ? 1 : 0) + s.unit;
-      applyTransform(num);
-    });
-
-    row.appendChild(label); row.appendChild(input);
-    row.appendChild(val); row.appendChild(reset);
-    panel.appendChild(row);
-  });
-
-  return panel;
-}
-
-// ── APPLY TRANSFORM ───────────────────────────────────────────────────────────
-function applyTransform(num) {
-  const img = document.querySelector(`#card-el-${num} .photo-img`);
-  if (!img) return;
-  const zoom = parseFloat(document.getElementById(`ctrl-${num}-zoom`)?.value || 100);
-  const posX = parseFloat(document.getElementById(`ctrl-${num}-posX`)?.value || 50);
-  const posY = parseFloat(document.getElementById(`ctrl-${num}-posY`)?.value || 50);
-
-  if (zoom <= 100) {
-    // contain mode — scale down or natural, centered with object-position
-    img.style.objectFit = 'contain';
-    img.style.objectPosition = `${posX}% ${posY}%`;
-    img.style.transform = `scale(${zoom/100})`;
-    img.style.transformOrigin = `${posX}% ${posY}%`;
-  } else {
-    // zoom > 100: switch to manual transform so user can zoom in if they want
-    img.style.objectFit = 'contain';
-    img.style.objectPosition = `${posX}% ${posY}%`;
-    img.style.transform = `scale(${zoom/100})`;
-    img.style.transformOrigin = `${posX}% ${posY}%`;
-  }
-
-  if (photoStore[num]) {
-    photoStore[num].zoom = zoom;
-    photoStore[num].posX = posX;
-    photoStore[num].posY = posY;
-  }
-}
-
-// ── BUILD CARD DOM ────────────────────────────────────────────────────────────
-function buildCard(card, num, photoDataURL, transform) {
-  const tipo = CARROSSEL.tipo;
-  const el = document.createElement('div');
-  el.className = `card ${tipo}`;
-
-  const photo = document.createElement('div');
-  photo.className = 'card-photo';
-
-  if (photoDataURL) {
-    const img = document.createElement('img');
-    img.className = 'photo-img';
-    img.src = photoDataURL;
-    // Apply contain transform
-    const zoom = transform?.zoom || 100;
-    const posX = transform?.posX ?? 50;
-    const posY = transform?.posY ?? 50;
-    img.style.objectFit = 'contain';
-    img.style.objectPosition = `${posX}% ${posY}%`;
-    img.style.transform = `scale(${zoom/100})`;
-    img.style.transformOrigin = `${posX}% ${posY}%`;
-    photo.appendChild(img);
-  }
-
-  const grad = document.createElement('div');
-  grad.className = 'photo-grad';
-  photo.appendChild(grad);
-
-  const wm = document.createElement('div');
-  wm.className = 'watermark';
-  wm.textContent = '@emagrecimentoblindado';
-  photo.appendChild(wm);
-
-  const idx = document.createElement('div');
-  idx.className = 'card-index';
-  idx.textContent = `${num < 10 ? '0'+num : num} / 10`;
-  photo.appendChild(idx);
-
-  ['corner corner-tl', 'corner corner-br'].forEach(cls => {
-    const c = document.createElement('div');
-    c.className = cls;
-    photo.appendChild(c);
-  });
-
-  el.appendChild(photo);
-
-  const sep = document.createElement('div');
-  sep.className = 'separator';
-  sep.innerHTML = '<div class="sep1"></div><div class="sep2"></div>';
-  el.appendChild(sep);
-
-  const text = document.createElement('div');
-  text.className = 'card-text';
-
-  const lineTop = document.createElement('span');
-  lineTop.className = 'line-top';
-  text.appendChild(lineTop);
-
-  const titulo = document.createElement('div');
-  const tlen = card.t.replace(/\n/g,' ').length;
-  titulo.className = 'titulo' + (tlen > 26 ? ' sml' : tlen > 14 ? ' med' : '');
-  titulo.innerHTML = card.t.replace(/\n/g,'<br>');
-  text.appendChild(titulo);
-
-  const sepLine = document.createElement('span');
-  sepLine.className = 'sep-line';
-  text.appendChild(sepLine);
-
-  if (card.pill) {
-    const pill = document.createElement('div');
-    pill.className = 'pill'; pill.textContent = 'BLINDADO';
-    text.appendChild(pill);
-    const sub = document.createElement('div');
-    sub.className = 'subtitulo';
-    sub.textContent = 'e entre para o Grupo VIP gratuito.';
-    text.appendChild(sub);
-  } else {
-    const sub = document.createElement('div');
-    sub.className = 'subtitulo';
-    sub.innerHTML = card.s.replace(/\n/g,'<br>');
-    text.appendChild(sub);
-  }
-
-  const brand = document.createElement('div');
-  brand.className = 'brand-bottom';
-  brand.textContent = '@emagrecimentoblindado';
-  text.appendChild(brand);
-
-  el.appendChild(text);
-  return el;
-}
+// ── STATE ────────────────────────────────────────────────────────────────────
+const store = {};        // store[num] = { dataURL, zoom, posX, posY }
+let currentPhoto = null; // dataURL of loaded photo
+let selectedCard = null; // currently selected card number
 
 // ── FILE INPUT ────────────────────────────────────────────────────────────────
-const fileInput = document.createElement('input');
-fileInput.type = 'file'; fileInput.accept = 'image/*';
-document.body.appendChild(fileInput);
-let pendingCardNum = null;
-
+const fileInput = document.getElementById('fileInput');
 fileInput.onchange = () => {
-  if (!fileInput.files[0]) return;
-  if (pendingCardNum === '__all__') {
-    const reader = new FileReader();
-    reader.onload = e => {
-      for (let i = 1; i <= 10; i++) applyPhotoDataURL(i, e.target.result);
-    };
-    reader.readAsDataURL(fileInput.files[0]);
-  } else if (pendingCardNum !== null) {
-    applyPhoto(pendingCardNum, fileInput.files[0]);
-  }
-  fileInput.value = ''; pendingCardNum = null;
+  if (fileInput.files[0]) loadPhoto(fileInput.files[0]);
+  fileInput.value = '';
 };
 
-function triggerFileInput(num) { pendingCardNum = num; fileInput.click(); }
+// Upload zone events
+const uploadZone = document.getElementById('upload-zone');
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) loadPhoto(f);
+});
 
-// ── APPLY PHOTO ───────────────────────────────────────────────────────────────
-function applyPhoto(num, file) {
+function loadPhoto(file) {
   const reader = new FileReader();
-  reader.onload = e => applyPhotoDataURL(num, e.target.result);
+  reader.onload = e => {
+    currentPhoto = e.target.result;
+    // Show preview in panel
+    const img = document.getElementById('upload-preview-img');
+    img.src = currentPhoto;
+    document.getElementById('upload-preview-name').textContent = file.name;
+    document.getElementById('upload-preview-wrap').classList.add('visible');
+    uploadZone.classList.add('has-photo');
+    uploadZone.querySelector('.upload-icon').textContent = '✓';
+    uploadZone.querySelector('.upload-label').textContent = 'Foto carregada';
+    uploadZone.querySelector('.upload-hint').textContent = 'Clique para trocar';
+  };
   reader.readAsDataURL(file);
 }
 
-function applyPhotoDataURL(num, dataURL) {
-  const t = defaultTransform();
-  photoStore[num] = { dataURL, ...t };
-  rebuildCard(num);
-  // Reset sliders to default
-  ['zoom','posX','posY'].forEach(k => {
-    const el = document.getElementById(`ctrl-${num}-${k}`);
-    const ve = document.getElementById(`val-${num}-${k}`);
-    if (el) { el.value = t[k]; }
-    if (ve) { ve.textContent = t[k] + (k==='zoom'?'%':'%'); }
+// ── APPLY BUTTONS ─────────────────────────────────────────────────────────────
+document.getElementById('btn-apply-all-cards').onclick = () => {
+  if (!currentPhoto) { alert('Carregue uma foto primeiro.'); return; }
+  const t = getTransform();
+  for (let i = 1; i <= 10; i++) {
+    store[i] = { dataURL: currentPhoto, ...t };
+    rebuildCard(i);
+    markCardBtn(i, true);
+  }
+  setStatus('✓ Foto aplicada em todos os 10 cards!');
+  setTimeout(clearStatus, 3000);
+};
+
+document.getElementById('btn-apply-selected').onclick = () => {
+  if (!currentPhoto) { alert('Carregue uma foto primeiro.'); return; }
+  if (!selectedCard)  { alert('Clique em um card na grade para selecionar.'); return; }
+  const t = getTransform();
+  store[selectedCard] = { dataURL: currentPhoto, ...t };
+  rebuildCard(selectedCard);
+  markCardBtn(selectedCard, true);
+  setStatus(`✓ Foto aplicada no card ${selectedCard}.`);
+  setTimeout(clearStatus, 2500);
+};
+
+// Controls live-update selected card
+['zoom','posX','posY'].forEach(k => {
+  document.getElementById(`ctrl-${k}`).addEventListener('input', () => {
+    document.getElementById(`val-${k}`).textContent = parseFloat(document.getElementById(`ctrl-${k}`).value).toFixed(k==='zoom'?0:1) + '%';
+    if (selectedCard && store[selectedCard]) {
+      store[selectedCard][k] = parseFloat(document.getElementById(`ctrl-${k}`).value);
+      updatePhotoTransform(selectedCard);
+    }
   });
-  // Show controls
-  const panel = document.getElementById(`ctrl-${num}`);
-  if (panel) panel.classList.add('visible');
-  // Hide drop overlay (show a thin hover hint instead)
-  const ov = document.getElementById(`drop-${num}`);
-  if (ov) { ov.classList.add('has-photo'); ov.querySelector('.drop-text').innerHTML = '<small style="opacity:.4;font-size:10px">clique para trocar</small>'; }
+});
+
+function getTransform() {
+  return {
+    zoom: parseFloat(document.getElementById('ctrl-zoom').value),
+    posX: parseFloat(document.getElementById('ctrl-posX').value),
+    posY: parseFloat(document.getElementById('ctrl-posY').value),
+  };
 }
 
-function clearPhoto(num) {
-  delete photoStore[num];
-  rebuildCard(num);
-  const panel = document.getElementById(`ctrl-${num}`);
-  if (panel) panel.classList.remove('visible');
-  const ov = document.getElementById(`drop-${num}`);
-  if (ov) {
-    ov.classList.remove('has-photo');
-    ov.querySelector('.drop-text').innerHTML = '<span>📷</span>Clique para<br>adicionar foto<br><small style="opacity:.6">Foto exibida completa</small>';
+function resetCtrl(k, def) {
+  document.getElementById(`ctrl-${k}`).value = def;
+  document.getElementById(`val-${k}`).textContent = def + '%';
+  if (selectedCard && store[selectedCard]) {
+    store[selectedCard][k] = def;
+    updatePhotoTransform(selectedCard);
   }
+}
+
+// ── BUILD GRID ────────────────────────────────────────────────────────────────
+const grid = document.getElementById('cards-grid');
+const csGrid = document.getElementById('card-select-grid');
+
+CARROSSEL.cards.forEach((card, i) => {
+  const num = i + 1;
+
+  // Card select button (left panel)
+  const csBtn = document.createElement('button');
+  csBtn.className = 'cs-btn'; csBtn.textContent = num; csBtn.id = `cs-${num}`;
+  csBtn.onclick = () => selectCard(num);
+  csGrid.appendChild(csBtn);
+
+  // Card wrap
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap'; wrap.id = `wrap-${num}`;
+
+  const numRow = document.createElement('div');
+  numRow.className = 'card-num';
+  numRow.innerHTML = `<span>Card ${num} / 10</span><span class="card-has-photo" id="photo-badge-${num}">● foto</span>`;
+
+  const scaleWrap = document.createElement('div');
+  scaleWrap.className = 'card-scale'; scaleWrap.id = `scale-${num}`;
+  scaleWrap.title = `Clique para selecionar card ${num}`;
+  scaleWrap.onclick = () => selectCard(num);
+
+  const inner = buildCardInner(card, num, null, { zoom:100, posX:50, posY:50 });
+  inner.id = `inner-${num}`;
+  scaleWrap.appendChild(inner);
+
+  const dlRow = document.createElement('div');
+  dlRow.className = 'dl-row';
+  const dlBtn = document.createElement('button');
+  dlBtn.className = 'btn'; dlBtn.textContent = '⬇ PNG';
+  dlBtn.onclick = () => exportCard(num, dlBtn);
+  const clrBtn = document.createElement('button');
+  clrBtn.className = 'btn out'; clrBtn.textContent = '✕';
+  clrBtn.title = 'Remover foto'; clrBtn.onclick = () => clearCardPhoto(num);
+  dlRow.appendChild(dlBtn); dlRow.appendChild(clrBtn);
+
+  wrap.appendChild(numRow); wrap.appendChild(scaleWrap); wrap.appendChild(dlRow);
+  grid.appendChild(wrap);
+});
+
+// ── SELECT CARD ───────────────────────────────────────────────────────────────
+function selectCard(num) {
+  // Deselect previous
+  if (selectedCard) {
+    document.getElementById(`scale-${selectedCard}`)?.classList.remove('selected');
+    document.getElementById(`cs-${selectedCard}`)?.classList.remove('active');
+  }
+  selectedCard = num;
+  document.getElementById(`scale-${num}`)?.classList.add('selected');
+  document.getElementById(`cs-${num}`)?.classList.add('active');
+  document.getElementById('selected-hint').textContent = `Card ${num} selecionado`;
+
+  // Sync controls with this card's transform
+  if (store[num]) {
+    const t = store[num];
+    ['zoom','posX','posY'].forEach(k => {
+      document.getElementById(`ctrl-${k}`).value = t[k];
+      document.getElementById(`val-${k}`).textContent = parseFloat(t[k]).toFixed(k==='zoom'?0:1) + '%';
+    });
+  } else {
+    ['zoom','posX','posY'].forEach((k,_,a) => {
+      const def = k==='zoom'?100:50;
+      document.getElementById(`ctrl-${k}`).value = def;
+      document.getElementById(`val-${k}`).textContent = def + '%';
+    });
+  }
+}
+
+// ── BUILD CARD INNER ─────────────────────────────────────────────────────────
+function buildCardInner(card, num, photoDataURL, t) {
+  const tipo = CARROSSEL.tipo;
+  const el = document.createElement('div');
+  el.className = `card-inner ${tipo}`;
+
+  const pz = document.createElement('div');
+  pz.className = 'photo-zone';
+
+  if (photoDataURL) {
+    const img = document.createElement('img');
+    img.className = 'foto';
+    img.src = photoDataURL;
+    applyImgTransform(img, t);
+    pz.appendChild(img);
+  }
+
+  const grad = document.createElement('div'); grad.className = 'grad'; pz.appendChild(grad);
+  const wm   = document.createElement('div'); wm.className = 'wm'; wm.textContent = '@emagrecimentoblindado'; pz.appendChild(wm);
+  const idx  = document.createElement('div'); idx.className = 'idx'; idx.textContent = `${num<10?'0'+num:num} / 10`; pz.appendChild(idx);
+  const c1   = document.createElement('div'); c1.className = 'corner ctlc'; pz.appendChild(c1);
+  const c2   = document.createElement('div'); c2.className = 'corner cbrc'; pz.appendChild(c2);
+  el.appendChild(pz);
+
+  const sep = document.createElement('div'); sep.className = 'sep';
+  sep.innerHTML = '<div class="s1"></div><div class="s2"></div>';
+  el.appendChild(sep);
+
+  const tz = document.createElement('div'); tz.className = 'text-zone';
+  const lt = document.createElement('span'); lt.className = 'line-top'; tz.appendChild(lt);
+
+  const tl = document.createElement('div');
+  const tlen = card.t.replace(/\n/g,' ').length;
+  tl.className = 'ttl' + (tlen>26?' sml':tlen>14?' med':'');
+  tl.innerHTML = card.t.replace(/\n/g,'<br>');
+  tz.appendChild(tl);
+
+  const sl = document.createElement('span'); sl.className = 'sep-ln'; tz.appendChild(sl);
+
+  if (card.pill) {
+    const pill = document.createElement('div'); pill.className = 'pill-el'; pill.textContent = 'BLINDADO'; tz.appendChild(pill);
+    const sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = 'e entre para o Grupo VIP gratuito.'; tz.appendChild(sub);
+  } else {
+    const sub = document.createElement('div'); sub.className = 'sub'; sub.innerHTML = card.s.replace(/\n/g,'<br>'); tz.appendChild(sub);
+  }
+
+  const brand = document.createElement('div'); brand.className = 'brand'; brand.textContent = '@emagrecimentoblindado'; tz.appendChild(brand);
+  el.appendChild(tz);
+  return el;
+}
+
+function applyImgTransform(img, t) {
+  img.style.objectFit = 'contain';
+  img.style.objectPosition = `${t.posX}% ${t.posY}%`;
+  img.style.transform = `scale(${t.zoom/100})`;
+  img.style.transformOrigin = `${t.posX}% ${t.posY}%`;
+}
+
+function updatePhotoTransform(num) {
+  const img = document.querySelector(`#inner-${num} .foto`);
+  if (!img || !store[num]) return;
+  applyImgTransform(img, store[num]);
 }
 
 function rebuildCard(num) {
-  const old = document.getElementById(`card-el-${num}`);
+  const old = document.getElementById(`inner-${num}`);
   if (!old) return;
-  const card = CARROSSEL.cards[num - 1];
-  const s = photoStore[num];
-  const newEl = buildCard(card, num, s?.dataURL || null, s || defaultTransform());
-  newEl.id = `card-el-${num}`;
-  old.replaceWith(newEl);
+  const s = store[num];
+  const el = buildCardInner(CARROSSEL.cards[num-1], num, s?.dataURL||null, s||{zoom:100,posX:50,posY:50});
+  el.id = `inner-${num}`;
+  old.replaceWith(el);
 }
 
-// ── APPLY 1 PHOTO TO ALL ──────────────────────────────────────────────────────
-document.getElementById('btn-apply-all').onclick = () => { pendingCardNum = '__all__'; fileInput.click(); };
+function markCardBtn(num, on) {
+  document.getElementById(`photo-badge-${num}`)?.classList.toggle('on', on);
+  document.getElementById(`cs-${num}`)?.classList.toggle('has-photo', on);
+}
 
-// ── EXPORT CARD ───────────────────────────────────────────────────────────────
+function clearCardPhoto(num) {
+  delete store[num];
+  rebuildCard(num);
+  markCardBtn(num, false);
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
 const renderZone = document.getElementById('render-zone');
 
 async function exportCard(num, btn) {
-  const card = CARROSSEL.cards[num - 1];
-  const filename = `carrossel_${CARROSSEL.id}_card_${num < 10 ? '0'+num : num}.png`;
-  if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
-  setStatus(`Gerando ${filename}…`);
+  const fname = `carrossel_${CARROSSEL.id}_card_${num<10?'0'+num:num}.png`;
+  if (btn) { btn.textContent='⏳'; btn.disabled=true; }
+  setStatus(`Gerando ${fname}…`);
 
   renderZone.innerHTML = '';
-  const s = photoStore[num];
-  const fullCard = buildCard(card, num, s?.dataURL || null, s || defaultTransform());
-  fullCard.style.position = 'absolute';
-  renderZone.appendChild(fullCard);
+  const s = store[num];
+  const full = buildCardInner(CARROSSEL.cards[num-1], num, s?.dataURL||null, s||{zoom:100,posX:50,posY:50});
+  full.style.position='absolute';
+  renderZone.appendChild(full);
 
   if (s?.dataURL) {
-    await new Promise(r => {
-      const img = fullCard.querySelector('img');
-      if (!img || img.complete) { r(); return; }
-      img.onload = r; img.onerror = r;
-    });
+    await new Promise(r => { const img=full.querySelector('img'); if(!img||img.complete){r();return;} img.onload=r; img.onerror=r; });
   }
-  await sleep(120);
+  await sleep(140);
 
   try {
-    const canvas = await html2canvas(fullCard, {
-      scale: 1, width: 1080, height: 1350,
-      useCORS: true, allowTaint: true,
-      backgroundColor: '#111111', logging: false,
-      windowWidth: 1080, windowHeight: 1350,
+    const canvas = await html2canvas(full, {
+      scale:1, width:1080, height:1350,
+      useCORS:true, allowTaint:true,
+      backgroundColor:'#111111', logging:false,
+      windowWidth:1080, windowHeight:1350,
     });
     canvas.toBlob(blob => {
-      triggerDownload(blob, filename);
-      if (btn) { btn.textContent = '✓'; btn.disabled = false; setTimeout(() => btn.textContent = '⬇ PNG', 2500); }
+      triggerDL(blob, fname);
+      if (btn) { btn.textContent='✓'; btn.disabled=false; setTimeout(()=>btn.textContent='⬇ PNG',2500); }
       clearStatus();
     }, 'image/png');
   } catch(e) {
-    console.error(e);
-    setStatus('Erro: ' + e.message);
-    if (btn) { btn.textContent = '⚠'; btn.disabled = false; }
+    console.error(e); setStatus('Erro: '+e.message);
+    if (btn) { btn.textContent='⚠'; btn.disabled=false; }
   }
 }
 
-// ── EXPORT ALL ────────────────────────────────────────────────────────────────
 document.getElementById('btn-dl-all').onclick = async () => {
-  const prog = document.getElementById('progress');
-  for (let i = 1; i <= 10; i++) {
-    prog.style.width = ((i-1)/10*100) + '%';
+  const prog = document.getElementById('prog');
+  for (let i=1; i<=10; i++) {
+    prog.style.width = ((i-1)/10*100)+'%';
     await exportCard(i, null);
     await sleep(350);
   }
-  prog.style.width = '100%';
+  prog.style.width='100%';
   setStatus('✓ Todos os 10 cards exportados!');
-  setTimeout(() => { clearStatus(); prog.style.width = '0'; }, 5000);
+  setTimeout(()=>{ clearStatus(); prog.style.width='0'; }, 5000);
 };
 
 // ── UTILS ─────────────────────────────────────────────────────────────────────
-function triggerDownload(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click();
+function triggerDL(blob, name) {
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=name; document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function setStatus(msg) { const s = document.getElementById('status'); s.textContent = msg; s.classList.add('on'); }
+function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+function setStatus(msg) { const s=document.getElementById('status'); s.textContent=msg; s.classList.add('on'); }
 function clearStatus() { document.getElementById('status').classList.remove('on'); }
 </script>
 </body>
