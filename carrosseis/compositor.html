@@ -127,16 +127,28 @@ hr.div { border: none; border-top: 1px solid #222; }
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
+/* Fundo blur — cópia da foto escalada e desfocada, preenche espaço vazio */
+.pzone .foto-bg {
+  position: absolute; inset: -40px;
+  width: calc(100% + 80px); height: calc(100% + 80px);
+  object-fit: cover;
+  filter: blur(28px) brightness(0.35) saturate(0.6);
+  transform: scale(1.08);
+  z-index: 0;
+  display: block;
+}
+/* Foto principal — sempre contain, nunca cortada */
 .pzone .foto {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain;        /* NUNCA cover — foto sempre completa */
+  object-fit: contain;
   object-position: center center;
   display: block;
   transform-origin: center center;
+  z-index: 1;
 }
 /* Gradient overlays */
-.pzone .vgrad { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.pzone .vgrad { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
 .card-real.manha    .pzone { background: linear-gradient(to bottom, rgb(8,6,2), rgb(22,14,4), rgb(52,32,8)); }
 .card-real.conteudo .pzone { background: linear-gradient(to bottom, rgb(6,4,12), rgb(18,10,32), rgb(42,22,68)); }
 .card-real.cta      .pzone { background: linear-gradient(to bottom, rgb(8,2,4), rgb(24,6,12), rgb(60,14,28)); }
@@ -372,6 +384,12 @@ function makeCard(card, num, photoURL, t) {
   pz.className = 'pzone';
 
   if (photoURL) {
+    // Fundo blur — preenche espaço vazio elegantemente
+    const bg = document.createElement('img');
+    bg.className = 'foto-bg';
+    bg.src = photoURL;
+    pz.appendChild(bg);
+    // Foto principal — contain, nunca cortada
     const img = document.createElement('img');
     img.className = 'foto';
     img.src = photoURL;
