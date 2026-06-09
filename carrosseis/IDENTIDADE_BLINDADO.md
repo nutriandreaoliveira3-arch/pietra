@@ -119,19 +119,36 @@ Todos os temas: vinheta perimetral agressiva para preto absoluto nas bordas.
 
 ---
 
-## 9. REGRAS DE IDENTIDADE — O QUE NUNCA ALTERAR
+## 9. REGRAS GLOBAIS — FOTOS DA ESPECIALISTA
+
+> **Prioridade máxima: mostrar a especialista completa e sem cortes.**
+
+| Regra | Descrição |
+|-------|-----------|
+| **Exibição** | Sempre `contain` — jamais `cover`. Nunca zoom automático. |
+| **Integridade** | Nunca cortar rosto, testa, olhos, queixo, cabelo ou braços. |
+| **Estado padrão** | Foto completa visível, centralizada, ao inserir. |
+| **Proporção diferente** | Ajustar foto inteira dentro do espaço; margens vazias permitidas; foto sempre centralizada. |
+| **Controles manuais** | Zoom (50–300%), posição vertical (0–100%), posição horizontal (0–100%). |
+| **Texto sobre rosto** | Nenhum texto, logotipo ou título pode sobrepor o rosto da especialista. |
+| **"EMAGRECIMENTO BLINDADO"** | **Removido** da zona da foto. Presente apenas como `@emagrecimentoblindado` discreto (watermark). |
+| **Aplicação** | Todos os carrosséis atuais e futuros. |
+
+---
+
+## 10. REGRAS DE IDENTIDADE — O QUE NUNCA ALTERAR
 
 - Proporção 60/40 (foto/texto)
-- Eyebrow "EMAGRECIMENTO BLINDADO" sempre presente na zona da foto
 - Separador duplo dourado sempre presente
 - Cantos L duplo sempre presentes
 - Pill BLINDADO sempre no card 10
 - Preto dominante no fundo da zona de texto
 - Fontes: DejaVu Serif Bold (títulos) + Liberation Sans (corpo)
+- Watermark `@emagrecimentoblindado` sempre presente (zona da foto, canto inferior esquerdo)
 
 ---
 
-## 10. LEGENDA PADRÃO DE POSTAGEM
+## 11. LEGENDA PADRÃO DE POSTAGEM
 
 ```
 [Frase gancho relacionada ao tema]
