@@ -7,222 +7,184 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --gold:   #d4a64a;
-  --goldhx: #e0b95b;
-  --amber:  #c6922e;
-  --dark:   #8c6c28;
-  --black:  #111111;
-  --bg:     #0d0d0d;
-  --card-bg:#161616;
-  --cream:  #f5e8d0;
-  --white:  #fffcf6;
-}
-body { background: var(--bg); color: var(--cream); font-family: Arial, sans-serif; min-height: 100vh; }
+body { background: #0d0d0d; color: #f5e8d0; font-family: Arial, sans-serif; }
 
-/* ── TOPBAR ── */
+/* ── TOPBAR ────────────────────────────────── */
 .topbar {
-  background: #111;
-  border-bottom: 2px solid var(--gold);
-  padding: 14px 28px;
-  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  background: #111; border-bottom: 2px solid #d4a64a;
+  padding: 14px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
 }
-.topbar h1 { font-size: 15px; color: var(--goldhx); letter-spacing: 0.1em; flex: 1; }
-.btn {
-  background: var(--gold); color: #111; border: none;
-  padding: 9px 20px; font-size: 13px; font-weight: bold;
-  cursor: pointer; letter-spacing: 0.05em; white-space: nowrap;
-}
-.btn:hover { background: var(--goldhx); }
-.btn.out { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.topbar h1 { font-size: 14px; color: #e0b95b; letter-spacing: .1em; flex: 1; }
+.btn { background: #d4a64a; color: #111; border: none; padding: 8px 18px; font-size: 12px; font-weight: bold; cursor: pointer; }
+.btn:hover { background: #e0b95b; }
+.btn.out { background: transparent; color: #d4a64a; border: 1px solid #d4a64a; }
 .btn.out:hover { background: #d4a64a18; }
 .btn:disabled { opacity: .4; cursor: not-allowed; }
 
-/* ── LAYOUT ── */
-.layout { display: flex; gap: 0; min-height: calc(100vh - 52px); }
+/* ── LAYOUT ─────────────────────────────────── */
+.layout { display: flex; min-height: calc(100vh - 50px); }
 
-/* ── LEFT PANEL ── */
+/* ── LEFT PANEL ──────────────────────────────── */
 .panel {
-  width: 320px; flex-shrink: 0;
-  background: var(--card-bg);
-  border-right: 1px solid #222;
-  display: flex; flex-direction: column;
-  padding: 24px 20px;
-  gap: 20px;
-  position: sticky; top: 0; height: calc(100vh - 52px); overflow-y: auto;
+  width: 300px; min-width: 300px;
+  background: #161616; border-right: 1px solid #252525;
+  padding: 20px 16px; display: flex; flex-direction: column; gap: 18px;
+  overflow-y: auto; height: calc(100vh - 50px); position: sticky; top: 0;
 }
-.panel-title { font-size: 11px; color: var(--dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.panel-section-title { font-size: 10px; color: #8c6c28; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
 
-/* ── UPLOAD ZONE ── */
+/* Upload zone */
 .upload-zone {
-  border: 2px dashed var(--amber);
-  border-radius: 4px;
-  background: #1a1208;
-  min-height: 180px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  position: relative;
-  text-align: center;
-  padding: 20px;
+  border: 2px dashed #c6922e; border-radius: 4px;
+  background: #1a1208; padding: 24px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  cursor: pointer; text-align: center; transition: border-color .2s, background .2s;
 }
-.upload-zone:hover, .upload-zone.drag-over {
-  border-color: var(--goldhx);
-  background: #221808;
-}
-.upload-zone.has-photo {
-  border-style: solid;
-  border-color: var(--gold);
-}
-.upload-icon { font-size: 40px; line-height: 1; }
-.upload-label { font-size: 13px; color: var(--goldhx); font-weight: bold; }
-.upload-hint  { font-size: 11px; color: var(--dark); line-height: 1.6; }
-
-.upload-preview-wrap {
-  width: 100%; display: none; flex-direction: column; gap: 8px;
-}
-.upload-preview-wrap.visible { display: flex; }
-.upload-preview-img {
-  width: 100%; max-height: 200px;
-  object-fit: contain; background: #0a0a0a;
-  border: 1px solid #2a2a2a;
-  display: block;
-}
-.upload-preview-name { font-size: 10px; color: var(--dark); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
+.upload-zone:hover, .upload-zone.over { border-color: #e0b95b; background: #221a08; }
+.upload-zone .uz-icon { font-size: 36px; }
+.upload-zone .uz-title { font-size: 13px; color: #e0b95b; font-weight: bold; }
+.upload-zone .uz-hint  { font-size: 11px; color: #8c6c28; }
 .choose-btn {
-  background: var(--gold); color: #111; border: none;
-  padding: 10px 24px; font-size: 14px; font-weight: bold;
-  cursor: pointer; letter-spacing: 0.06em; width: 100%;
+  width: 100%; background: #d4a64a; color: #111; border: none;
+  padding: 10px; font-size: 13px; font-weight: bold; cursor: pointer;
 }
-.choose-btn:hover { background: var(--goldhx); }
+.choose-btn:hover { background: #e0b95b; }
 
-/* ── APPLY OPTIONS ── */
-.apply-row { display: flex; flex-direction: column; gap: 8px; }
+/* Photo preview in panel */
+.photo-preview { display: none; flex-direction: column; gap: 6px; }
+.photo-preview.on { display: flex; }
+.photo-preview img { width: 100%; max-height: 160px; object-fit: contain; background: #0a0a0a; border: 1px solid #2a2a2a; }
+.photo-preview .fname { font-size: 10px; color: #8c6c28; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Apply buttons */
 .apply-btn {
-  background: #1e1408; color: var(--gold); border: 1px solid var(--amber);
-  padding: 9px 14px; font-size: 12px; font-weight: bold;
-  cursor: pointer; text-align: left; letter-spacing: 0.04em;
+  width: 100%; background: #1c1408; color: #d4a64a;
+  border: 1px solid #c6922e; padding: 9px 12px;
+  font-size: 12px; font-weight: bold; cursor: pointer; text-align: left;
 }
-.apply-btn:hover { background: #2a1c0a; border-color: var(--goldhx); }
-.apply-btn small { display: block; font-size: 10px; color: var(--dark); font-weight: normal; margin-top: 2px; }
+.apply-btn:hover { background: #261c0a; border-color: #e0b95b; }
+.apply-btn small { display: block; font-size: 10px; color: #8c6c28; font-weight: normal; margin-top: 2px; }
 
-/* ── CONTROLS ── */
-.controls-section { display: flex; flex-direction: column; gap: 10px; }
-.ctrl-row { display: flex; align-items: center; gap: 8px; }
-.ctrl-label { font-size: 10px; color: var(--dark); text-transform: uppercase; letter-spacing: .06em; width: 64px; flex-shrink: 0; }
-.ctrl-row input[type=range] { flex: 1; accent-color: var(--gold); cursor: pointer; }
-.ctrl-val { font-size: 11px; color: var(--amber); width: 38px; text-align: right; flex-shrink: 0; }
-.ctrl-reset { font-size: 11px; color: #444; background: none; border: 1px solid #2a2a2a; cursor: pointer; padding: 2px 6px; }
-.ctrl-reset:hover { color: var(--gold); border-color: var(--gold); }
+/* Sliders */
+.slider-row { display: flex; align-items: center; gap: 8px; }
+.slider-label { font-size: 10px; color: #8c6c28; text-transform: uppercase; width: 60px; flex-shrink: 0; }
+.slider-row input[type=range] { flex: 1; accent-color: #d4a64a; cursor: pointer; }
+.slider-val { font-size: 10px; color: #c6922e; width: 34px; text-align: right; flex-shrink: 0; }
+.slider-reset { font-size: 10px; color: #444; background: none; border: 1px solid #2a2a2a; cursor: pointer; padding: 1px 5px; }
+.slider-reset:hover { color: #d4a64a; border-color: #d4a64a; }
 
-/* ── DIVIDER ── */
-.divider { border: none; border-top: 1px solid #222; margin: 0; }
-
-/* ── CARD SELECT ── */
-.card-select-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+/* Card mini-buttons */
+.card-mini-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; }
+.card-mini-btn {
+  background: #1a1a1a; border: 1px solid #2a2a2a; color: #6a5228;
+  font-size: 10px; padding: 6px 2px; cursor: pointer; text-align: center;
 }
-.cs-btn {
-  background: #1a1a1a; border: 1px solid #2a2a2a; color: var(--dark);
-  font-size: 10px; padding: 5px 2px; cursor: pointer; text-align: center;
-}
-.cs-btn:hover { border-color: var(--gold); color: var(--gold); }
-.cs-btn.active { background: #2a1c08; border-color: var(--gold); color: var(--goldhx); }
-.cs-btn.has-photo { border-color: var(--amber); color: var(--amber); }
-.cs-all { grid-column: span 5; font-size: 11px; padding: 7px; }
+.card-mini-btn:hover { border-color: #d4a64a; color: #d4a64a; }
+.card-mini-btn.sel   { background: #2a1c08; border-color: #e0b95b; color: #e0b95b; }
+.card-mini-btn.hfoto { border-color: #c6922e; color: #c6922e; }
 
-/* ── MAIN GRID ── */
-.main { flex: 1; padding: 24px; overflow-y: auto; }
+hr.div { border: none; border-top: 1px solid #222; }
+
+/* ── MAIN GRID ────────────────────────────────── */
+.main { flex: 1; padding: 20px; overflow-y: auto; }
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
 }
-
 .card-wrap { display: flex; flex-direction: column; gap: 6px; }
-.card-num { font-size: 10px; color: var(--dark); letter-spacing: .08em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
-.card-has-photo { font-size: 9px; color: var(--amber); display: none; }
-.card-has-photo.on { display: block; }
+.card-label { font-size: 10px; color: #8c6c28; letter-spacing: .08em; text-transform: uppercase; display: flex; justify-content: space-between; }
+.card-label .has-foto { color: #c6922e; display: none; }
+.card-label .has-foto.on { display: block; }
 
-/* Card scale */
-.card-scale {
-  width: 240px; height: 300px;
+/* ── CARD VIEWPORT ──────────────────────────────
+   Real card: 1080 × 1350. Scale = 230/1080 ≈ 0.213
+   Displayed: 230 × 287.5 ≈ 288
+*/
+.card-viewport {
+  width: 230px; height: 288px;
   overflow: hidden; position: relative;
   border: 1px solid #222; cursor: pointer;
-  transition: border-color .15s;
+  flex-shrink: 0;
 }
-.card-scale:hover { border-color: var(--gold); }
-.card-scale.selected { border: 2px solid var(--goldhx); }
-.card-scale .card-inner {
+.card-viewport:hover { border-color: #d4a64a; }
+.card-viewport.sel   { border: 2px solid #e0b95b; }
+
+/* The actual card at real size, scaled down */
+.card-real {
   width: 1080px; height: 1350px;
-  transform-origin: top left;
-  transform: scale(0.2222);
   position: absolute; top: 0; left: 0;
+  transform: scale(0.2130);
+  transform-origin: top left;
+  font-family: Georgia, serif;
+  overflow: hidden;
+  background: #111;
 }
 
-/* ── CARD INNER STYLES (1080×1350) ── */
-.card-inner {
-  position: relative; overflow: hidden;
-  font-family: 'Georgia', serif; background: #111;
-}
-.photo-zone {
+/* Photo zone — 810px of 1350 */
+.pzone {
   width: 1080px; height: 810px;
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-/* contain — nunca cover, nunca corta */
-.photo-zone .foto {
-  position: absolute;
+.pzone .foto {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain;
+  object-fit: contain;        /* NUNCA cover — foto sempre completa */
   object-position: center center;
-  transform-origin: center center;
   display: block;
+  transform-origin: center center;
 }
-.photo-zone .grad {
-  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+/* Gradient overlays */
+.pzone .vgrad { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.card-real.manha    .pzone { background: linear-gradient(to bottom, rgb(8,6,2), rgb(22,14,4), rgb(52,32,8)); }
+.card-real.conteudo .pzone { background: linear-gradient(to bottom, rgb(6,4,12), rgb(18,10,32), rgb(42,22,68)); }
+.card-real.cta      .pzone { background: linear-gradient(to bottom, rgb(8,2,4), rgb(24,6,12), rgb(60,14,28)); }
+.card-real.manha    .vgrad { background: linear-gradient(to bottom, rgba(8,6,2,.28) 0%, rgba(22,14,4,.05) 45%, rgba(52,32,8,.72) 100%), radial-gradient(ellipse at left, rgba(0,0,0,.48) 0%, transparent 55%); }
+.card-real.conteudo .vgrad { background: linear-gradient(to bottom, rgba(6,4,12,.28) 0%, rgba(18,10,32,.05) 45%, rgba(42,22,68,.72) 100%), radial-gradient(ellipse at left, rgba(0,0,0,.48) 0%, transparent 55%); }
+.card-real.cta      .vgrad { background: linear-gradient(to bottom, rgba(8,2,4,.28) 0%, rgba(24,6,12,.05) 45%, rgba(60,14,28,.72) 100%), radial-gradient(ellipse at left, rgba(0,0,0,.48) 0%, transparent 55%); }
+
+/* Watermark & index */
+.pwm  { position: absolute; bottom: 52px; left: 42px; z-index: 2; font-family: Arial, sans-serif; font-size: 21px; color: #8c6c28; }
+.pidx { position: absolute; top: 28px; right: 42px;   z-index: 2; font-family: Arial, sans-serif; font-size: 21px; color: #8c6c28; }
+
+/* L-corners */
+.corner { position: absolute; pointer-events: none; z-index: 2; }
+.ctl { top: 40px; left: 40px; width: 100px; height: 100px; border-top: 3px solid #e0b95b; border-left: 3px solid #e0b95b; }
+.ctl::after { content:''; position: absolute; top: 7px; left: 7px; width: 83px; height: 83px; border-top: 2px solid #c6922e; border-left: 2px solid #c6922e; }
+.cbr { bottom: 580px; right: 40px; width: 100px; height: 100px; border-bottom: 3px solid #e0b95b; border-right: 3px solid #e0b95b; }
+.cbr::after { content:''; position: absolute; bottom: 7px; right: 7px; width: 83px; height: 83px; border-bottom: 2px solid #c6922e; border-right: 2px solid #c6922e; }
+
+/* Separator */
+.psep { position: absolute; top: 807px; left: 0; width: 1080px; z-index: 3; }
+.psep .s1 { height: 3px; background: #c6922e; }
+.psep .s2 { height: 4px; background: #e0b95b; margin-top: 1px; }
+
+/* Text zone */
+.tzone {
+  position: absolute; top: 815px; left: 0; width: 1080px; height: 535px;
+  padding: 50px 80px 40px; display: flex; flex-direction: column;
 }
-.card-inner.manha    .photo-zone { background: linear-gradient(to bottom,rgb(8,6,2),rgb(22,14,4),rgb(52,32,8)); }
-.card-inner.conteudo .photo-zone { background: linear-gradient(to bottom,rgb(6,4,12),rgb(18,10,32),rgb(42,22,68)); }
-.card-inner.cta      .photo-zone { background: linear-gradient(to bottom,rgb(8,2,4),rgb(24,6,12),rgb(60,14,28)); }
-.card-inner.manha    .grad { background: linear-gradient(to bottom,rgba(8,6,2,.3) 0%,rgba(22,14,4,.08) 45%,rgba(52,32,8,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
-.card-inner.conteudo .grad { background: linear-gradient(to bottom,rgba(6,4,12,.3) 0%,rgba(18,10,32,.08) 45%,rgba(42,22,68,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
-.card-inner.cta      .grad { background: linear-gradient(to bottom,rgba(8,2,4,.3) 0%,rgba(24,6,12,.08) 45%,rgba(60,14,28,.72) 100%),radial-gradient(ellipse at left,rgba(0,0,0,.5) 0%,transparent 55%); }
+.card-real.manha    .tzone { background: linear-gradient(to bottom, #111111, #1c140c); }
+.card-real.conteudo .tzone { background: linear-gradient(to bottom, #111111, #16121e); }
+.card-real.cta      .tzone { background: linear-gradient(to bottom, #111111, #180a10); }
+.acent { display: block; width: 100px; height: 5px; background: #e0b95b; margin-bottom: 22px; flex-shrink: 0; }
+.ttl  { font-size: 100px; font-weight: bold; color: #fffcf6; line-height: 1.1; text-shadow: 2px 2px 0 #281c08; flex-shrink: 0; }
+.ttl.md { font-size: 88px; }
+.ttl.sm { font-size: 76px; }
+.sepln { display: block; width: 60px; height: 2px; background: #c6922e; margin: 16px 0; flex-shrink: 0; }
+.sub  { font-family: Arial, sans-serif; font-size: 41px; color: #f5e8d0; line-height: 1.35; flex-shrink: 0; }
+.pill { display: inline-block; background: #e0b95b; color: #111; font-family: 'Arial Black', sans-serif; font-size: 46px; font-weight: bold; padding: 12px 28px; border-radius: 3px; margin-bottom: 14px; align-self: flex-start; flex-shrink: 0; }
+.brand { position: absolute; bottom: 44px; right: 80px; font-family: Arial, sans-serif; font-size: 21px; color: #d4a64a; }
 
-.wm  { position:absolute; bottom:52px; left:42px; font-family:Arial,sans-serif; font-size:21px; color:#8c6c28; z-index:2; }
-.idx { position:absolute; top:28px; right:42px; font-family:Arial,sans-serif; font-size:21px; color:#8c6c28; z-index:2; }
-.corner { position:absolute; pointer-events:none; z-index:2; }
-.ctlc { top:40px; left:40px; width:100px; height:100px; border-top:3px solid #e0b95b; border-left:3px solid #e0b95b; }
-.ctlc::after { content:''; position:absolute; top:7px; left:7px; width:83px; height:83px; border-top:2px solid #c6922e; border-left:2px solid #c6922e; }
-.cbrc { bottom:calc(540px+40px); right:40px; width:100px; height:100px; border-bottom:3px solid #e0b95b; border-right:3px solid #e0b95b; }
-.cbrc::after { content:''; position:absolute; bottom:7px; right:7px; width:83px; height:83px; border-bottom:2px solid #c6922e; border-right:2px solid #c6922e; }
-.sep { position:absolute; top:807px; left:0; width:1080px; z-index:2; }
-.sep .s1 { height:3px; background:#c6922e; }
-.sep .s2 { height:4px; background:#e0b95b; margin-top:1px; }
-.text-zone { position:absolute; top:815px; left:0; width:1080px; height:535px; padding:50px 80px 40px; display:flex; flex-direction:column; }
-.card-inner.manha    .text-zone { background:linear-gradient(to bottom,#111,#1c140c); }
-.card-inner.conteudo .text-zone { background:linear-gradient(to bottom,#111,#16121e); }
-.card-inner.cta      .text-zone { background:linear-gradient(to bottom,#111,#180a10); }
-.line-top { display:block; width:100px; height:5px; background:#e0b95b; margin-bottom:22px; flex-shrink:0; }
-.ttl { font-family:Georgia,serif; font-size:100px; font-weight:bold; color:#fffcf6; line-height:1.1; text-shadow:2px 2px 0 #281c08; flex-shrink:0; }
-.ttl.med { font-size:88px; }
-.ttl.sml { font-size:76px; }
-.sep-ln { display:block; width:60px; height:2px; background:#c6922e; margin:16px 0; flex-shrink:0; }
-.sub { font-family:Arial,sans-serif; font-size:41px; color:#f5e8d0; line-height:1.35; flex-shrink:0; }
-.pill-el { display:inline-block; background:#e0b95b; color:#111; font-family:'Arial Black',sans-serif; font-size:46px; font-weight:bold; padding:12px 28px; border-radius:3px; margin-bottom:14px; align-self:flex-start; flex-shrink:0; }
-.brand { position:absolute; bottom:44px; right:80px; font-family:Arial,sans-serif; font-size:21px; color:#d4a64a; }
+/* DL row */
+.dl-row { display: flex; gap: 4px; }
+.dl-row .btn { flex: 1; font-size: 11px; padding: 6px 8px; }
 
-/* download row */
-.dl-row { display:flex; gap:5px; }
-.dl-row .btn { font-size:11px; padding:6px 10px; flex:1; }
-
-/* status */
-#status { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#1c1c1c; border:1px solid var(--gold); color:var(--goldhx); padding:10px 24px; font-size:13px; display:none; z-index:200; pointer-events:none; }
-#status.on { display:block; }
-#prog { position:fixed; bottom:0; left:0; height:3px; background:var(--gold); width:0; transition:width .2s; z-index:300; }
+/* Status */
+#status { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1c1c1c; border: 1px solid #d4a64a; color: #e0b95b; padding: 10px 20px; font-size: 12px; display: none; z-index: 999; pointer-events: none; }
+#status.on { display: block; }
+#prog { position: fixed; bottom: 0; left: 0; height: 3px; background: #d4a64a; width: 0; transition: width .2s; z-index: 999; }
 </style>
 </head>
 <body>
@@ -234,415 +196,436 @@ body { background: var(--bg); color: var(--cream); font-family: Arial, sans-seri
 
 <div class="layout">
 
-  <!-- ── LEFT PANEL ── -->
+  <!-- ══ PAINEL ESQUERDO ══════════════════════════ -->
   <div class="panel">
 
     <div>
-      <div class="panel-title">📷 Foto da Especialista</div>
+      <div class="panel-section-title">📷 Foto da Especialista</div>
     </div>
 
-    <!-- Upload zone -->
-    <div class="upload-zone" id="upload-zone">
-      <div class="upload-icon">📷</div>
-      <div class="upload-label">Arraste a foto aqui</div>
-      <div class="upload-hint">ou clique para escolher</div>
-      <button class="choose-btn" id="choose-btn" onclick="event.stopPropagation(); fileInput.click()">Escolher Foto</button>
+    <!-- Zona de Upload -->
+    <div id="upload-zone" class="upload-zone">
+      <div class="uz-icon">📷</div>
+      <div class="uz-title">Arraste a foto aqui</div>
+      <div class="uz-hint">ou clique no botão abaixo</div>
+    </div>
+    <button class="choose-btn" onclick="fileInput.click()">Escolher Foto</button>
+
+    <!-- Preview da foto -->
+    <div class="photo-preview" id="photo-preview">
+      <img id="preview-img" src="" alt="preview">
+      <div class="fname" id="preview-name"></div>
+      <button class="choose-btn" style="padding:7px;font-size:11px;" onclick="fileInput.click()">↺ Trocar foto</button>
     </div>
 
-    <!-- Preview da foto carregada -->
-    <div class="upload-preview-wrap" id="upload-preview-wrap">
-      <img class="upload-preview-img" id="upload-preview-img" src="" alt="preview">
-      <div class="upload-preview-name" id="upload-preview-name"></div>
-      <button class="choose-btn" onclick="fileInput.click()" style="padding:7px;font-size:12px;">↺ Trocar foto</button>
-    </div>
-
-    <hr class="divider">
+    <hr class="div">
 
     <!-- Aplicar para -->
     <div>
-      <div class="panel-title" style="margin-bottom:8px">Aplicar foto em</div>
-      <div class="apply-row">
-        <button class="apply-btn" id="btn-apply-all-cards">
-          ✦ Todos os 10 cards
-          <small>Mesma foto em todos os cards do carrossel</small>
-        </button>
-        <button class="apply-btn" id="btn-apply-selected">
-          ▶ Card selecionado
-          <small id="selected-hint">Selecione um card na grade ao lado</small>
-        </button>
-      </div>
+      <div class="panel-section-title" style="margin-bottom:8px">Aplicar foto em</div>
+      <button class="apply-btn" id="btn-apply-all">
+        ✦ Todos os 10 cards
+        <small>Mesma foto em todo o carrossel</small>
+      </button>
+      <div style="height:6px"></div>
+      <button class="apply-btn" id="btn-apply-sel">
+        ▶ Card selecionado
+        <small id="sel-hint">Clique em um card na grade →</small>
+      </button>
     </div>
 
-    <hr class="divider">
+    <hr class="div">
 
-    <!-- Controles -->
-    <div class="controls-section">
-      <div class="panel-title" style="margin-bottom:4px">Ajuste fino</div>
-      <div class="ctrl-row">
-        <span class="ctrl-label">Zoom</span>
-        <input type="range" id="ctrl-zoom" min="50" max="300" step="1" value="100">
-        <span class="ctrl-val" id="val-zoom">100%</span>
-        <button class="ctrl-reset" onclick="resetCtrl('zoom',100)">↺</button>
-      </div>
-      <div class="ctrl-row">
-        <span class="ctrl-label">Vertical</span>
-        <input type="range" id="ctrl-posY" min="0" max="100" step="0.5" value="50">
-        <span class="ctrl-val" id="val-posY">50%</span>
-        <button class="ctrl-reset" onclick="resetCtrl('posY',50)">↺</button>
-      </div>
-      <div class="ctrl-row">
-        <span class="ctrl-label">Horizontal</span>
-        <input type="range" id="ctrl-posX" min="0" max="100" step="0.5" value="50">
-        <span class="ctrl-val" id="val-posX">50%</span>
-        <button class="ctrl-reset" onclick="resetCtrl('posX',50)">↺</button>
-      </div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Seleção rápida de card -->
+    <!-- Controles de ajuste -->
     <div>
-      <div class="panel-title" style="margin-bottom:8px">Cards</div>
-      <div class="card-select-grid" id="card-select-grid"></div>
+      <div class="panel-section-title" style="margin-bottom:8px">Ajuste fino</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="slider-row">
+          <span class="slider-label">Zoom</span>
+          <input type="range" id="s-zoom" min="50" max="300" step="1" value="100">
+          <span class="slider-val" id="v-zoom">100%</span>
+          <button class="slider-reset" onclick="resetSlider('zoom',100)">↺</button>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Vertical</span>
+          <input type="range" id="s-posY" min="0" max="100" step="1" value="50">
+          <span class="slider-val" id="v-posY">50%</span>
+          <button class="slider-reset" onclick="resetSlider('posY',50)">↺</button>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Horizontal</span>
+          <input type="range" id="s-posX" min="0" max="100" step="1" value="50">
+          <span class="slider-val" id="v-posX">50%</span>
+          <button class="slider-reset" onclick="resetSlider('posX',50)">↺</button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div">
+
+    <!-- Mini seleção de cards -->
+    <div>
+      <div class="panel-section-title" style="margin-bottom:8px">Selecionar card</div>
+      <div class="card-mini-grid" id="mini-grid"></div>
     </div>
 
   </div>
 
-  <!-- ── MAIN GRID ── -->
+  <!-- ══ GRADE DE CARDS ═══════════════════════════ -->
   <div class="main">
     <div class="cards-grid" id="cards-grid"></div>
   </div>
 
 </div>
 
-<div id="render-zone" style="position:fixed;left:-9999px;top:0;pointer-events:none;"></div>
+<div id="render-zone" style="position:fixed;left:-9999px;top:0;pointer-events:none;overflow:hidden;width:1080px;height:1350px;"></div>
 <div id="status"></div>
 <div id="prog"></div>
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
-const CARROSSEL = {
-  id: "faztudocerto", tipo: "conteudo",
-  cards: [
-    { t:"VOCÊ FAZ\nTUDO CERTO.", s:"E mesmo assim,\na balança não move." },
-    { t:"Você acorda\ncedo.", s:"Come menos do que todo mundo.\nE seu corpo parece ignorar." },
-    { t:"Segue a dieta.", s:"Corta o pão. Corta o doce.\nCorta tudo. E nada muda." },
-    { t:"Faz exercício.", s:"Se esforça mais do que amigas\nque emagrecem sem fazer metade." },
-    { t:"E mesmo assim.", s:"O peso não sai. As roupas continuam\napertando. A frustração cresce." },
-    { t:"A culpa não\né sua.", s:"Depois dos 35, o corpo muda por dentro.\nOs hormônios mudam as regras." },
-    { t:"O que funcionava\nantes...", s:"...pode ser exatamente o que\nsabota você hoje." },
-    { t:"Não é força\nde vontade.", s:"É estratégia. Seu corpo precisa de\numa abordagem diferente agora." },
-    { t:"Existe\numa saída.", s:"E ela começa entendendo o que realmente\nestá acontecendo dentro de você." },
-    { t:"Quer entender\no método?", s:"Comente BLINDADO.", pill:true, cta:true },
-  ]
-};
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const TIPO = "conteudo";
+const CARDS = [
+  { t:"VOCÊ FAZ\nTUDO CERTO.", s:"E mesmo assim,\na balança não move." },
+  { t:"Você acorda\ncedo.", s:"Come menos do que todo mundo.\nE seu corpo parece ignorar." },
+  { t:"Segue a dieta.", s:"Corta o pão. Corta o doce.\nCorta tudo. E nada muda." },
+  { t:"Faz exercício.", s:"Se esforça mais do que amigas\nque emagrecem sem fazer metade." },
+  { t:"E mesmo assim.", s:"O peso não sai. As roupas continuam\napertando. A frustração cresce." },
+  { t:"A culpa não\né sua.", s:"Depois dos 35, o corpo muda por dentro.\nOs hormônios mudam as regras." },
+  { t:"O que funcionava\nantes...", s:"...pode ser exatamente o que\nsabota você hoje." },
+  { t:"Não é força\nde vontade.", s:"É estratégia. Seu corpo precisa de\numa abordagem diferente agora." },
+  { t:"Existe\numa saída.", s:"E ela começa entendendo o que realmente\nestá acontecendo dentro de você." },
+  { t:"Quer entender\no método?", s:"Comente BLINDADO.", pill:true },
+];
+const ID = "faztudocerto";
 
-// ── STATE ────────────────────────────────────────────────────────────────────
-const store = {};        // store[num] = { dataURL, zoom, posX, posY }
-let currentPhoto = null; // dataURL of loaded photo
-let selectedCard = null; // currently selected card number
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const store     = {};   // store[num] = { dataURL, zoom, posX, posY }
+let currentURL  = null;
+let selectedNum = null;
+
+// ── BUILD GRID ────────────────────────────────────────────────────────────────
+const cardsGrid = document.getElementById('cards-grid');
+const miniGrid  = document.getElementById('mini-grid');
+
+for (let i = 0; i < CARDS.length; i++) {
+  const num  = i + 1;
+  const card = CARDS[i];
+
+  // Mini button
+  const mb = document.createElement('button');
+  mb.className = 'card-mini-btn';
+  mb.id = 'mb-' + num;
+  mb.textContent = num;
+  mb.onclick = () => selectCard(num);
+  miniGrid.appendChild(mb);
+
+  // Card wrap
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap';
+
+  // Label
+  const lbl = document.createElement('div');
+  lbl.className = 'card-label';
+  lbl.innerHTML = '<span>Card ' + num + ' / 10</span><span class="has-foto" id="badge-'+num+'">● foto</span>';
+
+  // Viewport
+  const vp = document.createElement('div');
+  vp.className = 'card-viewport';
+  vp.id = 'vp-' + num;
+  vp.onclick = () => selectCard(num);
+
+  // Real card
+  const real = makeCard(card, num, null, {zoom:100,posX:50,posY:50});
+  real.id = 'real-' + num;
+  vp.appendChild(real);
+
+  // DL row
+  const dlr = document.createElement('div');
+  dlr.className = 'dl-row';
+  const dlb = document.createElement('button');
+  dlb.className = 'btn';
+  dlb.textContent = '⬇ PNG';
+  dlb.onclick = () => exportOne(num, dlb);
+  const clb = document.createElement('button');
+  clb.className = 'btn out';
+  clb.textContent = '✕';
+  clb.title = 'Remover foto deste card';
+  clb.onclick = () => clearCard(num);
+  dlr.appendChild(dlb);
+  dlr.appendChild(clb);
+
+  wrap.appendChild(lbl);
+  wrap.appendChild(vp);
+  wrap.appendChild(dlr);
+  cardsGrid.appendChild(wrap);
+}
+
+// ── MAKE CARD DOM ─────────────────────────────────────────────────────────────
+function makeCard(card, num, photoURL, t) {
+  const root = document.createElement('div');
+  root.className = 'card-real ' + TIPO;
+
+  // — Photo zone —
+  const pz = document.createElement('div');
+  pz.className = 'pzone';
+
+  if (photoURL) {
+    const img = document.createElement('img');
+    img.className = 'foto';
+    img.src = photoURL;
+    setImgTransform(img, t);
+    pz.appendChild(img);
+  }
+
+  const vg = document.createElement('div'); vg.className = 'vgrad'; pz.appendChild(vg);
+  mk(pz, 'div', 'pwm',  '@emagrecimentoblindado');
+  mk(pz, 'div', 'pidx', (num < 10 ? '0'+num : num) + ' / 10');
+  mk(pz, 'div', 'corner ctl');
+  mk(pz, 'div', 'corner cbr');
+  root.appendChild(pz);
+
+  // — Separator —
+  const sep = document.createElement('div'); sep.className = 'psep';
+  sep.innerHTML = '<div class="s1"></div><div class="s2"></div>';
+  root.appendChild(sep);
+
+  // — Text zone —
+  const tz = document.createElement('div'); tz.className = 'tzone';
+  mk(tz, 'span', 'acent');
+
+  const tlen = card.t.replace(/\n/g,' ').length;
+  const tcls = 'ttl' + (tlen > 26 ? ' sm' : tlen > 14 ? ' md' : '');
+  const ttl = document.createElement('div'); ttl.className = tcls;
+  ttl.innerHTML = card.t.replace(/\n/g, '<br>');
+  tz.appendChild(ttl);
+  mk(tz, 'span', 'sepln');
+
+  if (card.pill) {
+    mk(tz, 'div', 'pill', 'BLINDADO');
+    mk(tz, 'div', 'sub',  'e entre para o Grupo VIP gratuito.');
+  } else {
+    const sub = document.createElement('div'); sub.className = 'sub';
+    sub.innerHTML = card.s.replace(/\n/g,'<br>');
+    tz.appendChild(sub);
+  }
+  mk(tz, 'div', 'brand', '@emagrecimentoblindado');
+  root.appendChild(tz);
+
+  return root;
+}
+
+function mk(parent, tag, cls, text) {
+  const el = document.createElement(tag);
+  el.className = cls;
+  if (text) el.textContent = text;
+  parent.appendChild(el);
+  return el;
+}
+
+function setImgTransform(img, t) {
+  img.style.objectFit       = 'contain';
+  img.style.objectPosition  = t.posX + '% ' + t.posY + '%';
+  img.style.transform       = 'scale(' + (t.zoom / 100) + ')';
+  img.style.transformOrigin = t.posX + '% ' + t.posY + '%';
+}
+
+function rebuildCard(num) {
+  const old = document.getElementById('real-' + num);
+  if (!old) return;
+  const s   = store[num];
+  const el  = makeCard(CARDS[num-1], num, s ? s.dataURL : null, s || {zoom:100,posX:50,posY:50});
+  el.id     = 'real-' + num;
+  old.replaceWith(el);
+}
+
+function updateTransformLive(num) {
+  const img = document.querySelector('#real-' + num + ' .foto');
+  if (!img || !store[num]) return;
+  setImgTransform(img, store[num]);
+}
 
 // ── FILE INPUT ────────────────────────────────────────────────────────────────
 const fileInput = document.getElementById('fileInput');
 fileInput.onchange = () => {
-  if (fileInput.files[0]) loadPhoto(fileInput.files[0]);
+  const f = fileInput.files[0];
+  if (f) loadFile(f);
   fileInput.value = '';
 };
 
-// Upload zone events
 const uploadZone = document.getElementById('upload-zone');
-uploadZone.addEventListener('click', () => fileInput.click());
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('drag-over');
+uploadZone.addEventListener('click',     () => fileInput.click());
+uploadZone.addEventListener('dragover',  e  => { e.preventDefault(); uploadZone.classList.add('over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('over'));
+uploadZone.addEventListener('drop',      e  => {
+  e.preventDefault(); uploadZone.classList.remove('over');
   const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image/')) loadPhoto(f);
+  if (f && f.type.startsWith('image/')) loadFile(f);
 });
 
-function loadPhoto(file) {
+function loadFile(file) {
   const reader = new FileReader();
   reader.onload = e => {
-    currentPhoto = e.target.result;
-    // Show preview in panel
-    const img = document.getElementById('upload-preview-img');
-    img.src = currentPhoto;
-    document.getElementById('upload-preview-name').textContent = file.name;
-    document.getElementById('upload-preview-wrap').classList.add('visible');
-    uploadZone.classList.add('has-photo');
-    uploadZone.querySelector('.upload-icon').textContent = '✓';
-    uploadZone.querySelector('.upload-label').textContent = 'Foto carregada';
-    uploadZone.querySelector('.upload-hint').textContent = 'Clique para trocar';
+    currentURL = e.target.result;
+    // Show preview
+    document.getElementById('preview-img').src  = currentURL;
+    document.getElementById('preview-name').textContent = file.name;
+    document.getElementById('photo-preview').classList.add('on');
+    uploadZone.querySelector('.uz-icon').textContent  = '✓';
+    uploadZone.querySelector('.uz-title').textContent = 'Foto carregada!';
+    uploadZone.querySelector('.uz-hint').textContent  = 'Clique para trocar';
   };
   reader.readAsDataURL(file);
 }
 
-// ── APPLY BUTTONS ─────────────────────────────────────────────────────────────
-document.getElementById('btn-apply-all-cards').onclick = () => {
-  if (!currentPhoto) { alert('Carregue uma foto primeiro.'); return; }
-  const t = getTransform();
+// ── APPLY BUTTONS ──────────────────────────────────────────────────────────────
+document.getElementById('btn-apply-all').onclick = () => {
+  if (!currentURL) { alert('Carregue uma foto primeiro.'); return; }
+  const t = getSliders();
   for (let i = 1; i <= 10; i++) {
-    store[i] = { dataURL: currentPhoto, ...t };
+    store[i] = { dataURL: currentURL, ...t };
     rebuildCard(i);
-    markCardBtn(i, true);
+    setBadge(i, true);
+    setMiniHasFoto(i, true);
   }
-  setStatus('✓ Foto aplicada em todos os 10 cards!');
-  setTimeout(clearStatus, 3000);
+  showStatus('✓ Foto aplicada em todos os 10 cards!', 3000);
 };
 
-document.getElementById('btn-apply-selected').onclick = () => {
-  if (!currentPhoto) { alert('Carregue uma foto primeiro.'); return; }
-  if (!selectedCard)  { alert('Clique em um card na grade para selecionar.'); return; }
-  const t = getTransform();
-  store[selectedCard] = { dataURL: currentPhoto, ...t };
-  rebuildCard(selectedCard);
-  markCardBtn(selectedCard, true);
-  setStatus(`✓ Foto aplicada no card ${selectedCard}.`);
-  setTimeout(clearStatus, 2500);
+document.getElementById('btn-apply-sel').onclick = () => {
+  if (!currentURL)  { alert('Carregue uma foto primeiro.'); return; }
+  if (!selectedNum) { alert('Clique em um card para selecioná-lo.'); return; }
+  const t = getSliders();
+  store[selectedNum] = { dataURL: currentURL, ...t };
+  rebuildCard(selectedNum);
+  setBadge(selectedNum, true);
+  setMiniHasFoto(selectedNum, true);
+  showStatus('✓ Foto aplicada no card ' + selectedNum + '.', 2500);
 };
 
-// Controls live-update selected card
-['zoom','posX','posY'].forEach(k => {
-  document.getElementById(`ctrl-${k}`).addEventListener('input', () => {
-    document.getElementById(`val-${k}`).textContent = parseFloat(document.getElementById(`ctrl-${k}`).value).toFixed(k==='zoom'?0:1) + '%';
-    if (selectedCard && store[selectedCard]) {
-      store[selectedCard][k] = parseFloat(document.getElementById(`ctrl-${k}`).value);
-      updatePhotoTransform(selectedCard);
+// ── SLIDERS ────────────────────────────────────────────────────────────────────
+['zoom','posY','posX'].forEach(k => {
+  document.getElementById('s-' + k).addEventListener('input', function() {
+    document.getElementById('v-' + k).textContent = this.value + '%';
+    if (selectedNum && store[selectedNum]) {
+      store[selectedNum][k] = parseFloat(this.value);
+      updateTransformLive(selectedNum);
     }
   });
 });
 
-function getTransform() {
+function getSliders() {
   return {
-    zoom: parseFloat(document.getElementById('ctrl-zoom').value),
-    posX: parseFloat(document.getElementById('ctrl-posX').value),
-    posY: parseFloat(document.getElementById('ctrl-posY').value),
+    zoom: parseFloat(document.getElementById('s-zoom').value),
+    posX: parseFloat(document.getElementById('s-posX').value),
+    posY: parseFloat(document.getElementById('s-posY').value),
   };
 }
 
-function resetCtrl(k, def) {
-  document.getElementById(`ctrl-${k}`).value = def;
-  document.getElementById(`val-${k}`).textContent = def + '%';
-  if (selectedCard && store[selectedCard]) {
-    store[selectedCard][k] = def;
-    updatePhotoTransform(selectedCard);
+function resetSlider(k, def) {
+  document.getElementById('s-' + k).value = def;
+  document.getElementById('v-' + k).textContent = def + '%';
+  if (selectedNum && store[selectedNum]) {
+    store[selectedNum][k] = def;
+    updateTransformLive(selectedNum);
   }
 }
 
-// ── BUILD GRID ────────────────────────────────────────────────────────────────
-const grid = document.getElementById('cards-grid');
-const csGrid = document.getElementById('card-select-grid');
-
-CARROSSEL.cards.forEach((card, i) => {
-  const num = i + 1;
-
-  // Card select button (left panel)
-  const csBtn = document.createElement('button');
-  csBtn.className = 'cs-btn'; csBtn.textContent = num; csBtn.id = `cs-${num}`;
-  csBtn.onclick = () => selectCard(num);
-  csGrid.appendChild(csBtn);
-
-  // Card wrap
-  const wrap = document.createElement('div');
-  wrap.className = 'card-wrap'; wrap.id = `wrap-${num}`;
-
-  const numRow = document.createElement('div');
-  numRow.className = 'card-num';
-  numRow.innerHTML = `<span>Card ${num} / 10</span><span class="card-has-photo" id="photo-badge-${num}">● foto</span>`;
-
-  const scaleWrap = document.createElement('div');
-  scaleWrap.className = 'card-scale'; scaleWrap.id = `scale-${num}`;
-  scaleWrap.title = `Clique para selecionar card ${num}`;
-  scaleWrap.onclick = () => selectCard(num);
-
-  const inner = buildCardInner(card, num, null, { zoom:100, posX:50, posY:50 });
-  inner.id = `inner-${num}`;
-  scaleWrap.appendChild(inner);
-
-  const dlRow = document.createElement('div');
-  dlRow.className = 'dl-row';
-  const dlBtn = document.createElement('button');
-  dlBtn.className = 'btn'; dlBtn.textContent = '⬇ PNG';
-  dlBtn.onclick = () => exportCard(num, dlBtn);
-  const clrBtn = document.createElement('button');
-  clrBtn.className = 'btn out'; clrBtn.textContent = '✕';
-  clrBtn.title = 'Remover foto'; clrBtn.onclick = () => clearCardPhoto(num);
-  dlRow.appendChild(dlBtn); dlRow.appendChild(clrBtn);
-
-  wrap.appendChild(numRow); wrap.appendChild(scaleWrap); wrap.appendChild(dlRow);
-  grid.appendChild(wrap);
-});
-
-// ── SELECT CARD ───────────────────────────────────────────────────────────────
+// ── SELECT CARD ────────────────────────────────────────────────────────────────
 function selectCard(num) {
-  // Deselect previous
-  if (selectedCard) {
-    document.getElementById(`scale-${selectedCard}`)?.classList.remove('selected');
-    document.getElementById(`cs-${selectedCard}`)?.classList.remove('active');
+  if (selectedNum) {
+    document.getElementById('vp-' + selectedNum)?.classList.remove('sel');
+    document.getElementById('mb-' + selectedNum)?.classList.remove('sel');
   }
-  selectedCard = num;
-  document.getElementById(`scale-${num}`)?.classList.add('selected');
-  document.getElementById(`cs-${num}`)?.classList.add('active');
-  document.getElementById('selected-hint').textContent = `Card ${num} selecionado`;
+  selectedNum = num;
+  document.getElementById('vp-' + num)?.classList.add('sel');
+  document.getElementById('mb-' + num)?.classList.add('sel');
+  document.getElementById('sel-hint').textContent = 'Card ' + num + ' selecionado';
 
-  // Sync controls with this card's transform
-  if (store[num]) {
-    const t = store[num];
-    ['zoom','posX','posY'].forEach(k => {
-      document.getElementById(`ctrl-${k}`).value = t[k];
-      document.getElementById(`val-${k}`).textContent = parseFloat(t[k]).toFixed(k==='zoom'?0:1) + '%';
-    });
-  } else {
-    ['zoom','posX','posY'].forEach((k,_,a) => {
-      const def = k==='zoom'?100:50;
-      document.getElementById(`ctrl-${k}`).value = def;
-      document.getElementById(`val-${k}`).textContent = def + '%';
-    });
-  }
+  // Sync sliders
+  const t = store[num] || { zoom:100, posX:50, posY:50 };
+  document.getElementById('s-zoom').value = t.zoom; document.getElementById('v-zoom').textContent = t.zoom + '%';
+  document.getElementById('s-posX').value = t.posX; document.getElementById('v-posX').textContent = t.posX + '%';
+  document.getElementById('s-posY').value = t.posY; document.getElementById('v-posY').textContent = t.posY + '%';
 }
 
-// ── BUILD CARD INNER ─────────────────────────────────────────────────────────
-function buildCardInner(card, num, photoDataURL, t) {
-  const tipo = CARROSSEL.tipo;
-  const el = document.createElement('div');
-  el.className = `card-inner ${tipo}`;
-
-  const pz = document.createElement('div');
-  pz.className = 'photo-zone';
-
-  if (photoDataURL) {
-    const img = document.createElement('img');
-    img.className = 'foto';
-    img.src = photoDataURL;
-    applyImgTransform(img, t);
-    pz.appendChild(img);
-  }
-
-  const grad = document.createElement('div'); grad.className = 'grad'; pz.appendChild(grad);
-  const wm   = document.createElement('div'); wm.className = 'wm'; wm.textContent = '@emagrecimentoblindado'; pz.appendChild(wm);
-  const idx  = document.createElement('div'); idx.className = 'idx'; idx.textContent = `${num<10?'0'+num:num} / 10`; pz.appendChild(idx);
-  const c1   = document.createElement('div'); c1.className = 'corner ctlc'; pz.appendChild(c1);
-  const c2   = document.createElement('div'); c2.className = 'corner cbrc'; pz.appendChild(c2);
-  el.appendChild(pz);
-
-  const sep = document.createElement('div'); sep.className = 'sep';
-  sep.innerHTML = '<div class="s1"></div><div class="s2"></div>';
-  el.appendChild(sep);
-
-  const tz = document.createElement('div'); tz.className = 'text-zone';
-  const lt = document.createElement('span'); lt.className = 'line-top'; tz.appendChild(lt);
-
-  const tl = document.createElement('div');
-  const tlen = card.t.replace(/\n/g,' ').length;
-  tl.className = 'ttl' + (tlen>26?' sml':tlen>14?' med':'');
-  tl.innerHTML = card.t.replace(/\n/g,'<br>');
-  tz.appendChild(tl);
-
-  const sl = document.createElement('span'); sl.className = 'sep-ln'; tz.appendChild(sl);
-
-  if (card.pill) {
-    const pill = document.createElement('div'); pill.className = 'pill-el'; pill.textContent = 'BLINDADO'; tz.appendChild(pill);
-    const sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = 'e entre para o Grupo VIP gratuito.'; tz.appendChild(sub);
-  } else {
-    const sub = document.createElement('div'); sub.className = 'sub'; sub.innerHTML = card.s.replace(/\n/g,'<br>'); tz.appendChild(sub);
-  }
-
-  const brand = document.createElement('div'); brand.className = 'brand'; brand.textContent = '@emagrecimentoblindado'; tz.appendChild(brand);
-  el.appendChild(tz);
-  return el;
-}
-
-function applyImgTransform(img, t) {
-  img.style.objectFit = 'contain';
-  img.style.objectPosition = `${t.posX}% ${t.posY}%`;
-  img.style.transform = `scale(${t.zoom/100})`;
-  img.style.transformOrigin = `${t.posX}% ${t.posY}%`;
-}
-
-function updatePhotoTransform(num) {
-  const img = document.querySelector(`#inner-${num} .foto`);
-  if (!img || !store[num]) return;
-  applyImgTransform(img, store[num]);
-}
-
-function rebuildCard(num) {
-  const old = document.getElementById(`inner-${num}`);
-  if (!old) return;
-  const s = store[num];
-  const el = buildCardInner(CARROSSEL.cards[num-1], num, s?.dataURL||null, s||{zoom:100,posX:50,posY:50});
-  el.id = `inner-${num}`;
-  old.replaceWith(el);
-}
-
-function markCardBtn(num, on) {
-  document.getElementById(`photo-badge-${num}`)?.classList.toggle('on', on);
-  document.getElementById(`cs-${num}`)?.classList.toggle('has-photo', on);
-}
-
-function clearCardPhoto(num) {
+function clearCard(num) {
   delete store[num];
   rebuildCard(num);
-  markCardBtn(num, false);
+  setBadge(num, false);
+  setMiniHasFoto(num, false);
 }
 
-// ── EXPORT ────────────────────────────────────────────────────────────────────
+function setBadge(num, on)      { document.getElementById('badge-' + num)?.classList.toggle('on', on); }
+function setMiniHasFoto(num, on){ document.getElementById('mb-' + num)?.classList.toggle('hfoto', on); }
+
+// ── EXPORT ─────────────────────────────────────────────────────────────────────
 const renderZone = document.getElementById('render-zone');
 
-async function exportCard(num, btn) {
-  const fname = `carrossel_${CARROSSEL.id}_card_${num<10?'0'+num:num}.png`;
+async function exportOne(num, btn) {
+  const fname = 'carrossel_' + ID + '_card_' + (num < 10 ? '0'+num : num) + '.png';
   if (btn) { btn.textContent='⏳'; btn.disabled=true; }
-  setStatus(`Gerando ${fname}…`);
+  showStatus('Gerando ' + fname + '…');
 
   renderZone.innerHTML = '';
-  const s = store[num];
-  const full = buildCardInner(CARROSSEL.cards[num-1], num, s?.dataURL||null, s||{zoom:100,posX:50,posY:50});
-  full.style.position='absolute';
+  const s    = store[num];
+  const full = makeCard(CARDS[num-1], num, s ? s.dataURL : null, s || {zoom:100,posX:50,posY:50});
   renderZone.appendChild(full);
 
-  if (s?.dataURL) {
-    await new Promise(r => { const img=full.querySelector('img'); if(!img||img.complete){r();return;} img.onload=r; img.onerror=r; });
+  if (s && s.dataURL) {
+    await new Promise(r => {
+      const img = full.querySelector('img');
+      if (!img || img.complete) { r(); return; }
+      img.onload = r; img.onerror = r;
+    });
   }
-  await sleep(140);
+  await sleep(150);
 
   try {
     const canvas = await html2canvas(full, {
-      scale:1, width:1080, height:1350,
-      useCORS:true, allowTaint:true,
-      backgroundColor:'#111111', logging:false,
-      windowWidth:1080, windowHeight:1350,
+      scale: 1, width: 1080, height: 1350,
+      useCORS: true, allowTaint: true,
+      backgroundColor: '#111111', logging: false,
+      windowWidth: 1080, windowHeight: 1350,
     });
     canvas.toBlob(blob => {
-      triggerDL(blob, fname);
-      if (btn) { btn.textContent='✓'; btn.disabled=false; setTimeout(()=>btn.textContent='⬇ PNG',2500); }
+      dlBlob(blob, fname);
+      if (btn) { btn.textContent='✓'; btn.disabled=false; setTimeout(()=>{ btn.textContent='⬇ PNG'; },2500); }
       clearStatus();
     }, 'image/png');
-  } catch(e) {
-    console.error(e); setStatus('Erro: '+e.message);
+  } catch(err) {
+    console.error(err);
+    showStatus('Erro: ' + err.message);
     if (btn) { btn.textContent='⚠'; btn.disabled=false; }
   }
 }
 
 document.getElementById('btn-dl-all').onclick = async () => {
   const prog = document.getElementById('prog');
-  for (let i=1; i<=10; i++) {
-    prog.style.width = ((i-1)/10*100)+'%';
-    await exportCard(i, null);
+  for (let i = 1; i <= 10; i++) {
+    prog.style.width = ((i-1)/10*100) + '%';
+    await exportOne(i, null);
     await sleep(350);
   }
-  prog.style.width='100%';
-  setStatus('✓ Todos os 10 cards exportados!');
-  setTimeout(()=>{ clearStatus(); prog.style.width='0'; }, 5000);
+  prog.style.width = '100%';
+  showStatus('✓ Todos os 10 cards exportados!', 5000);
+  setTimeout(() => { prog.style.width = '0'; }, 5000);
 };
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
-function triggerDL(blob, name) {
-  const url=URL.createObjectURL(blob), a=document.createElement('a');
-  a.href=url; a.download=name; document.body.appendChild(a); a.click();
+// ── UTILS ──────────────────────────────────────────────────────────────────────
+function dlBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
-function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
-function setStatus(msg) { const s=document.getElementById('status'); s.textContent=msg; s.classList.add('on'); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function showStatus(msg, dur) {
+  const el = document.getElementById('status');
+  el.textContent = msg; el.classList.add('on');
+  if (dur) setTimeout(clearStatus, dur);
+}
 function clearStatus() { document.getElementById('status').classList.remove('on'); }
 </script>
 </body>
