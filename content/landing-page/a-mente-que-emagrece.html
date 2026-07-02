@@ -1,0 +1,454 @@
+<style>
+:root {
+  --bg: #F3ECE4;
+  --surface: #FFFDFB;
+  --ink: #2B2019;
+  --ink-soft: #6E5C53;
+  --ink-faint: #9C8B80;
+  --accent: #7C2A3F;
+  --accent-dim: #A9576A;
+  --accent-tint: #F1DCE0;
+  --sage: #66714F;
+  --sage-tint: #E6E9DA;
+  --line: #DDCDBF;
+  --line-soft: #E9DFD3;
+  --hero-bg: #1E1116;
+  --hero-bg-2: #2B1620;
+  --hero-ink: #F3ECE4;
+  --hero-ink-soft: #C9B4B0;
+  --hero-glow: #B15B72;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+  --font-body: Charter, "Bitstream Charter", "Sitka Text", Georgia, serif;
+  --font-utility: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent-tint); color: var(--accent); }
+img { max-width: 100%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-inner > * { animation: rise .7s ease both; }
+  .hero-inner > *:nth-child(2) { animation-delay: .05s; }
+  .hero-inner > *:nth-child(3) { animation-delay: .12s; }
+  .hero-inner > *:nth-child(4) { animation-delay: .2s; }
+  .hero-inner > *:nth-child(5) { animation-delay: .28s; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+a { color: var(--accent); }
+.page { overflow-x: hidden; }
+
+/* ---------- BUTTONS ---------- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-utility);
+  font-weight: 600;
+  font-size: 15.5px;
+  letter-spacing: .01em;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 2px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn--primary {
+  background: var(--accent);
+  color: #FFF8F6;
+  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+}
+.btn--primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(124,42,63,.55); }
+.btn:focus-visible { outline: 2px solid var(--hero-glow); outline-offset: 3px; }
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  background: radial-gradient(ellipse 90% 70% at 18% 0%, var(--hero-bg-2) 0%, var(--hero-bg) 55%);
+  color: var(--hero-ink);
+  padding: clamp(64px, 11vw, 128px) clamp(20px, 6vw, 64px) clamp(56px, 9vw, 96px);
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 55vw; height: 55vw;
+  max-width: 720px; max-height: 720px;
+  background: radial-gradient(circle, var(--hero-glow) 0%, transparent 68%);
+  opacity: .22;
+  filter: blur(10px);
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 760px; margin: 0 auto; }
+.kicker {
+  font-family: var(--font-utility);
+  font-size: 12.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--hero-glow);
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: clamp(46px, 8vw, 84px);
+  line-height: .98;
+  letter-spacing: -0.01em;
+  margin: 0 0 26px;
+  text-wrap: balance;
+  color: var(--hero-ink);
+}
+.hero-lede {
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--hero-ink-soft);
+  max-width: 58ch;
+  margin: 0 0 36px;
+}
+.hero-cta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 56px; }
+.hero-cta-note {
+  font-family: var(--font-utility);
+  font-size: 13px;
+  color: var(--hero-ink-soft);
+  letter-spacing: .02em;
+}
+.hero-stats { display: flex; gap: clamp(24px, 5vw, 52px); flex-wrap: wrap; border-top: 1px solid rgba(243,236,228,.15); padding-top: 28px; }
+.hero-stats div { display: flex; flex-direction: column; max-width: 180px; }
+.hero-stats strong {
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: var(--hero-ink);
+  line-height: 1;
+}
+.hero-stats span {
+  font-family: var(--font-utility);
+  font-size: 12px;
+  color: var(--hero-ink-soft);
+  margin-top: 7px;
+  line-height: 1.4;
+}
+
+/* ---------- DARK BANDS ---------- */
+.band--dark {
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+}
+
+/* Marquee */
+.marquee-section { padding: 52px 0 60px; }
+.band-kicker {
+  text-align: center;
+  font-family: var(--font-utility);
+  font-size: 12.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--hero-glow);
+  font-weight: 700;
+  margin: 0 0 30px;
+}
+.marquee-row { overflow: hidden; margin: 14px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; width: max-content; gap: 14px; }
+.marquee-item {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--hero-ink-soft);
+  white-space: nowrap;
+  padding: 10px 22px;
+  border: 1px solid rgba(243,236,228,.16);
+  border-radius: 22px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-row--left .marquee-track { animation: scroll-left 60s linear infinite; }
+  .marquee-row--right .marquee-track { animation: scroll-right 60s linear infinite; }
+}
+@keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes scroll-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+/* ---------- SECTIONS ---------- */
+.section { padding: clamp(56px, 9vw, 96px) clamp(20px, 6vw, 64px); }
+.section-inner { max-width: 760px; margin: 0 auto; }
+.eyebrow {
+  font-family: var(--font-utility);
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.thesis h2, .blocks h2, .audience h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 24px;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.thesis .lead { font-size: 19px; color: var(--ink-soft); margin: 0 0 18px; }
+.thesis p { margin: 0 0 16px; }
+.thesis strong { color: var(--ink); }
+
+/* Blocks */
+.blocks .section-inner { margin-bottom: 40px; }
+.bcard-grid {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 6vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.bcard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  padding: 26px 24px;
+}
+.bcard-tag {
+  font-family: var(--font-utility);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.bcard h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0 10px;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.bcard p { margin: 0 0 16px; font-size: 15px; color: var(--ink-soft); }
+.bcard-examples { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  font-family: var(--font-utility);
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  padding: 5px 11px;
+  border-radius: 20px;
+}
+.pill--more { color: var(--accent); border-color: var(--accent-tint); background: var(--accent-tint); font-weight: 600; }
+
+/* Audience */
+.audience { background: var(--sage-tint); }
+.audience-grid { max-width: 980px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 64px); }
+@media (max-width: 760px) { .audience-grid { grid-template-columns: 1fr; } }
+.audience-col h2 { font-size: clamp(22px, 3vw, 27px); margin-bottom: 18px; }
+.check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.check-list li {
+  position: relative;
+  padding-left: 28px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.check-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--sage);
+  font-weight: 700;
+}
+.check-list--not li::before { content: "\2013"; color: var(--ink-faint); }
+.check-list--not li { color: var(--ink-soft); }
+
+/* Science */
+.science { text-align: center; }
+.science-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 68ch;
+  margin: 0 auto;
+}
+
+/* Final CTA */
+.cta-final { padding: clamp(64px, 10vw, 108px) clamp(20px, 6vw, 64px); text-align: center; }
+.cta-final-inner { max-width: 620px; margin: 0 auto; }
+.cta-final h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(28px, 4.4vw, 42px);
+  line-height: 1.18;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.cta-final p {
+  font-size: 17px;
+  color: var(--hero-ink-soft);
+  margin: 0 0 34px;
+  line-height: 1.6;
+}
+
+/* Footer */
+.page-foot { padding: 28px clamp(20px, 6vw, 64px) 56px; }
+.page-foot p {
+  font-family: var(--font-utility);
+  font-size: 13px;
+  color: var(--ink-faint);
+  max-width: 60ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+</style>
+<title>A Mente Que Emagrece — Método Emagrecimento Blindado</title>
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="kicker">Módulo &middot; Método Emagrecimento Blindado</p>
+      <h1>A Mente Que<br>Emagrece</h1>
+      <p class="hero-lede">Você já cortou carboidrato, contou calorias, começou mil vezes numa segunda-feira. E ainda assim, alguma coisa trava. Esse módulo existe pra te mostrar, com ciência e sem julgamento, o que realmente acontece entre a sua vontade de emagrecer e o que acontece à mesa.</p>
+      <div class="hero-cta">
+        <a class="btn btn--primary" href="https://claude.ai/code/artifact/009f9e1c-231f-4247-b223-916e38baace4" target="_blank" rel="noopener">Acessar o material completo</a>
+        <span class="hero-cta-note">Parte do Método Emagrecimento Blindado</span>
+      </div>
+      <div class="hero-stats">
+        <div><strong>33</strong><span>padrões de comportamento mapeados</span></div>
+        <div><strong>5</strong><span>blocos temáticos</span></div>
+        <div><strong>35+</strong><span>pesquisadores e autores de base</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="band band--dark marquee-section">
+    <p class="band-kicker">Você já pensou algo assim?</p>
+    <div class="marquee-row marquee-row--left"><div class="marquee-track"><span class="marquee-item">&ldquo;Eu não estava com fome. Eu estava com o dia inteiro dentro de mim.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estou sem disciplina. Eu estou sobrecarregada, e ninguém perguntou isso pra mim.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estava com fome de comida. Eu estava com fome de companhia.&rdquo;</span><span class="marquee-item">&ldquo;Eu tenho vergonha de comer na frente dos outros o que eu como sozinha.&rdquo;</span><span class="marquee-item">&ldquo;Eu não escolho comer daquele jeito. É como se outra pessoa assumisse o controle.&rdquo;</span><span class="marquee-item">&ldquo;Na minha família, amor sempre veio com prato cheio.&rdquo;</span><span class="marquee-item">&ldquo;Eu juro que não como quase nada... só belisco o dia inteiro.&rdquo;</span><span class="marquee-item">&ldquo;Pra mim, ou é tudo certo, ou já não vale mais a pena.&rdquo;</span><span class="marquee-item">&ldquo;Eu tenho medo da minha própria fome — como se ela fosse me trair.&rdquo;</span><span class="marquee-item">&ldquo;Não é que eu não consiga emagrecer. É que, no fundo, eu nem acredito que sou capaz.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estava com fome. Eu estava com o dia inteiro dentro de mim.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estou sem disciplina. Eu estou sobrecarregada, e ninguém perguntou isso pra mim.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estava com fome de comida. Eu estava com fome de companhia.&rdquo;</span><span class="marquee-item">&ldquo;Eu tenho vergonha de comer na frente dos outros o que eu como sozinha.&rdquo;</span><span class="marquee-item">&ldquo;Eu não escolho comer daquele jeito. É como se outra pessoa assumisse o controle.&rdquo;</span><span class="marquee-item">&ldquo;Na minha família, amor sempre veio com prato cheio.&rdquo;</span><span class="marquee-item">&ldquo;Eu juro que não como quase nada... só belisco o dia inteiro.&rdquo;</span><span class="marquee-item">&ldquo;Pra mim, ou é tudo certo, ou já não vale mais a pena.&rdquo;</span><span class="marquee-item">&ldquo;Eu tenho medo da minha própria fome — como se ela fosse me trair.&rdquo;</span><span class="marquee-item">&ldquo;Não é que eu não consiga emagrecer. É que, no fundo, eu nem acredito que sou capaz.&rdquo;</span></div></div>
+    <div class="marquee-row marquee-row--right"><div class="marquee-track"><span class="marquee-item">&ldquo;Minha ansiedade sempre encontra a cozinha antes de encontrar a saída.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estava com fome. Eu só não sabia o que fazer com o silêncio.&rdquo;</span><span class="marquee-item">&ldquo;Eu não exagero por causa do que comi. Eu exagero por causa do que penso depois.&rdquo;</span><span class="marquee-item">&ldquo;Eu aprendi cedo demais que a dor se disfarça de fome.&rdquo;</span><span class="marquee-item">&ldquo;Eu troco todo esforço meu por comida, como se fosse a única moeda que eu conheço.&rdquo;</span><span class="marquee-item">&ldquo;Eu não decido comer. Eu simplesmente me vejo comendo.&rdquo;</span><span class="marquee-item">&ldquo;Eu só sinto que comi demais depois que já é tarde demais.&rdquo;</span><span class="marquee-item">&ldquo;Quanto mais eu me proíbo, mais eu penso naquilo o dia inteiro.&rdquo;</span><span class="marquee-item">&ldquo;Eu já emagreci o mesmo peso tantas vezes que nem sei mais o que é meu corpo de verdade.&rdquo;</span><span class="marquee-item">&ldquo;Eu sei exatamente o que fazer. O problema é que, na hora, é como se outra pessoa decidisse por mim.&rdquo;</span><span class="marquee-item">&ldquo;Minha ansiedade sempre encontra a cozinha antes de encontrar a saída.&rdquo;</span><span class="marquee-item">&ldquo;Eu não estava com fome. Eu só não sabia o que fazer com o silêncio.&rdquo;</span><span class="marquee-item">&ldquo;Eu não exagero por causa do que comi. Eu exagero por causa do que penso depois.&rdquo;</span><span class="marquee-item">&ldquo;Eu aprendi cedo demais que a dor se disfarça de fome.&rdquo;</span><span class="marquee-item">&ldquo;Eu troco todo esforço meu por comida, como se fosse a única moeda que eu conheço.&rdquo;</span><span class="marquee-item">&ldquo;Eu não decido comer. Eu simplesmente me vejo comendo.&rdquo;</span><span class="marquee-item">&ldquo;Eu só sinto que comi demais depois que já é tarde demais.&rdquo;</span><span class="marquee-item">&ldquo;Quanto mais eu me proíbo, mais eu penso naquilo o dia inteiro.&rdquo;</span><span class="marquee-item">&ldquo;Eu já emagreci o mesmo peso tantas vezes que nem sei mais o que é meu corpo de verdade.&rdquo;</span><span class="marquee-item">&ldquo;Eu sei exatamente o que fazer. O problema é que, na hora, é como se outra pessoa decidisse por mim.&rdquo;</span></div></div>
+  </section>
+
+  <main>
+    <section class="section thesis">
+      <div class="section-inner">
+        <p class="eyebrow">O que é</p>
+        <h2>Não é mais um plano de dieta.<br>É a peça que estava faltando.</h2>
+        <p class="lead">A ciência do comportamento, a neurociência e a psicologia da alimentação já mostraram, com muita clareza, que a maior parte do que sabota o emagrecimento <strong>não acontece no prato</strong>. Acontece antes: na cabeça, no corpo, nas emoções, nos hábitos automáticos que a gente nem percebe que tem.</p>
+        <p>&ldquo;A Mente Que Emagrece&rdquo; reúne 33 padrões de comportamento alimentar que mais atrapalham mulheres acima dos 35 anos a emagrecer de forma sustentável — nomeados, explicados e, principalmente, com um caminho prático pra cada um. Nada aqui é rótulo ou defeito de caráter. São respostas aprendidas — e o que se aprende pode ser reaprendido, com estratégia e sem culpa.</p>
+      </div>
+    </section>
+
+    <section class="section blocks" id="blocos">
+      <div class="section-inner">
+        <p class="eyebrow">O que você vai encontrar</p>
+        <h2>Cinco blocos, do gatilho emocional ao sistema que sustenta a mudança</h2>
+      </div>
+      <div class="bcard-grid">
+        
+<div class="bcard">
+  <span class="bcard-tag">Bloco 01</span>
+  <h3>As emoções que a gente tenta comer</h3>
+  <p>Ansiedade, estresse, tédio, solidão, culpa — os oito jeitos mais comuns de usar comida pra regular um sentimento.</p>
+  <div class="bcard-examples">
+    <span class="pill">Fome Emocional</span><span class="pill">Comer por Ansiedade</span>
+    <span class="pill pill--more">+6 padrões</span>
+  </div>
+</div>
+
+<div class="bcard">
+  <span class="bcard-tag">Bloco 02</span>
+  <h3>O corpo, o cérebro e o piloto automático</h3>
+  <p>Compulsão, recompensa, dopamina e hábitos que acontecem antes de qualquer decisão consciente.</p>
+  <div class="bcard-examples">
+    <span class="pill">Compulsão Alimentar (Episódios de Descontrole)</span><span class="pill">Comida, Recompensa e Dopamina</span>
+    <span class="pill pill--more">+4 padrões</span>
+  </div>
+</div>
+
+<div class="bcard">
+  <span class="bcard-tag">Bloco 03</span>
+  <h3>Os pensamentos que sabotam por dentro</h3>
+  <p>Regras rígidas, restrição e culpa — a engenharia mental por trás do ciclo dieta-descontrole.</p>
+  <div class="bcard-examples">
+    <span class="pill">Mentalidade de Tudo ou Nada</span><span class="pill">Restrição Alimentar Excessiva</span>
+    <span class="pill pill--more">+5 padrões</span>
+  </div>
+</div>
+
+<div class="bcard">
+  <span class="bcard-tag">Bloco 04</span>
+  <h3>O corpo visto, comparado e adiado</h3>
+  <p>Vergonha, comparação e as formas mais silenciosas de adiar a própria mudança.</p>
+  <div class="bcard-examples">
+    <span class="pill">Vergonha do Corpo</span><span class="pill">Comparação Corporal (Redes Sociais e Corpo do Passado)</span>
+    <span class="pill pill--more">+2 padrões</span>
+  </div>
+</div>
+
+<div class="bcard">
+  <span class="bcard-tag">Bloco 05</span>
+  <h3>Sistema, ambiente e biologia</h3>
+  <p>Força de vontade, sono, decisão e ambiente — o que sustenta (ou derruba) tudo o que vem antes.</p>
+  <div class="bcard-examples">
+    <span class="pill">Baixo Autocontrole Percebido (Esgotamento da Força de Vontade)</span><span class="pill">Fadiga de Decisão Alimentar</span>
+    <span class="pill pill--more">+6 padrões</span>
+  </div>
+</div>
+      </div>
+    </section>
+
+    <section class="section audience">
+      <div class="section-inner audience-grid">
+        <div class="audience-col">
+          <p class="eyebrow">Para quem é</p>
+          <h2>Esse módulo é pra você que:</h2>
+          <ul class="check-list">
+            <li>Já tentou de tudo e sente que o corpo mudou depois dos 35</li>
+            <li>Vive começando dieta na segunda e "estragando tudo" antes de sexta</li>
+            <li>Evita fotos, roupas, praia e festas por vergonha do próprio corpo</li>
+            <li>Quer emagrecer com estratégia, saúde e preservando massa muscular</li>
+            <li>Está cansada de se culpar e quer, pela primeira vez, entender o porquê</li>
+          </ul>
+        </div>
+        <div class="audience-col audience-col--not">
+          <p class="eyebrow">O que esse módulo não é</p>
+          <h2>Pra ser honesta com você:</h2>
+          <ul class="check-list check-list--not">
+            <li>Não é fórmula mágica nem promessa de resultado da noite pro dia</li>
+            <li>Não é mais uma dieta restritiva pra você seguir por força de vontade</li>
+            <li>Não é conteúdo genérico — é construído sobre pesquisa real, com nome e sobrenome</li>
+            <li>Não é sobre julgar o que você come — é sobre entender por quê</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section science">
+      <div class="section-inner">
+        <p class="eyebrow">Base científica</p>
+        <p class="science-line">Baseado em pesquisas e obras de Kelly&nbsp;McGonigal, Judson&nbsp;Brewer, Brené&nbsp;Brown, Daniel&nbsp;Kahneman, James&nbsp;Clear, Traci&nbsp;Mann, Ellyn&nbsp;Satter, Roy&nbsp;Baumeister, Matthew&nbsp;Walker e mais de 35 especialistas em psicologia comportamental, neurociência, terapia cognitivo-comportamental e nutrição comportamental.</p>
+      </div>
+    </section>
+  </main>
+
+  <section class="band band--dark cta-final">
+    <div class="cta-final-inner">
+      <h2>Entender o próprio comportamento é o primeiro passo blindado.</h2>
+      <p>Sem fórmula mágica. Sem prometer o que a ciência não pode garantir. Só entendimento real — e um caminho possível.</p>
+      <a class="btn btn--primary" href="https://claude.ai/code/artifact/009f9e1c-231f-4247-b223-916e38baace4" target="_blank" rel="noopener">Acessar o material completo</a>
+    </div>
+  </section>
+
+  <footer class="page-foot">
+    <p>A Mente Que Emagrece &mdash; módulo do Método Emagrecimento Blindado. Conteúdo educativo; não substitui acompanhamento médico, nutricional ou psicológico individualizado.</p>
+  </footer>
+</div>
