@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pietra — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/css/design-system.css" />
+</head>
+<body>
+  <div class="container section">
+    <header class="section">
+      <span class="eyebrow">Pietra</span>
+      <h1>Design System</h1>
+      <p class="text-secondary" style="max-width: 640px;">
+        Referência viva de identidade visual do projeto. Toda página nova deve
+        reutilizar estes tokens e componentes — ver <code>docs/DESIGN_SYSTEM.md</code>.
+      </p>
+    </header>
+
+    <div class="layout">
+      <nav class="sidebar">
+        <div class="sidebar__group">
+          <div class="sidebar__group-title">Fundamentos</div>
+          <a class="sidebar__link sidebar__link--active" href="#cores">Cores</a>
+          <a class="sidebar__link" href="#tipografia">Tipografia</a>
+          <a class="sidebar__link" href="#espacamento">Espaçamento</a>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-title">Componentes</div>
+          <a class="sidebar__link" href="#cards">Cards</a>
+          <a class="sidebar__link" href="#callouts">Caixas de destaque</a>
+          <a class="sidebar__link" href="#botoes">Botões</a>
+          <a class="sidebar__link" href="#formularios">Formulários</a>
+          <a class="sidebar__link" href="#icones">Ícones</a>
+        </div>
+      </nav>
+
+      <main>
+        <section id="cores" class="section">
+          <h2>Cores</h2>
+          <div class="card-grid">
+            <div class="card">
+              <div style="height:56px;border-radius:var(--radius-sm);background:var(--color-bg);border:1px solid var(--color-border);margin-bottom:var(--space-3);"></div>
+              <strong>Fundo</strong><br /><span class="text-secondary">#F7F1EA</span>
+            </div>
+            <div class="card">
+              <div style="height:56px;border-radius:var(--radius-sm);background:var(--color-card);margin-bottom:var(--space-3);"></div>
+              <strong>Card</strong><br /><span class="text-secondary">#EFE3D6</span>
+            </div>
+            <div class="card">
+              <div style="height:56px;border-radius:var(--radius-sm);background:var(--color-primary);margin-bottom:var(--space-3);"></div>
+              <strong>Vinho (principal)</strong><br /><span class="text-secondary">#7B3048</span>
+            </div>
+            <div class="card">
+              <div style="height:56px;border-radius:var(--radius-sm);background:var(--color-secondary);margin-bottom:var(--space-3);"></div>
+              <strong>Secundária</strong><br /><span class="text-secondary">#A78C7D</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="tipografia" class="section">
+          <h2>Tipografia</h2>
+          <h1 style="margin-bottom: var(--space-2);">Título H1 — Playfair Display</h1>
+          <h2 style="margin-bottom: var(--space-2);">Título H2 — Playfair Display</h2>
+          <h3 style="margin-bottom: var(--space-2);">Título H3 — Playfair Display</h3>
+          <p>
+            Texto corrido em Inter. Desde muito cedo aprendemos a associar
+            conforto a pequenas decisões de leitura — hierarquia clara,
+            espaço generoso e uma paleta discreta ajudam o leitor a
+            descansar os olhos.
+          </p>
+          <p class="text-secondary">Texto secundário, usado em legendas e metadados.</p>
+        </section>
+
+        <section id="espacamento" class="section">
+          <h2>Espaçamento</h2>
+          <p class="text-secondary">
+            Escala de 4px a 96px. Entre seções: 80–120px · entre título e conteúdo: 40px · entre parágrafos: 20px.
+          </p>
+        </section>
+
+        <section id="cards" class="section">
+          <h2>Cards</h2>
+          <div class="card-grid">
+            <div class="card">
+              <h4>Card padrão</h4>
+              <p class="text-secondary">Fundo bege, borda sutil, sombra quase imperceptível.</p>
+            </div>
+            <div class="card card--elevated">
+              <h4>Card elevado</h4>
+              <p class="text-secondary">Superfície branca, usado para modais e blocos de destaque neutro.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="callouts" class="section">
+          <h2>Caixas de destaque</h2>
+          <div class="card-grid">
+            <div class="callout callout--quote">
+              “Eu não estava com fome. Eu estava com o dia inteiro dentro de mim.”
+              <span class="callout__label">Frase de identificação</span>
+            </div>
+            <div class="callout callout--highlight">
+              “Você não tem falta de força de vontade. Você tem uma emoção que nunca aprendeu a resolver sem comida.”
+              <span class="callout__label">Gancho para leitura</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="botoes" class="section">
+          <h2>Botões</h2>
+          <div style="display:flex; gap: var(--space-4); align-items:center; flex-wrap: wrap;">
+            <button class="btn btn--primary">Botão primário</button>
+            <button class="btn btn--secondary">Botão secundário</button>
+            <button class="btn btn--ghost">Botão texto</button>
+          </div>
+        </section>
+
+        <section id="formularios" class="section">
+          <h2>Formulários</h2>
+          <div class="card" style="max-width: 480px;">
+            <div class="form-group">
+              <label class="form-label" for="nome">Nome</label>
+              <input class="form-input" id="nome" type="text" placeholder="Seu nome" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="mensagem">Mensagem</label>
+              <textarea class="form-textarea" id="mensagem" placeholder="Escreva aqui"></textarea>
+            </div>
+            <button class="btn btn--primary">Enviar</button>
+          </div>
+        </section>
+
+        <section id="icones" class="section">
+          <h2>Ícones</h2>
+          <p class="text-secondary">Traço fino, minimalista, cor secundária.</p>
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19h16M4 15h16M4 11h10"/></svg>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
