@@ -1,0 +1,534 @@
+<title>Emagrecimento Blindado — Protocolo de Suplementação</title>
+<style>
+  :root {
+    --bg: #eff1ea;
+    --bg-raised: #f8f9f3;
+    --ink: #1b2420;
+    --ink-soft: #4c5750;
+    --line: #d8dbc9;
+    --accent: #1f6f5c;
+    --accent-soft: #dce8e2;
+    --amber: #b5702f;
+    --amber-soft: #f1e2cd;
+    --tag-new-bg: #e4efe9;
+    --tag-new-ink: #185a49;
+    --shadow: 0 1px 2px rgba(27, 36, 32, 0.06), 0 8px 24px rgba(27, 36, 32, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10140f;
+      --bg-raised: #171d16;
+      --ink: #e9ecd9;
+      --ink-soft: #aab3a2;
+      --line: #262f20;
+      --accent: #57c2a2;
+      --accent-soft: #1c2e27;
+      --amber: #e2a465;
+      --amber-soft: #2e2416;
+      --tag-new-bg: #16281f;
+      --tag-new-ink: #6bd2ae;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10140f;
+    --bg-raised: #171d16;
+    --ink: #e9ecd9;
+    --ink-soft: #aab3a2;
+    --line: #262f20;
+    --accent: #57c2a2;
+    --accent-soft: #1c2e27;
+    --amber: #e2a465;
+    --amber-soft: #2e2416;
+    --tag-new-bg: #16281f;
+    --tag-new-ink: #6bd2ae;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #eff1ea;
+    --bg-raised: #f8f9f3;
+    --ink: #1b2420;
+    --ink-soft: #4c5750;
+    --line: #d8dbc9;
+    --accent: #1f6f5c;
+    --accent-soft: #dce8e2;
+    --amber: #b5702f;
+    --amber-soft: #f1e2cd;
+    --tag-new-bg: #e4efe9;
+    --tag-new-ink: #185a49;
+    --shadow: 0 1px 2px rgba(27, 36, 32, 0.06), 0 8px 24px rgba(27, 36, 32, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 56px 24px 88px;
+  }
+
+  .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(30px, 4.4vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0 0 8px;
+  }
+
+  .duration {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .duration strong {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .traits li {
+    font-size: 12.5px;
+    padding: 5px 11px;
+    border-radius: 100px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid transparent;
+  }
+
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 44px 0;
+  }
+
+  .timeblock {
+    margin-bottom: 40px;
+  }
+
+  .timeblock-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+
+  .timeblock-head h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .timeblock-when {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .timeblock-goal {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    max-width: 60ch;
+    margin: 0 0 18px;
+  }
+
+  .formula {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .formula-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .formula-form {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .formula-dose {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+
+  .ingredient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ingredient {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+  }
+  .ingredient:first-child { border-top: none; }
+
+  .ingredient-name {
+    font-size: 14.5px;
+  }
+
+  .ingredient-amount {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .posology {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .posology b { color: var(--ink); font-weight: 600; }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .cta:hover, .cta:focus-visible { border-bottom-color: var(--amber); }
+  .cta:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+
+  .added-group {
+    margin-top: 16px;
+  }
+  .added-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--tag-new-ink);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .item {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+
+  .item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .item-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .item-dose {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .item-freq {
+    font-size: 12.5px;
+    background: var(--tag-new-bg);
+    color: var(--tag-new-ink);
+    padding: 3px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .item-desc {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    line-height: 1.55;
+  }
+
+  .caution {
+    background: var(--amber-soft);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 22px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .caution b { color: var(--ink); }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 520px) {
+    .item-head, .formula-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+
+<div class="page">
+  <p class="eyebrow">Emagrecimento Blindado</p>
+  <h1>Equilíbrio hormonal para emagrecimento sustentado</h1>
+  <p class="lede">
+    Depois dos 45, a queda de estrogênio, progesterona e DHEA — somada a alterações de tireoide,
+    insulina, cortisol e neurotransmissores — trava o emagrecimento mesmo com o déficit calórico certo.
+    Este protocolo reequilibra esse conjunto hormonal.
+  </p>
+  <div class="duration">Duração <strong>60 dias</strong></div>
+  <ul class="traits">
+    <li>Suporte à perimenopausa/menopausa</li>
+    <li>Fitoestrogênica</li>
+    <li>Sensibilizadora à insulina</li>
+    <li>Moduladora do cortisol</li>
+    <li>Suporte androgênico (DHEA)</li>
+    <li>Suporte tireoidiano</li>
+    <li>Precursora de serotonina/GABA</li>
+    <li>Restauradora do sono</li>
+  </ul>
+
+  <hr class="rule">
+
+  <section class="timeblock">
+    <div class="timeblock-head">
+      <h2>Manhã</h2>
+      <span class="timeblock-when">Em jejum</span>
+    </div>
+    <p class="timeblock-goal">
+      Sustentar energia, função tireoidiana e a reserva androgênica (DHEA) que caem com a idade —
+      e desbloquear a resistência metabólica que trava o emagrecimento.
+    </p>
+
+    <div class="formula">
+      <div class="formula-top">
+        <span class="formula-form">Cápsula composta</span>
+        <span class="formula-dose">2 cáps · 1x ao dia</span>
+      </div>
+      <div class="ingredient-list">
+        <div class="ingredient"><span class="ingredient-name">DHEA</span><span class="ingredient-amount">10 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Maca peruana (Lepidium meyenii)</span><span class="ingredient-amount">1 g</span></div>
+        <div class="ingredient"><span class="ingredient-name">L-tirosina</span><span class="ingredient-amount">500 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Selênio (selenometionina)</span><span class="ingredient-amount">200 mcg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Vitamina B12 (metilcobalamina)</span><span class="ingredient-amount">500 mcg</span></div>
+      </div>
+      <p class="posology"><b>Posologia</b> — 2 cápsulas em jejum, pela manhã, 1x ao dia. DHEA ajustado conforme dosagem sérica de DHEA-S. · 120 cápsulas</p>
+      <a class="cta" href="https://wa.me/5511949226745?text=Ol%C3%A1%2C%20quero%20pedir%20a%20f%C3%B3rmula%20da%20manh%C3%A3%20(DHEA%2C%20Maca%2C%20L-tirosina%2C%20Sel%C3%AAnio%2C%20B12)" target="_blank" rel="noopener">Pedir esta fórmula →</a>
+    </div>
+
+    <div class="added-group">
+      <p class="added-label">Adicionado nesta fase</p>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-name">SENOMAT®</span>
+          <span class="item-dose">20 mg</span>
+          <span class="item-freq">2x ao dia</span>
+        </div>
+        <p class="item-desc">
+          Fitoativo que atua no eixo obesidade-senescência, restaurando a sensibilidade à insulina e ao GLP-1
+          e promovendo o desbloqueio metabólico para ativar o emagrecimento. Indicado para resistência ao
+          emagrecimento, inflamação metabólica crônica, suporte a protocolos GIP/GLP-1 e envelhecimento saudável.
+        </p>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-name">PROGO®</span>
+          <span class="item-dose">1,5 mg</span>
+          <span class="item-freq">2x ao dia</span>
+        </div>
+        <p class="item-desc">
+          Peptídeo com tripla ação simultânea nos receptores GIP, GLP-1 e GLP-2: modula a saciedade e
+          reduz a inflamação do tecido adiposo. Pode ser usado com ou sem as canetas emagrecedoras.
+        </p>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-name">CLONAPURE®</span>
+          <span class="item-dose">5 g</span>
+          <span class="item-freq">1x ao dia</span>
+        </div>
+        <p class="item-desc">
+          A única creatina de efeito imediato. Potencializa o emagrecimento inteligente ao ativar a
+          termogênese via gordura bege — mecanismo relevante para protocolos de controle de peso.
+        </p>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-name">AKKERMAT®</span>
+          <span class="item-dose">150 mg</span>
+          <span class="item-freq">1x ao dia, após a refeição</span>
+        </div>
+        <p class="item-desc">
+          Fitoativo derivado de Capsicum frutescens, com tecnologia patenteada FENUMAT™ e mecanismo 5 em 1.
+          Atua no controle natural da fome e na modulação dos hormônios GLP-1, GIP, grelina e leptina, além da
+          termogênese. Indicado para emagrecer de forma natural, sem dependência, e para manter os resultados
+          após interromper tratamentos com análogos de GLP-1.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="timeblock">
+    <div class="timeblock-head">
+      <h2>Antes do almoço</h2>
+      <span class="timeblock-when">1x ao dia</span>
+    </div>
+    <p class="timeblock-goal">
+      Suavizar os efeitos do declínio estrogênico e reverter a resistência à insulina que surge na
+      perimenopausa/menopausa.
+    </p>
+
+    <div class="formula">
+      <div class="formula-top">
+        <span class="formula-form">Cápsula composta</span>
+        <span class="formula-dose">3 cáps · 1x ao dia</span>
+      </div>
+      <div class="ingredient-list">
+        <div class="ingredient"><span class="ingredient-name">Isoflavonas de soja (40% agliconas)</span><span class="ingredient-amount">100 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Cimicifuga racemosa</span><span class="ingredient-amount">40 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Berberina</span><span class="ingredient-amount">500 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Mio-inositol</span><span class="ingredient-amount">600 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Cromo picolinato</span><span class="ingredient-amount">200 mcg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Ormona®</span><span class="ingredient-amount">1 g</span></div>
+      </div>
+      <p class="item-desc">
+        Ormona® — composto de Bixa orellana, Trifolium pratense, Euterpe oleracea e Myrciaria dubia, que interage
+        com receptores estrogênicos (ação símile ao estradiol): melhora ondas de calor, ressecamento de mucosas
+        e baixa libido.
+      </p>
+      <p class="posology"><b>Posologia</b> — 3 cápsulas antes do almoço, 1x ao dia. Cautela em histórico de câncer de mama hormônio-dependente. · 180 cápsulas</p>
+      <a class="cta" href="https://wa.me/5511949226745?text=Ol%C3%A1%2C%20quero%20pedir%20a%20f%C3%B3rmula%20do%20almo%C3%A7o%20(Isoflavonas%2C%20Cimicifuga%2C%20Berberina%2C%20Mio-inositol%2C%20Cromo%2C%20Ormona)" target="_blank" rel="noopener">Pedir esta fórmula →</a>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="timeblock">
+    <div class="timeblock-head">
+      <h2>À noite</h2>
+      <span class="timeblock-when">30 min antes de dormir</span>
+    </div>
+    <p class="timeblock-goal">
+      Repor precursores de serotonina/GABA, equilibrar o eixo progesterona-símile e restaurar o sono.
+    </p>
+
+    <div class="formula">
+      <div class="formula-top">
+        <span class="formula-form">Sachê (pó)</span>
+        <span class="formula-dose">1 sachê · 1x ao dia</span>
+      </div>
+      <div class="ingredient-list">
+        <div class="ingredient"><span class="ingredient-name">Vitex agnus-castus</span><span class="ingredient-amount">400 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">5-HTP</span><span class="ingredient-amount">100 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">L-teanina</span><span class="ingredient-amount">200 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Magnésio glicinato</span><span class="ingredient-amount">300 mg</span></div>
+        <div class="ingredient"><span class="ingredient-name">Melatonina</span><span class="ingredient-amount">3 mg</span></div>
+      </div>
+      <p class="posology"><b>Posologia</b> — 1 sachê à noite, diluído em 50 ml de água, 30 min antes de dormir, 1x ao dia. Não associar 5-HTP a ISRS/IMAO. · 60 sachês</p>
+      <a class="cta" href="https://wa.me/5511949226745?text=Ol%C3%A1%2C%20quero%20pedir%20a%20f%C3%B3rmula%20da%20noite%20(Vitex%2C%205-HTP%2C%20L-teanina%2C%20Magn%C3%A9sio%2C%20Melatonina)" target="_blank" rel="noopener">Pedir esta fórmula →</a>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <div class="caution">
+    <b>Antes de iniciar</b> — recomenda-se painel hormonal basal (estradiol, progesterona, DHEA-S, TSH/T3/T4,
+    insulina, cortisol) para individualizar as doses. DHEA, isoflavonas/Cimicifuga e Ormona® são contraindicados
+    em histórico de câncer hormônio-dependente (mama, ovário, endométrio); Cimicifuga requer monitoramento
+    hepático em uso prolongado; Vitex pode interagir com terapias hormonais/anticoncepcionais. Este documento
+    não substitui avaliação médica individualizada.
+  </div>
+
+  <footer>
+    <span>Emagrecimento Blindado · 60 dias</span>
+    <a href="https://wa.me/5511949226745" target="_blank" rel="noopener">Dúvidas e pedidos — WhatsApp da farmácia</a>
+  </footer>
+</div>
