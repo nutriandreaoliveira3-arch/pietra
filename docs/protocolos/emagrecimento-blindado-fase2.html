@@ -293,6 +293,36 @@
   }
   .item:last-child{ border-bottom:none; }
   .item-name{ font-size:0.95rem; color:var(--ink); }
+  .badge-tag{
+    display:inline-block;
+    margin-left:8px;
+    font-size:0.66rem;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--card);
+    background:var(--accent);
+    padding:2px 7px;
+    vertical-align:middle;
+  }
+  .group-note{
+    margin:10px 0 0;
+    font-size:0.82rem;
+    line-height:1.55;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .isolated-box{
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px dashed var(--accent);
+    background:var(--tint);
+  }
+  .isolated-box + .isolated-box{ margin-top:10px; }
+  .isolated-row{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; }
+  .isolated-box-name{ font-weight:600; font-size:0.95rem; color:var(--ink); }
+  .isolated-box-dose{ font-weight:600; font-size:0.95rem; font-variant-numeric:tabular-nums; color:var(--accent); }
+  .isolated-box-note{ margin:6px 0 0; font-size:0.8rem; line-height:1.5; color:var(--ink-soft); }
   .item-dose{
     font-size:0.95rem;
     font-weight:600;
@@ -481,6 +511,29 @@
           <div class="item"><span class="item-name">Long Jack (<em>Eurycoma longifolia</em>)</span><span class="item-dose">400 mg</span></div>
         </div>
 
+        <div class="group">
+          <div class="group-label">Isolados — cápsula/sachê separado, junto com o blend da manhã</div>
+          <div class="item"><span class="item-name">PROGO®<span class="badge-tag">Nº1 em GIP &amp; GLP-1</span></span><span class="item-dose">1,5 g</span></div>
+          <div class="item"><span class="item-name">SENOMAT®</span><span class="item-dose">20 mg</span></div>
+          <p class="group-note">PROGO 1x ao dia (30 sachês/mês) · SENOMAT 20mg 2x ao dia — a 2ª dose também pela manhã, junto com o PROGO.</p>
+        </div>
+
+        <div class="isolated-box">
+          <div class="isolated-row">
+            <span class="isolated-box-name">CLONAPURE®</span>
+            <span class="isolated-box-dose">5 g</span>
+          </div>
+          <p class="isolated-box-note">Tomar sozinho, sem misturar com nenhum outro ativo — 1x ao dia, pela manhã (30 doses/mês).</p>
+        </div>
+
+        <div class="isolated-box">
+          <div class="isolated-row">
+            <span class="isolated-box-name">AKKERMAT®</span>
+            <span class="isolated-box-dose">150 mg</span>
+          </div>
+          <p class="isolated-box-note">Tomar sozinho, pela manhã, após a refeição — cápsula nº4 gastrorresistente, formulação monodroga isolada (30 cápsulas/mês).</p>
+        </div>
+
         <div class="rx-footer">
           <span class="rx-doses">90 cápsulas</span>
           <p class="rx-posologia"><b>Posologia —</b> tomar 3 cápsulas em jejum, pela manhã, 1x ao dia.</p>
@@ -555,9 +608,14 @@
           <div class="item"><span class="item-name">Magnésio glicinato</span><span class="item-dose">300 mg</span></div>
           <div class="item"><span class="item-name">Glutamina</span><span class="item-dose">5 g</span></div>
           <div class="item"><span class="item-name">Vitamina D3</span><span class="item-dose">2.000 UI</span></div>
-          <div class="item"><span class="item-name">Lactobacillus gasseri</span><span class="item-dose">10 mg</span></div>
-          <div class="item"><span class="item-name">Akkermansia muciniphila</span><span class="item-dose">50 mg</span></div>
-          <div class="item"><span class="item-name">Lactobacillus rhamnosus</span><span class="item-dose">10 mg</span></div>
+        </div>
+
+        <div class="isolated-box">
+          <div class="isolated-row">
+            <span class="isolated-box-name">BIOMANSIA®</span>
+            <span class="isolated-box-dose">10 mg</span>
+          </div>
+          <p class="isolated-box-note">Tomar sozinho, à noite, isolado do sachê (30 cápsulas/mês) — substitui os probióticos genéricos.</p>
         </div>
 
         <div class="rx-footer">
