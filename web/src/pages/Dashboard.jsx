@@ -21,10 +21,6 @@ export default function Dashboard() {
           <span className="nav-card-title">Progresso</span>
           <span className="nav-card-desc">Peso e medidas ao longo do tempo</span>
         </Link>
-        <Link to="/assistente" className="nav-card">
-          <span className="nav-card-title">Assistente BLIM</span>
-          <span className="nav-card-desc">Tire suas dúvidas sobre o protocolo</span>
-        </Link>
       </div>
     </div>
   );

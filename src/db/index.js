@@ -70,14 +70,6 @@ CREATE TABLE IF NOT EXISTS weight_entries (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-CREATE TABLE IF NOT EXISTS chat_messages (
-  id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  role TEXT NOT NULL,
-  content TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-
 CREATE TABLE IF NOT EXISTS greenn_events (
   id TEXT PRIMARY KEY,
   sale_id TEXT,

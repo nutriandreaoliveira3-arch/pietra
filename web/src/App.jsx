@@ -7,7 +7,6 @@ import Dashboard from './pages/Dashboard';
 import Modules from './pages/Modules';
 import Diary from './pages/Diary';
 import Progress from './pages/Progress';
-import Assistant from './pages/Assistant';
 
 export default function App() {
   return (
@@ -21,7 +20,6 @@ export default function App() {
             <Route path="/modulos" element={<Modules />} />
             <Route path="/diario" element={<Diary />} />
             <Route path="/progresso" element={<Progress />} />
-            <Route path="/assistente" element={<Assistant />} />
           </Route>
         </Routes>
       </AuthProvider>

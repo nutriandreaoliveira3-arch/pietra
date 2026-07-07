@@ -1,14 +1,12 @@
 # Emagrecimento Blindado
 
 App web (PWA) da BLINDADA — Nutricionista Andrea Oliveira. Área de membros com o
-protocolo do Emagrecimento Blindado, diário alimentar, acompanhamento de peso/medidas
-e assistente virtual BLIM com IA.
+protocolo do Emagrecimento Blindado, diário alimentar e acompanhamento de peso/medidas.
 
 ## Stack
 
 - **Backend**: Node.js + Express + SQLite (`better-sqlite3`), autenticação por JWT.
 - **Frontend**: React + Vite, PWA instalável (manifest + service worker).
-- **Assistente BLIM**: API da Anthropic (Claude).
 - **Pagamento/assinatura**: webhook da plataforma Greenn.
 
 ## Configuração
@@ -17,7 +15,6 @@ e assistente virtual BLIM com IA.
    - `JWT_SECRET`: obrigatório, qualquer string longa e aleatória.
    - `GREENN_WEBHOOK_TOKEN`: o token de webhook configurado no painel da Greenn
      (Integração e Tokens).
-   - `ANTHROPIC_API_KEY`: chave de API da Anthropic, para a assistente BLIM funcionar.
    - `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (opcional): cria um usuário admin ao
      rodar o seed, útil para testes locais sem depender do webhook da Greenn.
 
@@ -80,9 +77,9 @@ variações mais comuns de nomes de campo, mas registra o payload bruto em
 ```
 src/            backend (Express)
   db/           conexão e schema do SQLite
-  lib/          auth (JWT) e persona da BLIM
+  lib/          auth (JWT)
   middleware/   autenticação de rotas
-  routes/       auth, webhooks, módulos, diário, peso, chat
+  routes/       auth, webhooks, módulos, diário, peso
   seed.js       popula módulos/aulas iniciais e usuário admin de teste
 web/            frontend (React + Vite), PWA
 fotos/          biblioteca de imagens oficiais da BLINDADA (usada pelas skills de conteúdo)

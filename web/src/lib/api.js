@@ -37,6 +37,4 @@ export const api = {
   weightList: () => request('/weight'),
   weightAdd: (entry) => request('/weight', { method: 'POST', body: JSON.stringify(entry) }),
   weightRemove: (id) => request(`/weight/${id}`, { method: 'DELETE' }),
-  chatList: () => request('/chat'),
-  chatSend: (message) => request('/chat', { method: 'POST', body: JSON.stringify({ message }) }),
 };
