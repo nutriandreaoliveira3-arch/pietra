@@ -15,6 +15,11 @@ protocolo do Emagrecimento Blindado, diário alimentar e acompanhamento de peso/
    - `JWT_SECRET`: obrigatório, qualquer string longa e aleatória.
    - `GREENN_WEBHOOK_TOKEN`: o token de webhook configurado no painel da Greenn
      (Integração e Tokens).
+   - `APP_URL`: URL pública onde o app está publicado (usada para montar o link de
+     ativação enviado por e-mail).
+   - `RESEND_API_KEY` e `EMAIL_FROM`: credenciais da [Resend](https://resend.com) para
+     enviar o e-mail de ativação de conta. Sem `RESEND_API_KEY`, o e-mail não é enviado
+     (fica só um aviso no log) — útil em desenvolvimento.
    - `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (opcional): cria um usuário admin ao
      rodar o seed, útil para testes locais sem depender do webhook da Greenn.
 
@@ -57,8 +62,8 @@ POST https://SEU_DOMINIO/api/webhooks/greenn?token=SEU_GREENN_WEBHOOK_TOKEN
 ```
 
 Quando uma venda é aprovada (`status: paid`), o sistema cria automaticamente a conta da
-cliente (status `pending`) e um link de ativação deve ser enviado a ela (por e-mail, ainda
-não implementado neste MVP) no formato:
+cliente (status `pending`) e envia um e-mail de ativação via Resend, com um link no
+formato:
 
 ```
 https://SEU_DOMINIO/definir-senha?token=<activation_token>
@@ -66,6 +71,16 @@ https://SEU_DOMINIO/definir-senha?token=<activation_token>
 
 Ao definir a senha, a conta passa para `active` e a cliente ganha acesso ao app. Em
 reembolso/chargeback/recusa, o acesso é automaticamente revogado (status `inactive`).
+
+### Configurando o envio de e-mail (Resend)
+
+1. Crie uma conta em [resend.com](https://resend.com) e gere uma API Key.
+2. Coloque essa chave em `RESEND_API_KEY` no `.env`.
+3. Para testar rapidamente, pode deixar `EMAIL_FROM=BLINDADA <onboarding@resend.dev>`
+   (domínio de testes da própria Resend, funciona sem configuração adicional).
+4. Para produção, configure e verifique seu próprio domínio na Resend (registros DNS
+   SPF/DKIM) e troque `EMAIL_FROM` para um endereço desse domínio
+   (ex: `BLINDADA <contato@blindada.com.br>`).
 
 **Importante:** o formato exato do payload enviado pela Greenn deve ser conferido na conta
 real ao configurar o webhook em produção — o parser em `src/routes/webhooks.js` aceita as

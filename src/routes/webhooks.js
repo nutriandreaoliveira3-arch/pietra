@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
+const { sendActivationEmail } = require('../lib/email');
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ function extractSaleInfo(body) {
   };
 }
 
-router.post('/greenn', express.json(), (req, res) => {
+router.post('/greenn', express.json(), async (req, res) => {
   const token = extractToken(req);
 
   if (!isValidToken(token)) {
@@ -75,7 +76,12 @@ router.post('/greenn', express.json(), (req, res) => {
         `INSERT INTO users (id, name, email, role, status, activation_token, greenn_sale_id)
          VALUES (?, ?, ?, 'client', 'pending', ?, ?)`
       ).run(id, info.name || info.email, info.email, activationToken, info.saleId);
-      // TODO: enviar e-mail para a cliente com o link /definir-senha?token=<activationToken>
+
+      try {
+        await sendActivationEmail({ to: info.email, name: info.name || info.email, activationToken });
+      } catch (err) {
+        console.error(`Falha ao enviar e-mail de ativação para ${info.email}:`, err.message);
+      }
     }
   } else if (['refunded', 'chargedback', 'refused'].includes(info.status) && existing) {
     db.prepare(
