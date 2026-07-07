@@ -1,14 +1,25 @@
 {
   "name": "pietra",
   "version": "1.0.0",
-  "description": "Projeto simples em Node.js",
+  "description": "Emagrecimento Blindado - app web (PWA) da BLINDADA",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node src/seed.js && node src/index.js",
+    "dev": "nodemon src/index.js",
+    "seed": "node src/seed.js",
+    "build": "npm run build:web",
+    "build:web": "npm install --prefix web && npm run build --prefix web",
+    "dev:web": "npm run dev --prefix web"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "resend": "^6.17.1",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
