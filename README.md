@@ -53,6 +53,42 @@ npm run dev       # backend na porta 3000
 npm run dev:web   # frontend Vite na porta 5173, com proxy de /api para o backend
 ```
 
+## Deploy em produção (Railway)
+
+Recomendamos a [Railway](https://railway.app) por ser a opção mais simples: conecta
+direto no GitHub, builda e sobe o app automaticamente, e suporta armazenamento
+persistente (necessário para o banco SQLite).
+
+1. **Crie uma conta** em [railway.app](https://railway.app) (dá pra entrar direto com o
+   GitHub).
+2. **Novo projeto** → **Deploy from GitHub repo** → selecione o repositório `pietra`.
+   A Railway detecta sozinha que é um projeto Node.js (usa o `package.json` e o
+   `railway.json` já incluídos neste repositório) e sabe rodar `npm run build` (builda o
+   frontend) e depois `npm start` (roda o seed de conteúdo e sobe o servidor).
+3. **Adicione um Volume** (armazenamento persistente) para o banco de dados, para que ele
+   não seja apagado a cada novo deploy:
+   - Na aba do serviço, vá em **Settings → Volumes** (ou **+ New → Volume**).
+   - Monte o volume no caminho `/app/data`.
+4. **Configure as variáveis de ambiente** em **Variables**, com os mesmos valores que
+   estão no `.env.example`:
+   - `JWT_SECRET` — gere uma string aleatória longa (ex: rode
+     `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` no seu
+     computador e cole o resultado).
+   - `GREENN_WEBHOOK_TOKEN` — o mesmo token do painel da Greenn (veja seção abaixo).
+   - `RESEND_API_KEY` e `EMAIL_FROM` — suas credenciais da Resend.
+   - `APP_URL` — preencha depois que a Railway gerar a URL pública (passo 5).
+   - `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (opcional) — para você ter um login de
+     administradora de teste assim que subir.
+5. **Gere o domínio**: em **Settings → Networking → Generate Domain**, a Railway cria uma
+   URL pública tipo `pietra-production.up.railway.app`. Copie essa URL e cole em
+   `APP_URL` (passo 4) — ela é usada para montar o link de ativação nos e-mails.
+   Opcionalmente, depois é possível trocar por um domínio próprio (ex:
+   `app.blindada.com.br`) na mesma tela, apontando o DNS conforme instruído pela Railway.
+6. **Configure o webhook na Greenn** (veja a próxima seção) usando essa URL pública.
+
+Depois do primeiro deploy, toda vez que você (ou eu) enviar um novo commit para a branch
+principal, a Railway builda e sobe a nova versão automaticamente.
+
 ## Configurando o webhook da Greenn
 
 No painel da Greenn, em **Integração e Tokens**, configure um Webhook apontando para:

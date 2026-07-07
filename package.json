@@ -4,9 +4,10 @@
   "description": "Emagrecimento Blindado - app web (PWA) da BLINDADA",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/seed.js && node src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node src/seed.js",
+    "build": "npm run build:web",
     "build:web": "npm install --prefix web && npm run build --prefix web",
     "dev:web": "npm run dev --prefix web"
   },
