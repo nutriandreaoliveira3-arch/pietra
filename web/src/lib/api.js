@@ -31,6 +31,15 @@ export const api = {
   me: () => request('/auth/me'),
   modules: () => request('/modules'),
   completeLesson: (lessonId) => request(`/modules/lessons/${lessonId}/complete`, { method: 'POST' }),
+  createModule: (data) => request('/modules', { method: 'POST', body: JSON.stringify(data) }),
+  updateModule: (moduleId, data) =>
+    request(`/modules/${moduleId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  removeModule: (moduleId) => request(`/modules/${moduleId}`, { method: 'DELETE' }),
+  createLesson: (moduleId, data) =>
+    request(`/modules/${moduleId}/lessons`, { method: 'POST', body: JSON.stringify(data) }),
+  updateLesson: (lessonId, data) =>
+    request(`/modules/lessons/${lessonId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  removeLesson: (lessonId) => request(`/modules/lessons/${lessonId}`, { method: 'DELETE' }),
   diaryList: () => request('/diary'),
   diaryAdd: (entry) => request('/diary', { method: 'POST', body: JSON.stringify(entry) }),
   diaryRemove: (id) => request(`/diary/${id}`, { method: 'DELETE' }),
