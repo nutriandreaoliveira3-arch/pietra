@@ -324,3 +324,75 @@ select {
   border: 1px solid var(--cinza-claro);
 }
 
+.admin-module-block {
+  background: var(--branco);
+  border: 1px solid var(--cinza-claro);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.admin-module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.admin-lesson-item {
+  flex-direction: column;
+  align-items: stretch !important;
+}
+
+.admin-lesson-item > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.admin-form input,
+.admin-form textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--cinza-claro);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.admin-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-form-actions button[type='submit'] {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--preto);
+  color: var(--branco);
+  font-weight: 600;
+}
+
