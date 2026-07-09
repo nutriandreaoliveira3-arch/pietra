@@ -28,6 +28,7 @@ export default function Layout() {
         <NavLink to="/diario">Diário</NavLink>
         <NavLink to="/progresso">Progresso</NavLink>
         {user.role === 'admin' && <NavLink to="/admin/conteudo">Conteúdo</NavLink>}
+        {user.role === 'admin' && <NavLink to="/admin/clientes">Clientes</NavLink>}
       </nav>
     </div>
   );

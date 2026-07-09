@@ -396,3 +396,14 @@ select {
   font-weight: 600;
 }
 
+.admin-success {
+  color: #1e7d34;
+  font-size: 14px;
+}
+
+.admin-status {
+  font-size: 12px;
+  color: var(--dourado);
+  font-weight: 600;
+}
+
