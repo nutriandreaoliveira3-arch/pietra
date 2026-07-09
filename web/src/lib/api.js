@@ -40,6 +40,10 @@ export const api = {
   updateLesson: (lessonId, data) =>
     request(`/modules/lessons/${lessonId}`, { method: 'PUT', body: JSON.stringify(data) }),
   removeLesson: (lessonId) => request(`/modules/lessons/${lessonId}`, { method: 'DELETE' }),
+  adminUsers: () => request('/admin/users'),
+  adminCreateUser: (data) => request('/admin/users', { method: 'POST', body: JSON.stringify(data) }),
+  adminRevokeUser: (userId) => request(`/admin/users/${userId}/revoke`, { method: 'POST' }),
+  adminReactivateUser: (userId) => request(`/admin/users/${userId}/reactivate`, { method: 'POST' }),
   diaryList: () => request('/diary'),
   diaryAdd: (entry) => request('/diary', { method: 'POST', body: JSON.stringify(entry) }),
   diaryRemove: (id) => request(`/diary/${id}`, { method: 'DELETE' }),

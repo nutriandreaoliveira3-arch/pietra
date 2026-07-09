@@ -8,6 +8,7 @@ import Modules from './pages/Modules';
 import Diary from './pages/Diary';
 import Progress from './pages/Progress';
 import AdminModules from './pages/AdminModules';
+import AdminUsers from './pages/AdminUsers';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/diario" element={<Diary />} />
             <Route path="/progresso" element={<Progress />} />
             <Route path="/admin/conteudo" element={<AdminModules />} />
+            <Route path="/admin/clientes" element={<AdminUsers />} />
           </Route>
         </Routes>
       </AuthProvider>

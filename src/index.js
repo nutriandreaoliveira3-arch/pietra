@@ -19,6 +19,7 @@ const webhookRoutes = require('./routes/webhooks');
 const moduleRoutes = require('./routes/modules');
 const diaryRoutes = require('./routes/diary');
 const weightRoutes = require('./routes/weight');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/diary', diaryRoutes);
 app.use('/api/weight', weightRoutes);
+app.use('/api/admin/users', userRoutes);
 
 const webDist = path.join(__dirname, '..', 'web', 'dist');
 app.use(express.static(webDist));
