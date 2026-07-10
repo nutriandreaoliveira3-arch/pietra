@@ -8,17 +8,25 @@ const router = express.Router();
 
 router.use(requireAuth, requireAdmin);
 
+function withProducts(user) {
+  const productIds = db
+    .prepare('SELECT product_id FROM user_products WHERE user_id = ?')
+    .all(user.id)
+    .map((r) => r.product_id);
+  return { ...user, productIds };
+}
+
 router.get('/', (req, res) => {
   const users = db
     .prepare(
       'SELECT id, name, email, role, status, created_at FROM users ORDER BY created_at DESC'
     )
     .all();
-  res.json({ users });
+  res.json({ users: users.map(withProducts) });
 });
 
 router.post('/', async (req, res) => {
-  const { name, email } = req.body || {};
+  const { name, email, productIds } = req.body || {};
   if (!name || !email) {
     return res.status(400).json({ error: 'Informe nome e e-mail.' });
   }
@@ -29,12 +37,23 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Já existe uma conta com esse e-mail.' });
   }
 
+  const ids = Array.isArray(productIds) ? productIds : [];
+  for (const productId of ids) {
+    const product = db.prepare('SELECT id FROM products WHERE id = ?').get(productId);
+    if (!product) {
+      return res.status(400).json({ error: 'Produto inválido.' });
+    }
+  }
+
   const id = uuidv4();
   const activationToken = uuidv4();
   db.prepare(
     `INSERT INTO users (id, name, email, role, status, activation_token)
      VALUES (?, ?, ?, 'client', 'pending', ?)`
   ).run(id, name, normalizedEmail, activationToken);
+
+  const grantProduct = db.prepare('INSERT OR IGNORE INTO user_products (user_id, product_id) VALUES (?, ?)');
+  ids.forEach((productId) => grantProduct.run(id, productId));
 
   try {
     await sendActivationEmail({ to: normalizedEmail, name, activationToken });
@@ -43,8 +62,34 @@ router.post('/', async (req, res) => {
   }
 
   res.status(201).json({
-    user: db.prepare('SELECT id, name, email, role, status, created_at FROM users WHERE id = ?').get(id),
+    user: withProducts(
+      db.prepare('SELECT id, name, email, role, status, created_at FROM users WHERE id = ?').get(id)
+    ),
   });
+});
+
+router.post('/:userId/products/:productId', (req, res) => {
+  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(req.params.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuária não encontrada.' });
+  }
+  const product = db.prepare('SELECT id FROM products WHERE id = ?').get(req.params.productId);
+  if (!product) {
+    return res.status(404).json({ error: 'Produto não encontrado.' });
+  }
+  db.prepare('INSERT OR IGNORE INTO user_products (user_id, product_id) VALUES (?, ?)').run(
+    user.id,
+    product.id
+  );
+  res.json({ ok: true });
+});
+
+router.delete('/:userId/products/:productId', (req, res) => {
+  db.prepare('DELETE FROM user_products WHERE user_id = ? AND product_id = ?').run(
+    req.params.userId,
+    req.params.productId
+  );
+  res.json({ ok: true });
 });
 
 router.post('/:userId/revoke', (req, res) => {

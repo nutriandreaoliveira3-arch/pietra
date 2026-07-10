@@ -9,13 +9,40 @@ const STATUS_LABELS = {
   inactive: 'Inativa',
 };
 
+function ProductChecklist({ products, selectedIds, onChange }) {
+  function toggle(productId) {
+    if (selectedIds.includes(productId)) {
+      onChange(selectedIds.filter((id) => id !== productId));
+    } else {
+      onChange([...selectedIds, productId]);
+    }
+  }
+
+  return (
+    <div className="admin-checklist">
+      {products.map((p) => (
+        <label key={p.id} className="admin-checklist-item">
+          <input
+            type="checkbox"
+            checked={selectedIds.includes(p.id)}
+            onChange={() => toggle(p.id)}
+          />
+          {p.name}
+        </label>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminUsers() {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [productIds, setProductIds] = useState([]);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -26,9 +53,11 @@ export default function AdminUsers() {
 
   function load() {
     setLoading(true);
-    api
-      .adminUsers()
-      .then((data) => setUsers(data.users))
+    Promise.all([api.adminUsers(), api.products()])
+      .then(([usersData, productsData]) => {
+        setUsers(usersData.users);
+        setProducts(productsData.products);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
@@ -39,10 +68,11 @@ export default function AdminUsers() {
     setCreateError('');
     setSuccessMsg('');
     try {
-      await api.adminCreateUser({ name, email });
+      await api.adminCreateUser({ name, email, productIds });
       setSuccessMsg(`Conta criada! E-mail de ativação enviado para ${email}.`);
       setName('');
       setEmail('');
+      setProductIds([]);
       load();
     } catch (err) {
       setCreateError(err.message);
@@ -52,13 +82,22 @@ export default function AdminUsers() {
   }
 
   async function revoke(userId) {
-    if (!confirm('Revogar o acesso desta cliente?')) return;
+    if (!confirm('Revogar o acesso desta cliente (bloqueia login completamente)?')) return;
     await api.adminRevokeUser(userId);
     load();
   }
 
   async function reactivate(userId) {
     await api.adminReactivateUser(userId);
+    load();
+  }
+
+  async function toggleProduct(userId, productId, hasIt) {
+    if (hasIt) {
+      await api.adminRevokeProduct(userId, productId);
+    } else {
+      await api.adminGrantProduct(userId, productId);
+    }
     load();
   }
 
@@ -84,6 +123,10 @@ export default function AdminUsers() {
             E-mail
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
+          <label>
+            Protocolos liberados
+            <ProductChecklist products={products} selectedIds={productIds} onChange={setProductIds} />
+          </label>
           {createError && <p className="auth-error">{createError}</p>}
           {successMsg && <p className="admin-success">{successMsg}</p>}
           <div className="admin-form-actions">
@@ -98,14 +141,31 @@ export default function AdminUsers() {
         <h2>Todas as clientes</h2>
         {loading && <p>Carregando...</p>}
         {error && <p className="auth-error">{error}</p>}
-        <ul className="entry-list">
+        <ul className="entry-list admin-client-list">
           {users.map((u) => (
-            <li key={u.id}>
+            <li key={u.id} className="admin-client-item">
               <div className="entry-desc">
                 <strong>{u.name}</strong> — {u.email}
                 <br />
                 <span className="admin-status">{STATUS_LABELS[u.status] || u.status}</span>
                 {u.role === 'admin' && <span className="admin-status"> · admin</span>}
+                {u.role !== 'admin' && (
+                  <div className="admin-checklist">
+                    {products.map((p) => {
+                      const hasIt = u.productIds.includes(p.id);
+                      return (
+                        <label key={p.id} className="admin-checklist-item">
+                          <input
+                            type="checkbox"
+                            checked={hasIt}
+                            onChange={() => toggleProduct(u.id, p.id, hasIt)}
+                          />
+                          {p.name}
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               {u.role !== 'admin' && (
                 <>
@@ -115,7 +175,7 @@ export default function AdminUsers() {
                     </button>
                   ) : (
                     <button className="link-button" onClick={() => revoke(u.id)}>
-                      Revogar
+                      Revogar tudo
                     </button>
                   )}
                 </>

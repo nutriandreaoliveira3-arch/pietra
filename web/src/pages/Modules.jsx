@@ -32,22 +32,31 @@ export default function Modules() {
       <h1>Protocolo</h1>
       <p className="page-subtitle">Emagrecimento Blindado</p>
       {modules.map((mod) => (
-        <section key={mod.id} className="module-block">
-          <h2>{mod.title}</h2>
+        <section key={mod.id} className={`module-block ${mod.locked ? 'module-locked' : ''}`}>
+          <h2>
+            {mod.locked && '🔒 '}
+            {mod.title}
+          </h2>
           <p className="module-desc">{mod.description}</p>
-          <ul className="lesson-list">
-            {mod.lessons.map((lesson) => (
-              <li key={lesson.id} className={lesson.completed ? 'lesson-done' : ''}>
-                <div>
-                  <strong>{lesson.title}</strong>
-                  <p>{lesson.content}</p>
-                </div>
-                <button onClick={() => toggleComplete(lesson.id)} disabled={lesson.completed}>
-                  {lesson.completed ? 'Concluída' : 'Marcar como concluída'}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {mod.locked ? (
+            <p className="module-locked-msg">
+              Disponível para quem tem o protocolo{mod.product ? ` "${mod.product.name}"` : ''}.
+            </p>
+          ) : (
+            <ul className="lesson-list">
+              {mod.lessons.map((lesson) => (
+                <li key={lesson.id} className={lesson.completed ? 'lesson-done' : ''}>
+                  <div>
+                    <strong>{lesson.title}</strong>
+                    <p>{lesson.content}</p>
+                  </div>
+                  <button onClick={() => toggleComplete(lesson.id)} disabled={lesson.completed}>
+                    {lesson.completed ? 'Concluída' : 'Marcar como concluída'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       ))}
     </div>

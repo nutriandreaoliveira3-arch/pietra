@@ -8,18 +8,37 @@ const router = express.Router();
 router.get('/', requireAuth, (req, res) => {
   const modules = db.prepare('SELECT * FROM modules ORDER BY sort_order').all();
   const lessons = db.prepare('SELECT * FROM lessons ORDER BY sort_order').all();
+  const products = db.prepare('SELECT * FROM products').all();
+  const productById = new Map(products.map((p) => [p.id, p]));
   const completed = new Set(
     db.prepare('SELECT lesson_id FROM lesson_progress WHERE user_id = ?').all(req.user.id).map((r) => r.lesson_id)
   );
 
-  const result = modules.map((mod) => ({
-    ...mod,
-    lessons: lessons
-      .filter((l) => l.module_id === mod.id)
-      .map((l) => ({ ...l, completed: completed.has(l.id) })),
-  }));
+  const isAdmin = req.user.role === 'admin';
+  const entitledProductIds = new Set(
+    db.prepare('SELECT product_id FROM user_products WHERE user_id = ?').all(req.user.id).map((r) => r.product_id)
+  );
+
+  const result = modules.map((mod) => {
+    const locked = !isAdmin && !!mod.product_id && !entitledProductIds.has(mod.product_id);
+    const modLessons = lessons.filter((l) => l.module_id === mod.id);
+
+    return {
+      ...mod,
+      product: mod.product_id ? productById.get(mod.product_id) || null : null,
+      locked,
+      lessons: locked
+        ? modLessons.map((l) => ({ id: l.id, title: l.title, locked: true }))
+        : modLessons.map((l) => ({ ...l, completed: completed.has(l.id) })),
+    };
+  });
 
   res.json({ modules: result });
+});
+
+router.get('/products', requireAuth, requireAdmin, (req, res) => {
+  const products = db.prepare('SELECT * FROM products ORDER BY sort_order').all();
+  res.json({ products });
 });
 
 router.post('/lessons/:lessonId/complete', requireAuth, (req, res) => {
@@ -36,19 +55,22 @@ router.post('/lessons/:lessonId/complete', requireAuth, (req, res) => {
 });
 
 router.post('/', requireAuth, requireAdmin, (req, res) => {
-  const { title, description } = req.body || {};
+  const { title, description, product_id } = req.body || {};
   if (!title) {
     return res.status(400).json({ error: 'Informe o título do módulo.' });
+  }
+  if (product_id) {
+    const product = db.prepare('SELECT id FROM products WHERE id = ?').get(product_id);
+    if (!product) {
+      return res.status(400).json({ error: 'Produto inválido.' });
+    }
   }
 
   const maxOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS max FROM modules').get().max;
   const id = uuidv4();
-  db.prepare('INSERT INTO modules (id, title, description, sort_order) VALUES (?, ?, ?, ?)').run(
-    id,
-    title,
-    description || '',
-    maxOrder + 1
-  );
+  db.prepare(
+    'INSERT INTO modules (id, title, description, product_id, sort_order) VALUES (?, ?, ?, ?, ?)'
+  ).run(id, title, description || '', product_id || null, maxOrder + 1);
 
   res.status(201).json({ module: db.prepare('SELECT * FROM modules WHERE id = ?').get(id) });
 });
@@ -59,10 +81,18 @@ router.put('/:moduleId', requireAuth, requireAdmin, (req, res) => {
     return res.status(404).json({ error: 'Módulo não encontrado.' });
   }
 
-  const { title, description } = req.body || {};
-  db.prepare('UPDATE modules SET title = ?, description = ? WHERE id = ?').run(
+  const { title, description, product_id } = req.body || {};
+  if (product_id) {
+    const product = db.prepare('SELECT id FROM products WHERE id = ?').get(product_id);
+    if (!product) {
+      return res.status(400).json({ error: 'Produto inválido.' });
+    }
+  }
+
+  db.prepare('UPDATE modules SET title = ?, description = ?, product_id = ? WHERE id = ?').run(
     title ?? mod.title,
     description ?? mod.description,
+    product_id === undefined ? mod.product_id : product_id || null,
     mod.id
   );
 
