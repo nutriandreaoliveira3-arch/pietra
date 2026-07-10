@@ -51,9 +51,10 @@ function LessonEditor({ lesson, onSaved, onCancel }) {
   );
 }
 
-function ModuleEditor({ mod, onSaved, onCancel }) {
+function ModuleEditor({ mod, products, onSaved, onCancel }) {
   const [title, setTitle] = useState(mod.title);
   const [description, setDescription] = useState(mod.description || '');
+  const [productId, setProductId] = useState(mod.product_id || '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -62,7 +63,7 @@ function ModuleEditor({ mod, onSaved, onCancel }) {
     setSaving(true);
     setError('');
     try {
-      await api.updateModule(mod.id, { title, description });
+      await api.updateModule(mod.id, { title, description, product_id: productId || null });
       onSaved();
     } catch (err) {
       setError(err.message);
@@ -81,6 +82,17 @@ function ModuleEditor({ mod, onSaved, onCancel }) {
         Descrição
         <textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
       </label>
+      <label>
+        Protocolo (produto) — quem não comprou este vê o módulo trancado
+        <select value={productId} onChange={(e) => setProductId(e.target.value)}>
+          <option value="">Sem protocolo (aberto para todas)</option>
+          {products.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
+      </label>
       {error && <p className="auth-error">{error}</p>}
       <div className="admin-form-actions">
         <button type="submit" disabled={saving}>
@@ -97,11 +109,13 @@ function ModuleEditor({ mod, onSaved, onCancel }) {
 export default function AdminModules() {
   const { user } = useAuth();
   const [modules, setModules] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingModuleId, setEditingModuleId] = useState(null);
   const [editingLessonId, setEditingLessonId] = useState(null);
   const [newModuleTitle, setNewModuleTitle] = useState('');
+  const [newModuleProductId, setNewModuleProductId] = useState('');
   const [newLessonTitleByModule, setNewLessonTitleByModule] = useState({});
 
   useEffect(() => {
@@ -110,9 +124,11 @@ export default function AdminModules() {
 
   function load() {
     setLoading(true);
-    api
-      .modules()
-      .then((data) => setModules(data.modules))
+    Promise.all([api.modules(), api.products()])
+      .then(([modulesData, productsData]) => {
+        setModules(modulesData.modules);
+        setProducts(productsData.products);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
@@ -120,8 +136,13 @@ export default function AdminModules() {
   async function addModule(e) {
     e.preventDefault();
     if (!newModuleTitle.trim()) return;
-    await api.createModule({ title: newModuleTitle.trim(), description: '' });
+    await api.createModule({
+      title: newModuleTitle.trim(),
+      description: '',
+      product_id: newModuleProductId || null,
+    });
     setNewModuleTitle('');
+    setNewModuleProductId('');
     load();
   }
 
@@ -160,6 +181,7 @@ export default function AdminModules() {
           {editingModuleId === mod.id ? (
             <ModuleEditor
               mod={mod}
+              products={products}
               onSaved={() => {
                 setEditingModuleId(null);
                 load();
@@ -170,6 +192,9 @@ export default function AdminModules() {
             <div className="admin-module-header">
               <div>
                 <h2>{mod.title}</h2>
+                <p className="admin-status">
+                  {mod.product ? `Protocolo: ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
+                </p>
                 <p className="module-desc">{mod.description}</p>
               </div>
               <div className="admin-actions">
@@ -237,6 +262,14 @@ export default function AdminModules() {
             value={newModuleTitle}
             onChange={(e) => setNewModuleTitle(e.target.value)}
           />
+          <select value={newModuleProductId} onChange={(e) => setNewModuleProductId(e.target.value)}>
+            <option value="">Sem protocolo</option>
+            {products.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
           <button type="submit">+ Criar módulo</button>
         </form>
       </section>

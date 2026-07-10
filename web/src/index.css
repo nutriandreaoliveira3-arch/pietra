@@ -407,3 +407,42 @@ select {
   font-weight: 600;
 }
 
+.admin-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.admin-checklist-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.admin-client-item {
+  flex-direction: column;
+  align-items: stretch !important;
+}
+
+.module-locked {
+  opacity: 0.7;
+}
+
+.module-locked h2 {
+  color: var(--texto);
+}
+
+.module-locked-msg {
+  font-size: 13px;
+  color: var(--dourado);
+  font-weight: 600;
+  background: var(--branco);
+  border: 1px dashed var(--dourado);
+  border-radius: 8px;
+  padding: 12px;
+}
+

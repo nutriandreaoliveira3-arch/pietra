@@ -27,10 +27,25 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS products (
+  id TEXT PRIMARY KEY,
+  key TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS user_products (
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  product_id TEXT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  granted_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (user_id, product_id)
+);
+
 CREATE TABLE IF NOT EXISTS modules (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   description TEXT,
+  product_id TEXT REFERENCES products(id) ON DELETE SET NULL,
   sort_order INTEGER NOT NULL DEFAULT 0
 );
 
@@ -78,5 +93,10 @@ CREATE TABLE IF NOT EXISTS greenn_events (
   received_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 `);
+
+const moduleColumns = db.prepare('PRAGMA table_info(modules)').all().map((c) => c.name);
+if (!moduleColumns.includes('product_id')) {
+  db.exec('ALTER TABLE modules ADD COLUMN product_id TEXT REFERENCES products(id) ON DELETE SET NULL');
+}
 
 module.exports = db;

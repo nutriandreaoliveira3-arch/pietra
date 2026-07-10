@@ -3,6 +3,25 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
+const products = [
+  { key: 'emagrecimento_blindado', name: 'Emagrecimento Blindado' },
+  { key: 'ativacao_metabolica', name: 'Ativação Metabólica' },
+  { key: 'destravando_hormonios', name: 'Destravando seus Hormônios' },
+  { key: 'jejum_intermitente', name: 'Jejum Intermitente' },
+  { key: 'canetas_turbo', name: 'Protocolo das Canetas Turbo' },
+];
+
+const insertProduct = db.prepare(
+  'INSERT INTO products (id, key, name, sort_order) VALUES (?, ?, ?, ?)'
+);
+products.forEach((product, index) => {
+  const existing = db.prepare('SELECT id FROM products WHERE key = ?').get(product.key);
+  if (!existing) {
+    insertProduct.run(uuidv4(), product.key, product.name, index);
+  }
+});
+console.log(`Produtos verificados: ${products.length}.`);
+
 const modules = [
   {
     title: 'Boas-vindas ao Emagrecimento Blindado',
