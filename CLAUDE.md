@@ -11,10 +11,26 @@ operacional pra retomar o projeto rápido em conversas novas.
 - **Domínio de e-mail:** `blindadokp.com.br`, verificado na Resend (DNS gerenciado no Cloudflare).
 - **Banco de dados:** SQLite com volume persistente montado em `/app/data` no Railway (sem isso,
   o banco se perde a cada deploy).
-- **Pagamento:** webhook da Greenn, configurado nos 5 produtos de lançamento (Emagrecimento
-  Blindado, Ativação Metabólica, Destravando seus Hormônios, Jejum Intermitente, Protocolo das
-  Canetas Turbo) — todos usam o **mesmo token de conta** e a mesma URL de webhook
-  (`/api/webhooks/greenn`), configurados individualmente em cada produto no painel da Greenn.
+- **Pagamento:** webhook da Greenn, configurado por produto no painel da Greenn (aba **Integração e
+  Tokens** de cada produto) — todos usam o **mesmo token de conta** e a mesma URL de webhook
+  (`/api/webhooks/greenn`). Catálogo de produtos que dão acesso a conteúdo do app (cadastrados em
+  `src/seed.js`, nome tem que bater com o nome exato do produto na Greenn — `matchProduct` em
+  `src/routes/webhooks.js` faz correspondência aproximada/normalizada):
+  - Protocolos: Reset Blindado (R$197, produto de lançamento principal), Protocolo Emagrecimento
+    Metabólico, Protocolo Emagrecimento Hormonal, Jejum Intermitente, Protocolo Turbo das Canetas
+    Emagrecedoras (R$497 cada).
+  - Produtos avulsos: APP - BLINDADA (R$97), BLIN - Assistente Virtual Educativa da Blindada
+    (R$47), e 5 Suplementações (Ativação Metabólica, Modulação Intestinal, Antioxidante
+    Anti-inflamatória, Ansiedade e Compulsão GLP-1, Termogênica — R$97 cada).
+  - Cada módulo de conteúdo (Admin → Conteúdo) pode ser vinculado a um desses produtos — quem não
+    comprou vê o módulo trancado. Módulo sem produto vinculado fica aberto pra qualquer cliente
+    ativa.
+  - Fora do catálogo (produtos só de checkout, sem relação com o app — ficam no site
+    `blindadokp`): Editor de Vídeo Blindado (PRO/Básico), Máquina Prompt, Skills, e os desafios
+    curtos (Pare de Comer por Ansiedade, Receitas Blindadas, Desafio 7 dias, Desafio 21 dias,
+    Detox 3 dias, Barriga Desinchada).
+  - Ofertas combinadas (comprou X, ganha acesso a Y também) ainda não têm automação — a dona avisa
+    quando quiser montar uma e eu libero manualmente.
 - Variáveis de ambiente reais (JWT_SECRET, RESEND_API_KEY, GREENN_WEBHOOK_TOKEN etc.) ficam **só**
   no Railway → Variables. Nunca commitar valores reais no repo.
 
