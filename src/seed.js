@@ -3,20 +3,33 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
+// Nomes precisam bater (ao menos por substring, veja matchProduct em
+// src/routes/webhooks.js) com o nome do produto configurado na Greenn, senão
+// o webhook não consegue liberar/revogar o protocolo certo automaticamente.
 const products = [
-  { key: 'emagrecimento_blindado', name: 'Emagrecimento Blindado' },
-  { key: 'ativacao_metabolica', name: 'Ativação Metabólica' },
-  { key: 'destravando_hormonios', name: 'Destravando seus Hormônios' },
+  { key: 'emagrecimento_blindado', name: 'Reset Blindado' },
+  { key: 'ativacao_metabolica', name: 'Protocolo Emagrecimento Metabólico' },
+  { key: 'destravando_hormonios', name: 'Protocolo Emagrecimento Hormonal' },
   { key: 'jejum_intermitente', name: 'Jejum Intermitente' },
-  { key: 'canetas_turbo', name: 'Protocolo das Canetas Turbo' },
+  { key: 'canetas_turbo', name: 'Protocolo Turbo das Canetas Emagrecedoras' },
+  { key: 'app_blindada', name: 'APP - BLINDADA' },
+  { key: 'blin_assistente_virtual', name: 'BLIN - Assistente Virtual Educativa da Blindada' },
+  { key: 'suplementacao_ativacao_metabolica', name: 'Suplementação Ativação Metabólica' },
+  { key: 'suplementacao_modulacao_intestinal', name: 'Suplementação Blindada Modulação Intestinal' },
+  { key: 'suplementacao_antioxidante_antiinflamatoria', name: 'Suplementação Antioxidante Anti-inflamatória' },
+  { key: 'suplementacao_ansiedade_compulsao_glp1', name: 'Suplementação Ansiedade e Compulsão GLP-1' },
+  { key: 'suplementacao_termogenica', name: 'Suplementação Termogênica' },
 ];
 
 const insertProduct = db.prepare(
   'INSERT INTO products (id, key, name, sort_order) VALUES (?, ?, ?, ?)'
 );
+const updateProduct = db.prepare('UPDATE products SET name = ?, sort_order = ? WHERE key = ?');
 products.forEach((product, index) => {
   const existing = db.prepare('SELECT id FROM products WHERE key = ?').get(product.key);
-  if (!existing) {
+  if (existing) {
+    updateProduct.run(product.name, index, product.key);
+  } else {
     insertProduct.run(uuidv4(), product.key, product.name, index);
   }
 });
