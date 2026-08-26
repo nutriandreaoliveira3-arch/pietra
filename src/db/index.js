@@ -99,6 +99,26 @@ CREATE TABLE IF NOT EXISTS greenn_events (
   raw_payload TEXT NOT NULL,
   received_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS meal_plans (
+  user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS supplement_plans (
+  user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS water_entries (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  entry_date TEXT NOT NULL,
+  amount_ml INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `);
 
 const moduleColumns = db.prepare('PRAGMA table_info(modules)').all().map((c) => c.name);
@@ -107,6 +127,11 @@ if (!moduleColumns.includes('product_id')) {
 }
 if (!moduleColumns.includes('phase_gated')) {
   db.exec('ALTER TABLE modules ADD COLUMN phase_gated INTEGER NOT NULL DEFAULT 0');
+}
+
+const userColumns = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name);
+if (!userColumns.includes('water_goal_ml')) {
+  db.exec('ALTER TABLE users ADD COLUMN water_goal_ml INTEGER NOT NULL DEFAULT 2000');
 }
 
 module.exports = db;

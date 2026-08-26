@@ -34,6 +34,64 @@ function ProductChecklist({ products, selectedIds, onChange }) {
   );
 }
 
+const DOC_TYPES = {
+  'meal-plan': { title: 'Plano alimentar', get: api.adminGetMealPlan, set: api.adminSetMealPlan },
+  supplements: { title: 'Suplementação', get: api.adminGetSupplements, set: api.adminSetSupplements },
+};
+
+function ClientDocEditor({ userId, kind, onClose }) {
+  const { title, get, set } = DOC_TYPES[kind];
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    get(userId)
+      .then((data) => setContent(data.content))
+      .finally(() => setLoading(false));
+  }, [userId]);
+
+  async function save(e) {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
+    try {
+      await set(userId, content);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) return <p>Carregando...</p>;
+
+  return (
+    <form className="admin-form" onSubmit={save}>
+      <label>
+        {title}
+        <textarea
+          rows={10}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Cole ou escreva o conteúdo aqui — pode usar **negrito** e ### título."
+        />
+      </label>
+      {error && <p className="auth-error">{error}</p>}
+      <div className="admin-form-actions">
+        <button type="submit" disabled={saving}>
+          {saving ? 'Salvando...' : 'Salvar'}
+        </button>
+        <button type="button" className="link-button" onClick={onClose}>
+          Cancelar
+        </button>
+      </div>
+    </form>
+  );
+}
+
 export default function AdminUsers() {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
@@ -49,6 +107,7 @@ export default function AdminUsers() {
   const [successMsg, setSuccessMsg] = useState('');
   const [newActivationUrl, setNewActivationUrl] = useState('');
   const [copiedId, setCopiedId] = useState('');
+  const [editingDoc, setEditingDoc] = useState(null);
 
   useEffect(() => {
     load();
@@ -226,6 +285,29 @@ export default function AdminUsers() {
                       })}
                     </div>
                   </>
+                )}
+                {u.role !== 'admin' && (
+                  <div className="admin-actions">
+                    <button
+                      className="link-button"
+                      onClick={() => setEditingDoc({ userId: u.id, kind: 'meal-plan' })}
+                    >
+                      Plano alimentar
+                    </button>
+                    <button
+                      className="link-button"
+                      onClick={() => setEditingDoc({ userId: u.id, kind: 'supplements' })}
+                    >
+                      Suplementação
+                    </button>
+                  </div>
+                )}
+                {editingDoc?.userId === u.id && (
+                  <ClientDocEditor
+                    userId={u.id}
+                    kind={editingDoc.kind}
+                    onClose={() => setEditingDoc(null)}
+                  />
                 )}
               </div>
               {u.role !== 'admin' && (

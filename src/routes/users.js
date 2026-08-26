@@ -132,6 +132,42 @@ router.delete('/:userId/modules/:moduleId', (req, res) => {
   res.json({ ok: true });
 });
 
+router.get('/:userId/meal-plan', (req, res) => {
+  const plan = db.prepare('SELECT content, updated_at FROM meal_plans WHERE user_id = ?').get(req.params.userId);
+  res.json({ content: plan?.content || '', updatedAt: plan?.updated_at || null });
+});
+
+router.put('/:userId/meal-plan', (req, res) => {
+  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(req.params.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuária não encontrada.' });
+  }
+  const { content } = req.body || {};
+  db.prepare(
+    `INSERT INTO meal_plans (user_id, content, updated_at) VALUES (?, ?, datetime('now'))
+     ON CONFLICT(user_id) DO UPDATE SET content = excluded.content, updated_at = datetime('now')`
+  ).run(user.id, content || '');
+  res.json({ ok: true });
+});
+
+router.get('/:userId/supplements', (req, res) => {
+  const plan = db.prepare('SELECT content, updated_at FROM supplement_plans WHERE user_id = ?').get(req.params.userId);
+  res.json({ content: plan?.content || '', updatedAt: plan?.updated_at || null });
+});
+
+router.put('/:userId/supplements', (req, res) => {
+  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(req.params.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuária não encontrada.' });
+  }
+  const { content } = req.body || {};
+  db.prepare(
+    `INSERT INTO supplement_plans (user_id, content, updated_at) VALUES (?, ?, datetime('now'))
+     ON CONFLICT(user_id) DO UPDATE SET content = excluded.content, updated_at = datetime('now')`
+  ).run(user.id, content || '');
+  res.json({ ok: true });
+});
+
 router.post('/:userId/revoke', (req, res) => {
   const result = db
     .prepare(`UPDATE users SET status = 'inactive', updated_at = datetime('now') WHERE id = ?`)
