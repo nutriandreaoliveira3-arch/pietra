@@ -12,6 +12,7 @@ import Supplements from './pages/Supplements';
 import Water from './pages/Water';
 import AdminModules from './pages/AdminModules';
 import AdminUsers from './pages/AdminUsers';
+import AdminClientDetail from './pages/AdminClientDetail';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/agua" element={<Water />} />
             <Route path="/admin/conteudo" element={<AdminModules />} />
             <Route path="/admin/clientes" element={<AdminUsers />} />
+            <Route path="/admin/clientes/:userId" element={<AdminClientDetail />} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -2,6 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { requireAuth } = require('../middleware/auth');
+const { estimateCalories } = require('../lib/calories');
 
 const router = express.Router();
 
@@ -12,18 +13,19 @@ router.get('/', requireAuth, (req, res) => {
   res.json({ entries });
 });
 
-router.post('/', requireAuth, (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   const { entry_date, meal, description } = req.body || {};
   if (!entry_date || !meal || !description) {
     return res.status(400).json({ error: 'Informe data, refeição e descrição.' });
   }
 
   const id = uuidv4();
+  const caloriesKcal = await estimateCalories(description);
   db.prepare(
-    'INSERT INTO diary_entries (id, user_id, entry_date, meal, description) VALUES (?, ?, ?, ?, ?)'
-  ).run(id, req.user.id, entry_date, meal, description);
+    'INSERT INTO diary_entries (id, user_id, entry_date, meal, description, calories_kcal) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(id, req.user.id, entry_date, meal, description, caloriesKcal);
 
-  res.status(201).json({ id });
+  res.status(201).json({ id, calories_kcal: caloriesKcal });
 });
 
 router.delete('/:id', requireAuth, (req, res) => {

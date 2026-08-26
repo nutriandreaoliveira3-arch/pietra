@@ -168,6 +168,28 @@ router.put('/:userId/supplements', (req, res) => {
   res.json({ ok: true });
 });
 
+router.get('/:userId/tracking', (req, res) => {
+  const user = db
+    .prepare('SELECT id, name, email, status, created_at FROM users WHERE id = ?')
+    .get(req.params.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuária não encontrada.' });
+  }
+
+  const diary = db
+    .prepare('SELECT * FROM diary_entries WHERE user_id = ? ORDER BY entry_date DESC, created_at DESC')
+    .all(user.id);
+  const weight = db
+    .prepare('SELECT * FROM weight_entries WHERE user_id = ? ORDER BY entry_date ASC')
+    .all(user.id);
+  const water = db
+    .prepare('SELECT * FROM water_entries WHERE user_id = ? ORDER BY entry_date DESC, created_at DESC')
+    .all(user.id);
+  const waterGoal = db.prepare('SELECT water_goal_ml FROM users WHERE id = ?').get(user.id);
+
+  res.json({ user, diary, weight, water, waterGoalMl: waterGoal.water_goal_ml });
+});
+
 router.post('/:userId/revoke', (req, res) => {
   const result = db
     .prepare(`UPDATE users SET status = 'inactive', updated_at = datetime('now') WHERE id = ?`)

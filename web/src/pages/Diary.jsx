@@ -35,9 +35,16 @@ export default function Diary() {
     load();
   }
 
+  const todayEntries = entries.filter((e) => e.entry_date === date);
+  const todayCalories = todayEntries.reduce((sum, e) => sum + (e.calories_kcal || 0), 0);
+  const todayHasEstimate = todayEntries.some((e) => e.calories_kcal != null);
+
   return (
     <div className="page">
       <h1>Diário alimentar</h1>
+      {todayHasEstimate && (
+        <p className="page-subtitle">~{todayCalories} kcal estimadas hoje</p>
+      )}
       <form className="inline-form" onSubmit={handleSubmit}>
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
         <select value={meal} onChange={(e) => setMeal(e.target.value)}>
@@ -63,7 +70,12 @@ export default function Diary() {
           <li key={entry.id}>
             <span className="entry-date">{entry.entry_date}</span>
             <span className="entry-meal">{entry.meal}</span>
-            <span className="entry-desc">{entry.description}</span>
+            <span className="entry-desc">
+              {entry.description}
+              {entry.calories_kcal != null && (
+                <span className="admin-status"> · ~{entry.calories_kcal} kcal</span>
+              )}
+            </span>
             <button className="link-button" onClick={() => handleRemove(entry.id)}>
               Remover
             </button>

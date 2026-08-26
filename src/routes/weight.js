@@ -13,16 +13,27 @@ router.get('/', requireAuth, (req, res) => {
 });
 
 router.post('/', requireAuth, (req, res) => {
-  const { entry_date, weight_kg, waist_cm, hip_cm, notes } = req.body || {};
+  const { entry_date, weight_kg, waist_cm, hip_cm, abdomen_cm, thigh_cm, arm_cm, notes } = req.body || {};
   if (!entry_date || !weight_kg) {
     return res.status(400).json({ error: 'Informe data e peso.' });
   }
 
   const id = uuidv4();
   db.prepare(
-    `INSERT INTO weight_entries (id, user_id, entry_date, weight_kg, waist_cm, hip_cm, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`
-  ).run(id, req.user.id, entry_date, weight_kg, waist_cm || null, hip_cm || null, notes || null);
+    `INSERT INTO weight_entries (id, user_id, entry_date, weight_kg, waist_cm, hip_cm, abdomen_cm, thigh_cm, arm_cm, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    req.user.id,
+    entry_date,
+    weight_kg,
+    waist_cm || null,
+    hip_cm || null,
+    abdomen_cm || null,
+    thigh_cm || null,
+    arm_cm || null,
+    notes || null
+  );
 
   res.status(201).json({ id });
 });

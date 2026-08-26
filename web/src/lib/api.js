@@ -71,4 +71,5 @@ export const api = {
   waterAdd: (entry) => request('/water', { method: 'POST', body: JSON.stringify(entry) }),
   waterRemove: (id) => request(`/water/${id}`, { method: 'DELETE' }),
   waterSetGoal: (goal_ml) => request('/water/goal', { method: 'PUT', body: JSON.stringify({ goal_ml }) }),
+  adminClientTracking: (userId) => request(`/admin/users/${userId}/tracking`),
 };
