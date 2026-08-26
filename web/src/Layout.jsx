@@ -27,6 +27,9 @@ export default function Layout() {
         <NavLink to="/modulos">Protocolo</NavLink>
         <NavLink to="/diario">Diário</NavLink>
         <NavLink to="/progresso">Progresso</NavLink>
+        <NavLink to="/plano-alimentar">Plano</NavLink>
+        <NavLink to="/suplementacao">Suplementos</NavLink>
+        <NavLink to="/agua">Água</NavLink>
         {user.role === 'admin' && <NavLink to="/admin/conteudo">Conteúdo</NavLink>}
         {user.role === 'admin' && <NavLink to="/admin/clientes">Clientes</NavLink>}
       </nav>

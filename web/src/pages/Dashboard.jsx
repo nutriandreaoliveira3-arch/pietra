@@ -21,6 +21,18 @@ export default function Dashboard() {
           <span className="nav-card-title">Progresso</span>
           <span className="nav-card-desc">Peso e medidas ao longo do tempo</span>
         </Link>
+        <Link to="/plano-alimentar" className="nav-card">
+          <span className="nav-card-title">Plano alimentar</span>
+          <span className="nav-card-desc">Seu plano, montado pela Andrea</span>
+        </Link>
+        <Link to="/suplementacao" className="nav-card">
+          <span className="nav-card-title">Suplementação</span>
+          <span className="nav-card-desc">Sua indicação de suplementos</span>
+        </Link>
+        <Link to="/agua" className="nav-card">
+          <span className="nav-card-title">Água</span>
+          <span className="nav-card-desc">Bata sua meta do dia</span>
+        </Link>
       </div>
     </div>
   );

@@ -19,6 +19,9 @@ const webhookRoutes = require('./routes/webhooks');
 const moduleRoutes = require('./routes/modules');
 const diaryRoutes = require('./routes/diary');
 const weightRoutes = require('./routes/weight');
+const mealPlanRoutes = require('./routes/mealPlan');
+const supplementRoutes = require('./routes/supplements');
+const waterRoutes = require('./routes/water');
 const userRoutes = require('./routes/users');
 
 const app = express();
@@ -36,6 +39,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/diary', diaryRoutes);
 app.use('/api/weight', weightRoutes);
+app.use('/api/meal-plan', mealPlanRoutes);
+app.use('/api/supplements', supplementRoutes);
+app.use('/api/water', waterRoutes);
 app.use('/api/admin/users', userRoutes);
 
 const webDist = path.join(__dirname, '..', 'web', 'dist');

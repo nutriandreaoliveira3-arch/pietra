@@ -59,4 +59,16 @@ export const api = {
   weightList: () => request('/weight'),
   weightAdd: (entry) => request('/weight', { method: 'POST', body: JSON.stringify(entry) }),
   weightRemove: (id) => request(`/weight/${id}`, { method: 'DELETE' }),
+  mealPlan: () => request('/meal-plan'),
+  adminGetMealPlan: (userId) => request(`/admin/users/${userId}/meal-plan`),
+  adminSetMealPlan: (userId, content) =>
+    request(`/admin/users/${userId}/meal-plan`, { method: 'PUT', body: JSON.stringify({ content }) }),
+  supplements: () => request('/supplements'),
+  adminGetSupplements: (userId) => request(`/admin/users/${userId}/supplements`),
+  adminSetSupplements: (userId, content) =>
+    request(`/admin/users/${userId}/supplements`, { method: 'PUT', body: JSON.stringify({ content }) }),
+  waterList: () => request('/water'),
+  waterAdd: (entry) => request('/water', { method: 'POST', body: JSON.stringify(entry) }),
+  waterRemove: (id) => request(`/water/${id}`, { method: 'DELETE' }),
+  waterSetGoal: (goal_ml) => request('/water/goal', { method: 'PUT', body: JSON.stringify({ goal_ml }) }),
 };

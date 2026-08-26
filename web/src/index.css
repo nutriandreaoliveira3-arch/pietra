@@ -152,16 +152,21 @@ select {
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 4px;
   background: var(--branco);
   border-top: 1px solid var(--cinza-claro);
-  padding: 10px 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bottom-nav a {
+  flex: 0 0 auto;
   color: var(--texto);
   text-decoration: none;
   font-size: 13px;
+  white-space: nowrap;
   padding: 4px 8px;
 }
 
@@ -245,32 +250,32 @@ select {
   color: var(--texto);
 }
 
-.lesson-list .lesson-content {
+.lesson-content {
   margin-top: 4px;
 }
 
-.lesson-list .lesson-content p {
+.lesson-content p {
   font-size: 13px;
   line-height: 1.6;
   margin: 0 0 10px;
   color: var(--texto);
 }
 
-.lesson-list .lesson-content p:last-child {
+.lesson-content p:last-child {
   margin-bottom: 0;
 }
 
-.lesson-list .lesson-content h4,
-.lesson-list .lesson-content h5,
-.lesson-list .lesson-content h6 {
+.lesson-content h4,
+.lesson-content h5,
+.lesson-content h6 {
   font-size: 14px;
   color: var(--dourado);
   margin: 14px 0 6px;
 }
 
-.lesson-list .lesson-content h4:first-child,
-.lesson-list .lesson-content h5:first-child,
-.lesson-list .lesson-content h6:first-child {
+.lesson-content h4:first-child,
+.lesson-content h5:first-child,
+.lesson-content h6:first-child {
   margin-top: 0;
 }
 
@@ -351,6 +356,46 @@ select {
   padding: 12px;
   margin-bottom: 20px;
   border: 1px solid var(--cinza-claro);
+}
+
+.water-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.water-bar {
+  height: 14px;
+  border-radius: 7px;
+  background: var(--cinza-claro);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.water-bar-fill {
+  height: 100%;
+  background: var(--dourado);
+  border-radius: 7px;
+  transition: width 0.3s ease;
+}
+
+.water-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.water-quick-actions > button {
+  border: 1px solid var(--dourado);
+  background: none;
+  color: var(--dourado);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
 }
 
 .admin-module-block {
