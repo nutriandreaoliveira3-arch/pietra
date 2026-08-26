@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import RichText from '../components/RichText';
 
 function LessonEditor({ lesson, onSaved, onCancel }) {
   const [title, setTitle] = useState(lesson.title);
@@ -238,7 +239,15 @@ export default function AdminModules() {
                   <>
                     <div>
                       <strong>{lesson.title}</strong>
-                      <p>{lesson.content || <em>Sem conteúdo ainda</em>}</p>
+                      {lesson.content ? (
+                        <div className="lesson-content">
+                          <RichText text={lesson.content} />
+                        </div>
+                      ) : (
+                        <p>
+                          <em>Sem conteúdo ainda</em>
+                        </p>
+                      )}
                       {lesson.video_url && <p>🎬 {lesson.video_url}</p>}
                     </div>
                     <div className="admin-actions">

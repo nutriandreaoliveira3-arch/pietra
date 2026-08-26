@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
+import RichText from '../components/RichText';
 
 export default function Modules() {
   const [modules, setModules] = useState([]);
@@ -50,7 +51,9 @@ export default function Modules() {
                 <li key={lesson.id} className={lesson.completed ? 'lesson-done' : ''}>
                   <div>
                     <strong>{lesson.title}</strong>
-                    <p>{lesson.content}</p>
+                    <div className="lesson-content">
+                      <RichText text={lesson.content} />
+                    </div>
                   </div>
                   <button onClick={() => toggleComplete(lesson.id)} disabled={lesson.completed}>
                     {lesson.completed ? 'Concluída' : 'Marcar como concluída'}
