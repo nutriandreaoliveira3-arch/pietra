@@ -38,6 +38,7 @@ export default function AdminUsers() {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [phaseModules, setPhaseModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -53,10 +54,11 @@ export default function AdminUsers() {
 
   function load() {
     setLoading(true);
-    Promise.all([api.adminUsers(), api.products()])
-      .then(([usersData, productsData]) => {
+    Promise.all([api.adminUsers(), api.products(), api.modules()])
+      .then(([usersData, productsData, modulesData]) => {
         setUsers(usersData.users);
         setProducts(productsData.products);
+        setPhaseModules(modulesData.modules.filter((m) => m.phase_gated));
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -97,6 +99,15 @@ export default function AdminUsers() {
       await api.adminRevokeProduct(userId, productId);
     } else {
       await api.adminGrantProduct(userId, productId);
+    }
+    load();
+  }
+
+  async function toggleModule(userId, moduleId, hasIt) {
+    if (hasIt) {
+      await api.adminRevokeModule(userId, moduleId);
+    } else {
+      await api.adminGrantModule(userId, moduleId);
     }
     load();
   }
@@ -165,6 +176,26 @@ export default function AdminUsers() {
                       );
                     })}
                   </div>
+                )}
+                {u.role !== 'admin' && phaseModules.length > 0 && (
+                  <>
+                    <span className="admin-status">Fases liberadas:</span>
+                    <div className="admin-checklist">
+                      {phaseModules.map((m) => {
+                        const hasIt = u.moduleIds.includes(m.id);
+                        return (
+                          <label key={m.id} className="admin-checklist-item">
+                            <input
+                              type="checkbox"
+                              checked={hasIt}
+                              onChange={() => toggleModule(u.id, m.id, hasIt)}
+                            />
+                            {m.title}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </>
                 )}
               </div>
               {u.role !== 'admin' && (

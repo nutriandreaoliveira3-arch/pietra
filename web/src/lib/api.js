@@ -49,6 +49,10 @@ export const api = {
     request(`/admin/users/${userId}/products/${productId}`, { method: 'POST' }),
   adminRevokeProduct: (userId, productId) =>
     request(`/admin/users/${userId}/products/${productId}`, { method: 'DELETE' }),
+  adminGrantModule: (userId, moduleId) =>
+    request(`/admin/users/${userId}/modules/${moduleId}`, { method: 'POST' }),
+  adminRevokeModule: (userId, moduleId) =>
+    request(`/admin/users/${userId}/modules/${moduleId}`, { method: 'DELETE' }),
   diaryList: () => request('/diary'),
   diaryAdd: (entry) => request('/diary', { method: 'POST', body: JSON.stringify(entry) }),
   diaryRemove: (id) => request(`/diary/${id}`, { method: 'DELETE' }),
