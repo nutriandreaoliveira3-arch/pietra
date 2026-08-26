@@ -8,6 +8,10 @@ const router = express.Router();
 
 router.use(requireAuth, requireAdmin);
 
+function activationUrl(token) {
+  return `${process.env.APP_URL || 'http://localhost:3000'}/definir-senha?token=${token}`;
+}
+
 function withProducts(user) {
   const productIds = db
     .prepare('SELECT product_id FROM user_products WHERE user_id = ?')
@@ -17,13 +21,19 @@ function withProducts(user) {
     .prepare('SELECT module_id FROM user_module_unlocks WHERE user_id = ?')
     .all(user.id)
     .map((r) => r.module_id);
-  return { ...user, productIds, moduleIds };
+  const { activation_token, ...rest } = user;
+  return {
+    ...rest,
+    productIds,
+    moduleIds,
+    activationUrl: activation_token ? activationUrl(activation_token) : null,
+  };
 }
 
 router.get('/', (req, res) => {
   const users = db
     .prepare(
-      'SELECT id, name, email, role, status, created_at FROM users ORDER BY created_at DESC'
+      'SELECT id, name, email, role, status, activation_token, created_at FROM users ORDER BY created_at DESC'
     )
     .all();
   res.json({ users: users.map(withProducts) });
@@ -67,7 +77,9 @@ router.post('/', async (req, res) => {
 
   res.status(201).json({
     user: withProducts(
-      db.prepare('SELECT id, name, email, role, status, created_at FROM users WHERE id = ?').get(id)
+      db
+        .prepare('SELECT id, name, email, role, status, activation_token, created_at FROM users WHERE id = ?')
+        .get(id)
     ),
   });
 });

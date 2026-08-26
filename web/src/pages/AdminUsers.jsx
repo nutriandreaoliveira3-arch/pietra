@@ -47,6 +47,8 @@ export default function AdminUsers() {
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [newActivationUrl, setNewActivationUrl] = useState('');
+  const [copiedId, setCopiedId] = useState('');
 
   useEffect(() => {
     load();
@@ -69,9 +71,11 @@ export default function AdminUsers() {
     setCreating(true);
     setCreateError('');
     setSuccessMsg('');
+    setNewActivationUrl('');
     try {
-      await api.adminCreateUser({ name, email, productIds });
+      const { user: created } = await api.adminCreateUser({ name, email, productIds });
       setSuccessMsg(`Conta criada! E-mail de ativação enviado para ${email}.`);
+      setNewActivationUrl(created.activationUrl || '');
       setName('');
       setEmail('');
       setProductIds([]);
@@ -80,6 +84,16 @@ export default function AdminUsers() {
       setCreateError(err.message);
     } finally {
       setCreating(false);
+    }
+  }
+
+  async function copyLink(id, url) {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(''), 2000);
+    } catch {
+      prompt('Copie o link manualmente:', url);
     }
   }
 
@@ -123,7 +137,8 @@ export default function AdminUsers() {
         <h2>Nova cliente</h2>
         <p className="module-desc">
           Use isso para venda direta, cortesia ou acesso fora da Greenn. A cliente recebe um e-mail
-          de ativação igual ao de uma compra normal.
+          de ativação automático, mas você também pode copiar o link e mandar você mesma (WhatsApp, por
+          exemplo) — útil pra venda 1 a 1 de alto ticket.
         </p>
         <form className="admin-form" onSubmit={addUser}>
           <label>
@@ -140,6 +155,13 @@ export default function AdminUsers() {
           </label>
           {createError && <p className="auth-error">{createError}</p>}
           {successMsg && <p className="admin-success">{successMsg}</p>}
+          {newActivationUrl && (
+            <div className="admin-form-actions">
+              <button type="button" onClick={() => copyLink('new', newActivationUrl)}>
+                {copiedId === 'new' ? 'Link copiado!' : 'Copiar link pra mandar você mesma'}
+              </button>
+            </div>
+          )}
           <div className="admin-form-actions">
             <button type="submit" disabled={creating}>
               {creating ? 'Criando...' : 'Criar acesso e enviar e-mail'}
@@ -160,6 +182,14 @@ export default function AdminUsers() {
                 <br />
                 <span className="admin-status">{STATUS_LABELS[u.status] || u.status}</span>
                 {u.role === 'admin' && <span className="admin-status"> · admin</span>}
+                {u.role !== 'admin' && u.activationUrl && (
+                  <>
+                    {' · '}
+                    <button className="link-button" onClick={() => copyLink(u.id, u.activationUrl)}>
+                      {copiedId === u.id ? 'Link copiado!' : 'Copiar link de acesso'}
+                    </button>
+                  </>
+                )}
                 {u.role !== 'admin' && (
                   <div className="admin-checklist">
                     {products.map((p) => {
