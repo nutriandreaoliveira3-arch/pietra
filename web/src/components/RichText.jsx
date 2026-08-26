@@ -1,12 +1,14 @@
-function renderInline(line, keyPrefix) {
-  const parts = line.split(/(\*\*[^*]+\*\*)/g).filter((part) => part !== '');
-  return parts.map((part, i) =>
-    part.startsWith('**') && part.endsWith('**') ? (
-      <strong key={`${keyPrefix}-${i}`}>{part.slice(2, -2)}</strong>
-    ) : (
-      <span key={`${keyPrefix}-${i}`}>{part}</span>
-    )
-  );
+// Divide o bloco inteiro (não linha a linha) pra **negrito** funcionar mesmo
+// quando a quebra de linha cai bem no meio do trecho marcado.
+function renderInline(block, keyPrefix) {
+  const tokens = block.split(/(\*\*[^*]+\*\*|\n)/g).filter((token) => token !== '');
+  return tokens.map((token, i) => {
+    if (token === '\n') return <br key={`${keyPrefix}-${i}`} />;
+    if (token.startsWith('**') && token.endsWith('**')) {
+      return <strong key={`${keyPrefix}-${i}`}>{token.slice(2, -2)}</strong>;
+    }
+    return <span key={`${keyPrefix}-${i}`}>{token}</span>;
+  });
 }
 
 // Entende o texto que a Andrea cola vindo de outros editores: parágrafos
@@ -24,16 +26,6 @@ export default function RichText({ text }) {
       return <Tag key={bi}>{renderInline(headingMatch[2], `h${bi}`)}</Tag>;
     }
 
-    const lines = trimmed.split('\n');
-    return (
-      <p key={bi}>
-        {lines.map((line, li) => (
-          <span key={li}>
-            {renderInline(line, `${bi}-${li}`)}
-            {li < lines.length - 1 && <br />}
-          </span>
-        ))}
-      </p>
-    );
+    return <p key={bi}>{renderInline(trimmed, `p${bi}`)}</p>;
   });
 }
