@@ -245,6 +245,35 @@ select {
   color: var(--texto);
 }
 
+.lesson-list .lesson-content {
+  margin-top: 4px;
+}
+
+.lesson-list .lesson-content p {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 10px;
+  color: var(--texto);
+}
+
+.lesson-list .lesson-content p:last-child {
+  margin-bottom: 0;
+}
+
+.lesson-list .lesson-content h4,
+.lesson-list .lesson-content h5,
+.lesson-list .lesson-content h6 {
+  font-size: 14px;
+  color: var(--dourado);
+  margin: 14px 0 6px;
+}
+
+.lesson-list .lesson-content h4:first-child,
+.lesson-list .lesson-content h5:first-child,
+.lesson-list .lesson-content h6:first-child {
+  margin-top: 0;
+}
+
 .lesson-list button {
   border: 1px solid var(--dourado);
   background: none;
