@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -288,6 +288,9 @@ export default function AdminUsers() {
                 )}
                 {u.role !== 'admin' && (
                   <div className="admin-actions">
+                    <Link className="link-button" to={`/admin/clientes/${u.id}`}>
+                      Ver acompanhamento
+                    </Link>
                     <button
                       className="link-button"
                       onClick={() => setEditingDoc({ userId: u.id, kind: 'meal-plan' })}

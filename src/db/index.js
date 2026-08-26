@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS diary_entries (
   entry_date TEXT NOT NULL,
   meal TEXT NOT NULL,
   description TEXT NOT NULL,
+  calories_kcal INTEGER,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -88,6 +89,9 @@ CREATE TABLE IF NOT EXISTS weight_entries (
   weight_kg REAL NOT NULL,
   waist_cm REAL,
   hip_cm REAL,
+  abdomen_cm REAL,
+  thigh_cm REAL,
+  arm_cm REAL,
   notes TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -133,5 +137,17 @@ const userColumns = db.prepare('PRAGMA table_info(users)').all().map((c) => c.na
 if (!userColumns.includes('water_goal_ml')) {
   db.exec('ALTER TABLE users ADD COLUMN water_goal_ml INTEGER NOT NULL DEFAULT 2000');
 }
+
+const diaryColumns = db.prepare('PRAGMA table_info(diary_entries)').all().map((c) => c.name);
+if (!diaryColumns.includes('calories_kcal')) {
+  db.exec('ALTER TABLE diary_entries ADD COLUMN calories_kcal INTEGER');
+}
+
+const weightColumns = db.prepare('PRAGMA table_info(weight_entries)').all().map((c) => c.name);
+['abdomen_cm', 'thigh_cm', 'arm_cm'].forEach((column) => {
+  if (!weightColumns.includes(column)) {
+    db.exec(`ALTER TABLE weight_entries ADD COLUMN ${column} REAL`);
+  }
+});
 
 module.exports = db;

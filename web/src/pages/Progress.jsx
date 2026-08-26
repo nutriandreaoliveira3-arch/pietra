@@ -8,6 +8,9 @@ export default function Progress() {
   const [weight, setWeight] = useState('');
   const [waist, setWaist] = useState('');
   const [hip, setHip] = useState('');
+  const [abdomen, setAbdomen] = useState('');
+  const [thigh, setThigh] = useState('');
+  const [arm, setArm] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -27,10 +30,16 @@ export default function Progress() {
         weight_kg: parseFloat(weight),
         waist_cm: waist ? parseFloat(waist) : null,
         hip_cm: hip ? parseFloat(hip) : null,
+        abdomen_cm: abdomen ? parseFloat(abdomen) : null,
+        thigh_cm: thigh ? parseFloat(thigh) : null,
+        arm_cm: arm ? parseFloat(arm) : null,
       });
       setWeight('');
       setWaist('');
       setHip('');
+      setAbdomen('');
+      setThigh('');
+      setArm('');
       load();
     } catch (err) {
       setError(err.message);
@@ -74,9 +83,27 @@ export default function Progress() {
         />
         <input type="number" step="0.1" placeholder="Cintura (cm)" value={waist} onChange={(e) => setWaist(e.target.value)} />
         <input type="number" step="0.1" placeholder="Quadril (cm)" value={hip} onChange={(e) => setHip(e.target.value)} />
+        <input type="number" step="0.1" placeholder="Abdômen (cm)" value={abdomen} onChange={(e) => setAbdomen(e.target.value)} />
+        <input type="number" step="0.1" placeholder="Coxa (cm)" value={thigh} onChange={(e) => setThigh(e.target.value)} />
+        <input type="number" step="0.1" placeholder="Braço (cm)" value={arm} onChange={(e) => setArm(e.target.value)} />
         <button type="submit">Registrar</button>
       </form>
       {error && <p className="auth-error">{error}</p>}
+
+      <p className="module-desc">
+        Meça sempre em jejum, pela manhã, com a mesma fita métrica: cintura (na altura do umbigo),
+        abdômen (2 dedos acima do umbigo), quadril (parte mais larga), coxa (parte média) e braço
+        (meio do bíceps, relaxado), sem apertar a fita.
+      </p>
+
+      <section className="module-block">
+        <h2>Fotos (opcional, mas recomendado)</h2>
+        <p className="module-desc">
+          Tire fotos de frente, de lado e de costas, sempre com a mesma roupa, no mesmo horário do
+          dia e com a mesma iluminação. As fotos mostram mudanças que às vezes o número da balança
+          não mostra tão bem — combine com a Andrea onde enviar as suas.
+        </p>
+      </section>
 
       <ul className="entry-list">
         {[...entries].reverse().map((entry) => (
@@ -86,6 +113,9 @@ export default function Progress() {
               {entry.weight_kg} kg
               {entry.waist_cm ? ` · cintura ${entry.waist_cm} cm` : ''}
               {entry.hip_cm ? ` · quadril ${entry.hip_cm} cm` : ''}
+              {entry.abdomen_cm ? ` · abdômen ${entry.abdomen_cm} cm` : ''}
+              {entry.thigh_cm ? ` · coxa ${entry.thigh_cm} cm` : ''}
+              {entry.arm_cm ? ` · braço ${entry.arm_cm} cm` : ''}
             </span>
             <button className="link-button" onClick={() => handleRemove(entry.id)}>
               Remover
