@@ -18,15 +18,29 @@ router.get('/', requireAuth, (req, res) => {
   const entitledProductIds = new Set(
     db.prepare('SELECT product_id FROM user_products WHERE user_id = ?').all(req.user.id).map((r) => r.product_id)
   );
+  const unlockedModuleIds = new Set(
+    db.prepare('SELECT module_id FROM user_module_unlocks WHERE user_id = ?').all(req.user.id).map((r) => r.module_id)
+  );
 
   const result = modules.map((mod) => {
-    const locked = !isAdmin && !!mod.product_id && !entitledProductIds.has(mod.product_id);
+    let locked = false;
+    let lockReason = null;
+    if (!isAdmin) {
+      if (mod.product_id && !entitledProductIds.has(mod.product_id)) {
+        locked = true;
+        lockReason = 'product';
+      } else if (mod.phase_gated && !unlockedModuleIds.has(mod.id)) {
+        locked = true;
+        lockReason = 'phase';
+      }
+    }
     const modLessons = lessons.filter((l) => l.module_id === mod.id);
 
     return {
       ...mod,
       product: mod.product_id ? productById.get(mod.product_id) || null : null,
       locked,
+      lockReason,
       lessons: locked
         ? modLessons.map((l) => ({ id: l.id, title: l.title, locked: true }))
         : modLessons.map((l) => ({ ...l, completed: completed.has(l.id) })),
@@ -55,7 +69,7 @@ router.post('/lessons/:lessonId/complete', requireAuth, (req, res) => {
 });
 
 router.post('/', requireAuth, requireAdmin, (req, res) => {
-  const { title, description, product_id } = req.body || {};
+  const { title, description, product_id, phase_gated } = req.body || {};
   if (!title) {
     return res.status(400).json({ error: 'Informe o título do módulo.' });
   }
@@ -69,8 +83,8 @@ router.post('/', requireAuth, requireAdmin, (req, res) => {
   const maxOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS max FROM modules').get().max;
   const id = uuidv4();
   db.prepare(
-    'INSERT INTO modules (id, title, description, product_id, sort_order) VALUES (?, ?, ?, ?, ?)'
-  ).run(id, title, description || '', product_id || null, maxOrder + 1);
+    'INSERT INTO modules (id, title, description, product_id, phase_gated, sort_order) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(id, title, description || '', product_id || null, phase_gated ? 1 : 0, maxOrder + 1);
 
   res.status(201).json({ module: db.prepare('SELECT * FROM modules WHERE id = ?').get(id) });
 });
@@ -81,7 +95,7 @@ router.put('/:moduleId', requireAuth, requireAdmin, (req, res) => {
     return res.status(404).json({ error: 'Módulo não encontrado.' });
   }
 
-  const { title, description, product_id } = req.body || {};
+  const { title, description, product_id, phase_gated } = req.body || {};
   if (product_id) {
     const product = db.prepare('SELECT id FROM products WHERE id = ?').get(product_id);
     if (!product) {
@@ -89,10 +103,11 @@ router.put('/:moduleId', requireAuth, requireAdmin, (req, res) => {
     }
   }
 
-  db.prepare('UPDATE modules SET title = ?, description = ?, product_id = ? WHERE id = ?').run(
+  db.prepare('UPDATE modules SET title = ?, description = ?, product_id = ?, phase_gated = ? WHERE id = ?').run(
     title ?? mod.title,
     description ?? mod.description,
     product_id === undefined ? mod.product_id : product_id || null,
+    phase_gated === undefined ? mod.phase_gated : phase_gated ? 1 : 0,
     mod.id
   );
 

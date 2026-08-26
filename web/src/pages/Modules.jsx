@@ -40,7 +40,9 @@ export default function Modules() {
           <p className="module-desc">{mod.description}</p>
           {mod.locked ? (
             <p className="module-locked-msg">
-              Disponível para quem tem o protocolo{mod.product ? ` "${mod.product.name}"` : ''}.
+              {mod.lockReason === 'phase'
+                ? 'Essa fase ainda não foi liberada pra você. Continue evoluindo que a Andrea libera em breve!'
+                : `Disponível para quem tem o protocolo${mod.product ? ` "${mod.product.name}"` : ''}.`}
             </p>
           ) : (
             <ul className="lesson-list">

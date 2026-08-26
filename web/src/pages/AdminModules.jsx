@@ -55,6 +55,7 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
   const [title, setTitle] = useState(mod.title);
   const [description, setDescription] = useState(mod.description || '');
   const [productId, setProductId] = useState(mod.product_id || '');
+  const [phaseGated, setPhaseGated] = useState(!!mod.phase_gated);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -63,7 +64,12 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
     setSaving(true);
     setError('');
     try {
-      await api.updateModule(mod.id, { title, description, product_id: productId || null });
+      await api.updateModule(mod.id, {
+        title,
+        description,
+        product_id: productId || null,
+        phase_gated: phaseGated,
+      });
       onSaved();
     } catch (err) {
       setError(err.message);
@@ -93,6 +99,10 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
           ))}
         </select>
       </label>
+      <label className="checkbox-label">
+        <input type="checkbox" checked={phaseGated} onChange={(e) => setPhaseGated(e.target.checked)} />
+        Fase — começa trancada pra todas, eu libero uma por uma em Clientes
+      </label>
       {error && <p className="auth-error">{error}</p>}
       <div className="admin-form-actions">
         <button type="submit" disabled={saving}>
@@ -116,6 +126,7 @@ export default function AdminModules() {
   const [editingLessonId, setEditingLessonId] = useState(null);
   const [newModuleTitle, setNewModuleTitle] = useState('');
   const [newModuleProductId, setNewModuleProductId] = useState('');
+  const [newModulePhaseGated, setNewModulePhaseGated] = useState(false);
   const [newLessonTitleByModule, setNewLessonTitleByModule] = useState({});
 
   useEffect(() => {
@@ -140,9 +151,11 @@ export default function AdminModules() {
       title: newModuleTitle.trim(),
       description: '',
       product_id: newModuleProductId || null,
+      phase_gated: newModulePhaseGated,
     });
     setNewModuleTitle('');
     setNewModuleProductId('');
+    setNewModulePhaseGated(false);
     load();
   }
 
@@ -194,6 +207,7 @@ export default function AdminModules() {
                 <h2>{mod.title}</h2>
                 <p className="admin-status">
                   {mod.product ? `Protocolo: ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
+                  {mod.phase_gated ? ' · Fase (liberação manual por cliente)' : ''}
                 </p>
                 <p className="module-desc">{mod.description}</p>
               </div>
@@ -270,6 +284,14 @@ export default function AdminModules() {
               </option>
             ))}
           </select>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={newModulePhaseGated}
+              onChange={(e) => setNewModulePhaseGated(e.target.checked)}
+            />
+            É uma fase (começa trancada)
+          </label>
           <button type="submit">+ Criar módulo</button>
         </form>
       </section>

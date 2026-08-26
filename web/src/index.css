@@ -428,6 +428,15 @@ select {
   align-items: stretch !important;
 }
 
+.checkbox-label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400 !important;
+}
+
 .module-locked {
   opacity: 0.7;
 }

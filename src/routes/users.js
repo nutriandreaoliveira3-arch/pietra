@@ -13,7 +13,11 @@ function withProducts(user) {
     .prepare('SELECT product_id FROM user_products WHERE user_id = ?')
     .all(user.id)
     .map((r) => r.product_id);
-  return { ...user, productIds };
+  const moduleIds = db
+    .prepare('SELECT module_id FROM user_module_unlocks WHERE user_id = ?')
+    .all(user.id)
+    .map((r) => r.module_id);
+  return { ...user, productIds, moduleIds };
 }
 
 router.get('/', (req, res) => {
@@ -88,6 +92,30 @@ router.delete('/:userId/products/:productId', (req, res) => {
   db.prepare('DELETE FROM user_products WHERE user_id = ? AND product_id = ?').run(
     req.params.userId,
     req.params.productId
+  );
+  res.json({ ok: true });
+});
+
+router.post('/:userId/modules/:moduleId', (req, res) => {
+  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(req.params.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuária não encontrada.' });
+  }
+  const mod = db.prepare('SELECT id FROM modules WHERE id = ?').get(req.params.moduleId);
+  if (!mod) {
+    return res.status(404).json({ error: 'Módulo não encontrado.' });
+  }
+  db.prepare('INSERT OR IGNORE INTO user_module_unlocks (user_id, module_id) VALUES (?, ?)').run(
+    user.id,
+    mod.id
+  );
+  res.json({ ok: true });
+});
+
+router.delete('/:userId/modules/:moduleId', (req, res) => {
+  db.prepare('DELETE FROM user_module_unlocks WHERE user_id = ? AND module_id = ?').run(
+    req.params.userId,
+    req.params.moduleId
   );
   res.json({ ok: true });
 });

@@ -65,6 +65,13 @@ CREATE TABLE IF NOT EXISTS lesson_progress (
   PRIMARY KEY (user_id, lesson_id)
 );
 
+CREATE TABLE IF NOT EXISTS user_module_unlocks (
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  module_id TEXT NOT NULL REFERENCES modules(id) ON DELETE CASCADE,
+  unlocked_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (user_id, module_id)
+);
+
 CREATE TABLE IF NOT EXISTS diary_entries (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -97,6 +104,9 @@ CREATE TABLE IF NOT EXISTS greenn_events (
 const moduleColumns = db.prepare('PRAGMA table_info(modules)').all().map((c) => c.name);
 if (!moduleColumns.includes('product_id')) {
   db.exec('ALTER TABLE modules ADD COLUMN product_id TEXT REFERENCES products(id) ON DELETE SET NULL');
+}
+if (!moduleColumns.includes('phase_gated')) {
+  db.exec('ALTER TABLE modules ADD COLUMN phase_gated INTEGER NOT NULL DEFAULT 0');
 }
 
 module.exports = db;
