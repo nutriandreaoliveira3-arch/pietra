@@ -232,19 +232,6 @@ select {
   margin-bottom: 0;
 }
 
-.module-desc h4,
-.module-desc h5,
-.module-desc h6 {
-  font-size: 15px;
-  color: var(--dourado);
-  margin: 14px 0 6px;
-}
-
-.module-desc h4:first-child,
-.module-desc h5:first-child,
-.module-desc h6:first-child {
-  margin-top: 0;
-}
 
 .lesson-list {
   list-style: none;
@@ -287,18 +274,56 @@ select {
   margin-bottom: 0;
 }
 
-.lesson-content h4,
-.lesson-content h5,
-.lesson-content h6 {
-  font-size: 14px;
-  color: var(--dourado);
-  margin: 14px 0 6px;
+.rich-text-section {
+  margin: 10px 0;
+  border: 1px solid var(--cinza-claro);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.lesson-content h4:first-child,
-.lesson-content h5:first-child,
-.lesson-content h6:first-child {
-  margin-top: 0;
+.rich-text-section summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dourado);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.rich-text-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.rich-text-section summary::after {
+  content: '+';
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.rich-text-section[open] summary::after {
+  content: '−';
+}
+
+.rich-text-section[open] summary {
+  border-bottom: 1px solid var(--cinza-claro);
+}
+
+.rich-text-section p {
+  padding: 0 14px;
+  margin: 10px 0;
+}
+
+.rich-text-section p:first-of-type {
+  margin-top: 12px;
+}
+
+.rich-text-section p:last-of-type {
+  margin-bottom: 12px;
 }
 
 .lesson-list button {
