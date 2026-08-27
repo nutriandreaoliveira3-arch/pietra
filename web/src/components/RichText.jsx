@@ -11,10 +11,36 @@ function renderInline(block, keyPrefix) {
   });
 }
 
+function isListBlock(block) {
+  const lines = block.split('\n').map((l) => l.trim()).filter(Boolean);
+  return lines.length > 0 && lines.every((l) => /^[*-]\s+\S/.test(l));
+}
+
+// Um bloco vira lista com bolinhas quando toda linha começa com "* " ou "- "
+// seguido de texto (não confunde com **negrito**, que não tem espaço depois
+// do primeiro *); senão vira parágrafo normal (com **negrito** processado).
+function renderBlock(block, key) {
+  if (isListBlock(block)) {
+    const items = block
+      .split('\n')
+      .map((l) => l.trim().replace(/^[*-]\s+/, ''))
+      .filter((l) => l !== '');
+    if (items.length === 0) return null;
+    return (
+      <ul key={key}>
+        {items.map((item, i) => (
+          <li key={i}>{renderInline(item, `${key}-li-${i}`)}</li>
+        ))}
+      </ul>
+    );
+  }
+  return <p key={key}>{renderInline(block, key)}</p>;
+}
+
 // Entende o texto que a Andréa cola vindo de outros editores: parágrafos
-// separados por linha em branco, **negrito**, e #/##/### como títulos — cada
-// título vira um botão que expande/recolhe o texto abaixo dele, pra não
-// deixar tudo como um texto corrido só.
+// separados por linha em branco, **negrito**, listas com */-, e #/##/###
+// como títulos — cada título vira um botão que expande/recolhe o texto
+// abaixo dele, pra não deixar tudo como um texto corrido só.
 export default function RichText({ text }) {
   if (!text) return null;
 
@@ -39,15 +65,11 @@ export default function RichText({ text }) {
 
   return (
     <>
-      {intro.map((block, i) => (
-        <p key={`intro-${i}`}>{renderInline(block, `intro-${i}`)}</p>
-      ))}
+      {intro.map((block, i) => renderBlock(block, `intro-${i}`))}
       {sections.map((section, si) => (
         <details key={si} className="rich-text-section">
           <summary>{renderInline(section.title, `sum-${si}`)}</summary>
-          {section.blocks.map((block, bi) => (
-            <p key={bi}>{renderInline(block, `${si}-${bi}`)}</p>
-          ))}
+          {section.blocks.map((block, bi) => renderBlock(block, `${si}-${bi}`))}
         </details>
       ))}
     </>
