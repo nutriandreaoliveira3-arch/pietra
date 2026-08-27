@@ -150,11 +150,30 @@ router.put('/lessons/:lessonId', requireAuth, requireAdmin, (req, res) => {
     return res.status(404).json({ error: 'Aula não encontrada.' });
   }
 
-  const { title, content, video_url } = req.body || {};
-  db.prepare('UPDATE lessons SET title = ?, content = ?, video_url = ? WHERE id = ?').run(
+  const { title, content, video_url, module_id } = req.body || {};
+
+  let targetModuleId = lesson.module_id;
+  let sortOrder = lesson.sort_order;
+  if (module_id && module_id !== lesson.module_id) {
+    const targetModule = db.prepare('SELECT id FROM modules WHERE id = ?').get(module_id);
+    if (!targetModule) {
+      return res.status(400).json({ error: 'Módulo de destino inválido.' });
+    }
+    targetModuleId = module_id;
+    const maxOrder = db
+      .prepare('SELECT COALESCE(MAX(sort_order), -1) AS max FROM lessons WHERE module_id = ?')
+      .get(module_id).max;
+    sortOrder = maxOrder + 1;
+  }
+
+  db.prepare(
+    'UPDATE lessons SET title = ?, content = ?, video_url = ?, module_id = ?, sort_order = ? WHERE id = ?'
+  ).run(
     title ?? lesson.title,
     content ?? lesson.content,
     video_url === undefined ? lesson.video_url : video_url,
+    targetModuleId,
+    sortOrder,
     lesson.id
   );
 
