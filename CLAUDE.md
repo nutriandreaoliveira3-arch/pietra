@@ -1,6 +1,6 @@
 # pietra — Emagrecimento Blindado (BLINDADA)
 
-App web (PWA) de área de membros para a nutricionista Andrea Oliveira, marca BLINDADA.
+App web (PWA) de área de membros para a nutricionista Andréa Oliveira, marca BLINDADA.
 Veja `README.md` para stack, setup local e detalhes de deploy — este arquivo é contexto
 operacional pra retomar o projeto rápido em conversas novas.
 
@@ -69,5 +69,5 @@ Ambas protegidas por `requireAdmin` middleware (`src/middleware/auth.js`).
   de novos commits (`git fetch origin main && git checkout -B <branch> origin/main`).
 - PRs são criados e mesclados via GitHub MCP (squash merge). A dona do projeto não lê código —
   prefere que eu resolva, teste localmente e já mescle, avisando o que mudou em português simples.
-- A dona (Andrea/equipe) tem pouca familiaridade técnica — instruções de UI (Railway, Resend,
+- A dona (Andréa/equipe) tem pouca familiaridade técnica — instruções de UI (Railway, Resend,
   Greenn, Cloudflare) precisam ser bem passo a passo, com nomes exatos de botões/abas.

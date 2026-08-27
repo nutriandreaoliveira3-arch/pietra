@@ -101,7 +101,7 @@ export default function Progress() {
         <p className="module-desc">
           Tire fotos de frente, de lado e de costas, sempre com a mesma roupa, no mesmo horário do
           dia e com a mesma iluminação. As fotos mostram mudanças que às vezes o número da balança
-          não mostra tão bem — combine com a Andrea onde enviar as suas.
+          não mostra tão bem — combine com a Andréa onde enviar as suas.
         </p>
       </section>
 

@@ -23,7 +23,7 @@ export default function Dashboard() {
         </Link>
         <Link to="/plano-alimentar" className="nav-card">
           <span className="nav-card-title">Plano alimentar</span>
-          <span className="nav-card-desc">Seu plano, montado pela Andrea</span>
+          <span className="nav-card-desc">Seu plano, montado pela Andréa</span>
         </Link>
         <Link to="/suplementacao" className="nav-card">
           <span className="nav-card-title">Suplementação</span>

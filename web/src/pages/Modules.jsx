@@ -44,7 +44,7 @@ export default function Modules() {
           {mod.locked ? (
             <p className="module-locked-msg">
               {mod.lockReason === 'phase'
-                ? 'Essa fase ainda não foi liberada pra você. Continue evoluindo que a Andrea libera em breve!'
+                ? 'Essa fase ainda não foi liberada pra você. Continue evoluindo que a Andréa libera em breve!'
                 : `Disponível para quem tem o protocolo${mod.product ? ` "${mod.product.name}"` : ''}.`}
             </p>
           ) : (

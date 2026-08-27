@@ -22,7 +22,7 @@ export default function Supplements() {
   return (
     <div className="page">
       <h1>Suplementação</h1>
-      <p className="page-subtitle">Sua indicação, montada pela Andrea</p>
+      <p className="page-subtitle">Sua indicação, montada pela Andréa</p>
 
       {content ? (
         <section className="module-block">
@@ -32,7 +32,7 @@ export default function Supplements() {
           {updatedAt && <p className="admin-status">Atualizado em {updatedAt.slice(0, 10)}</p>}
         </section>
       ) : (
-        <p>Sua suplementação ainda não foi cadastrada. A Andrea vai liberar em breve.</p>
+        <p>Sua suplementação ainda não foi cadastrada. A Andréa vai liberar em breve.</p>
       )}
     </div>
   );
