@@ -4,10 +4,11 @@ import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import RichText from '../components/RichText';
 
-function LessonEditor({ lesson, onSaved, onCancel }) {
+function LessonEditor({ lesson, modules, onSaved, onCancel }) {
   const [title, setTitle] = useState(lesson.title);
   const [content, setContent] = useState(lesson.content || '');
   const [videoUrl, setVideoUrl] = useState(lesson.video_url || '');
+  const [moduleId, setModuleId] = useState(lesson.module_id);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,7 +17,7 @@ function LessonEditor({ lesson, onSaved, onCancel }) {
     setSaving(true);
     setError('');
     try {
-      await api.updateLesson(lesson.id, { title, content, video_url: videoUrl });
+      await api.updateLesson(lesson.id, { title, content, video_url: videoUrl, module_id: moduleId });
       onSaved();
     } catch (err) {
       setError(err.message);
@@ -38,6 +39,16 @@ function LessonEditor({ lesson, onSaved, onCancel }) {
       <label>
         Link do vídeo (YouTube, Vimeo etc. — opcional)
         <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
+      </label>
+      <label>
+        Módulo
+        <select value={moduleId} onChange={(e) => setModuleId(e.target.value)}>
+          {modules.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.title}
+            </option>
+          ))}
+        </select>
       </label>
       {error && <p className="auth-error">{error}</p>}
       <div className="admin-form-actions">
@@ -235,6 +246,7 @@ export default function AdminModules() {
                 {editingLessonId === lesson.id ? (
                   <LessonEditor
                     lesson={lesson}
+                    modules={modules}
                     onSaved={() => {
                       setEditingLessonId(null);
                       load();
