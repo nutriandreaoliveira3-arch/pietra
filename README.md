@@ -1,6 +1,6 @@
 # Emagrecimento Blindado
 
-App web (PWA) da BLINDADA — Nutricionista Andrea Oliveira. Área de membros com o
+App web (PWA) da BLINDADA — Nutricionista Andréa Oliveira. Área de membros com o
 protocolo do Emagrecimento Blindado, diário alimentar e acompanhamento de peso/medidas.
 
 ## Stack

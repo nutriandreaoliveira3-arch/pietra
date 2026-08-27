@@ -11,7 +11,7 @@ function renderInline(block, keyPrefix) {
   });
 }
 
-// Entende o texto que a Andrea cola vindo de outros editores: parágrafos
+// Entende o texto que a Andréa cola vindo de outros editores: parágrafos
 // separados por linha em branco, **negrito** e #/##/### como títulos.
 export default function RichText({ text }) {
   if (!text) return null;

@@ -22,7 +22,7 @@ export default function MealPlan() {
   return (
     <div className="page">
       <h1>Plano alimentar</h1>
-      <p className="page-subtitle">Montado pela Andrea especialmente pra você</p>
+      <p className="page-subtitle">Montado pela Andréa especialmente pra você</p>
 
       {content ? (
         <section className="module-block">
@@ -32,7 +32,7 @@ export default function MealPlan() {
           {updatedAt && <p className="admin-status">Atualizado em {updatedAt.slice(0, 10)}</p>}
         </section>
       ) : (
-        <p>Seu plano alimentar ainda não foi cadastrado. A Andrea vai liberar em breve.</p>
+        <p>Seu plano alimentar ainda não foi cadastrado. A Andréa vai liberar em breve.</p>
       )}
     </div>
   );
