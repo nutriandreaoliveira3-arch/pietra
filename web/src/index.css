@@ -239,6 +239,19 @@ select {
   margin-bottom: 0;
 }
 
+.module-desc ul {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+.module-desc ul li {
+  margin-bottom: 4px;
+}
+
+.module-desc ul li::marker {
+  color: var(--dourado);
+}
+
 
 .lesson-list {
   list-style: none;
@@ -249,7 +262,7 @@ select {
   gap: 10px;
 }
 
-.lesson-list li {
+.lesson-list > li {
   background: var(--branco);
   border-radius: 10px;
   padding: 14px;
@@ -260,7 +273,7 @@ select {
   border: 1px solid var(--cinza-claro);
 }
 
-.lesson-list p {
+.lesson-list > li > p {
   font-size: 13px;
   margin-top: 4px;
   color: var(--texto);
@@ -279,6 +292,22 @@ select {
 
 .lesson-content p:last-child {
   margin-bottom: 0;
+}
+
+.lesson-content ul {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--texto);
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+.lesson-content ul li {
+  margin-bottom: 4px;
+}
+
+.lesson-content ul li::marker {
+  color: var(--dourado);
 }
 
 .rich-text-section {
@@ -331,6 +360,23 @@ select {
 
 .rich-text-section p:last-of-type {
   margin-bottom: 12px;
+}
+
+.rich-text-section ul {
+  margin: 10px 0;
+  padding: 0 14px 0 34px;
+}
+
+.rich-text-section ul:last-child {
+  margin-bottom: 12px;
+}
+
+.rich-text-section ul li {
+  margin-bottom: 4px;
+}
+
+.rich-text-section ul li::marker {
+  color: var(--dourado);
 }
 
 .lesson-list button {
