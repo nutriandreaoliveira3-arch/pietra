@@ -38,7 +38,9 @@ export default function Modules() {
             {mod.locked && '🔒 '}
             {mod.title}
           </h2>
-          <p className="module-desc">{mod.description}</p>
+          <div className="module-desc">
+            <RichText text={mod.description} />
+          </div>
           {mod.locked ? (
             <p className="module-locked-msg">
               {mod.lockReason === 'phase'
