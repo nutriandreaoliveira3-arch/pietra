@@ -243,27 +243,27 @@ export default function AdminModules() {
                   />
                 ) : (
                   <>
-                    <div>
+                    <div className="admin-lesson-header">
                       <strong>{lesson.title}</strong>
-                      {lesson.content ? (
-                        <div className="lesson-content">
-                          <RichText text={lesson.content} />
-                        </div>
-                      ) : (
-                        <p>
-                          <em>Sem conteúdo ainda</em>
-                        </p>
-                      )}
-                      {lesson.video_url && <p>🎬 {lesson.video_url}</p>}
+                      <div className="admin-actions">
+                        <button className="link-button" onClick={() => setEditingLessonId(lesson.id)}>
+                          Editar
+                        </button>
+                        <button className="link-button" onClick={() => removeLesson(lesson.id)}>
+                          Apagar
+                        </button>
+                      </div>
                     </div>
-                    <div className="admin-actions">
-                      <button className="link-button" onClick={() => setEditingLessonId(lesson.id)}>
-                        Editar
-                      </button>
-                      <button className="link-button" onClick={() => removeLesson(lesson.id)}>
-                        Apagar
-                      </button>
-                    </div>
+                    {lesson.content ? (
+                      <div className="lesson-content">
+                        <RichText text={lesson.content} />
+                      </div>
+                    ) : (
+                      <p>
+                        <em>Sem conteúdo ainda</em>
+                      </p>
+                    )}
+                    {lesson.video_url && <p>🎬 {lesson.video_url}</p>}
                   </>
                 )}
               </li>
