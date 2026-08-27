@@ -89,6 +89,10 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
         Descrição
         <textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
       </label>
+      <p className="admin-hint">
+        Use aqui só uma frase curta sobre o módulo. Pra colar o conteúdo completo de uma aula (com
+        títulos e negrito), use o botão <strong>"+ Nova aula"</strong> lá embaixo, não este campo.
+      </p>
       <label>
         Protocolo (produto) — quem não comprou este vê o módulo trancado
         <select value={productId} onChange={(e) => setProductId(e.target.value)}>
