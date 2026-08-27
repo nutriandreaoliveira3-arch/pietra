@@ -478,7 +478,7 @@ select {
   align-items: stretch !important;
 }
 
-.admin-lesson-item > div:first-child {
+.admin-lesson-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
