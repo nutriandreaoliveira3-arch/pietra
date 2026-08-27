@@ -12,20 +12,44 @@ function renderInline(block, keyPrefix) {
 }
 
 // Entende o texto que a Andréa cola vindo de outros editores: parágrafos
-// separados por linha em branco, **negrito** e #/##/### como títulos.
+// separados por linha em branco, **negrito**, e #/##/### como títulos — cada
+// título vira um botão que expande/recolhe o texto abaixo dele, pra não
+// deixar tudo como um texto corrido só.
 export default function RichText({ text }) {
   if (!text) return null;
 
   const blocks = text.trim().split(/\n\s*\n/);
 
-  return blocks.map((block, bi) => {
-    const trimmed = block.trim();
-    const headingMatch = trimmed.match(/^(#{1,4})\s+(.+)$/);
-    if (headingMatch) {
-      const Tag = `h${Math.min(headingMatch[1].length + 3, 6)}`;
-      return <Tag key={bi}>{renderInline(headingMatch[2], `h${bi}`)}</Tag>;
-    }
+  const intro = [];
+  const sections = [];
+  let current = null;
 
-    return <p key={bi}>{renderInline(trimmed, `p${bi}`)}</p>;
+  blocks.forEach((block) => {
+    const trimmed = block.trim();
+    const headingMatch = trimmed.match(/^#{1,4}\s+(.+)$/);
+    if (headingMatch) {
+      current = { title: headingMatch[1], blocks: [] };
+      sections.push(current);
+    } else if (current) {
+      current.blocks.push(trimmed);
+    } else {
+      intro.push(trimmed);
+    }
   });
+
+  return (
+    <>
+      {intro.map((block, i) => (
+        <p key={`intro-${i}`}>{renderInline(block, `intro-${i}`)}</p>
+      ))}
+      {sections.map((section, si) => (
+        <details key={si} className="rich-text-section">
+          <summary>{renderInline(section.title, `sum-${si}`)}</summary>
+          {section.blocks.map((block, bi) => (
+            <p key={bi}>{renderInline(block, `${si}-${bi}`)}</p>
+          ))}
+        </details>
+      ))}
+    </>
+  );
 }
