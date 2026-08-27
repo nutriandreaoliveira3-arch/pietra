@@ -224,6 +224,28 @@ select {
   margin-bottom: 12px;
 }
 
+.module-desc p {
+  margin: 0 0 10px;
+}
+
+.module-desc p:last-child {
+  margin-bottom: 0;
+}
+
+.module-desc h4,
+.module-desc h5,
+.module-desc h6 {
+  font-size: 15px;
+  color: var(--dourado);
+  margin: 14px 0 6px;
+}
+
+.module-desc h4:first-child,
+.module-desc h5:first-child,
+.module-desc h6:first-child {
+  margin-top: 0;
+}
+
 .lesson-list {
   list-style: none;
   margin: 0;

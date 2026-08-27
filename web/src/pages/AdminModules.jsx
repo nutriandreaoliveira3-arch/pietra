@@ -210,7 +210,9 @@ export default function AdminModules() {
                   {mod.product ? `Protocolo: ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
                   {mod.phase_gated ? ' · Fase (liberação manual por cliente)' : ''}
                 </p>
-                <p className="module-desc">{mod.description}</p>
+                <div className="module-desc">
+                  <RichText text={mod.description} />
+                </div>
               </div>
               <div className="admin-actions">
                 <button className="link-button" onClick={() => setEditingModuleId(mod.id)}>
