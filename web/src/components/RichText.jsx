@@ -1,11 +1,22 @@
+const URL_PATTERN = /https?:\/\/[^\s<>"]+[^\s<>".,;:)\]]/;
+
 // Divide o bloco inteiro (não linha a linha) pra **negrito** funcionar mesmo
-// quando a quebra de linha cai bem no meio do trecho marcado.
+// quando a quebra de linha cai bem no meio do trecho marcado. Um link colado
+// (https://...) também vira token separado, pra virar <a> clicável.
 function renderInline(block, keyPrefix) {
-  const tokens = block.split(/(\*\*[^*]+\*\*|\n)/g).filter((token) => token !== '');
+  const splitter = new RegExp(`(\\*\\*[^*]+\\*\\*|${URL_PATTERN.source}|\\n)`, 'g');
+  const tokens = block.split(splitter).filter((token) => token !== '');
   return tokens.map((token, i) => {
     if (token === '\n') return <br key={`${keyPrefix}-${i}`} />;
     if (token.startsWith('**') && token.endsWith('**')) {
       return <strong key={`${keyPrefix}-${i}`}>{token.slice(2, -2)}</strong>;
+    }
+    if (URL_PATTERN.test(token)) {
+      return (
+        <a key={`${keyPrefix}-${i}`} href={token} target="_blank" rel="noopener noreferrer">
+          {token}
+        </a>
+      );
     }
     return <span key={`${keyPrefix}-${i}`}>{token}</span>;
   });

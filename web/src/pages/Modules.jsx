@@ -56,6 +56,14 @@ export default function Modules() {
                     <div className="lesson-content">
                       <RichText text={lesson.content} />
                     </div>
+                    {lesson.video_url && (
+                      <p className="lesson-link">
+                        🎬{' '}
+                        <a href={lesson.video_url} target="_blank" rel="noopener noreferrer">
+                          Abrir vídeo/material
+                        </a>
+                      </p>
+                    )}
                   </div>
                   <button onClick={() => toggleComplete(lesson.id)} disabled={lesson.completed}>
                     {lesson.completed ? 'Concluída' : 'Marcar como concluída'}
