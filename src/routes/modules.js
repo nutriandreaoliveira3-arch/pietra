@@ -122,6 +122,32 @@ router.delete('/:moduleId', requireAuth, requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
+router.post('/:moduleId/reorder', requireAuth, requireAdmin, (req, res) => {
+  const mod = db.prepare('SELECT * FROM modules WHERE id = ?').get(req.params.moduleId);
+  if (!mod) {
+    return res.status(404).json({ error: 'Módulo não encontrado.' });
+  }
+
+  const { direction } = req.body || {};
+  if (direction !== 'up' && direction !== 'down') {
+    return res.status(400).json({ error: 'Direção inválida.' });
+  }
+
+  const siblings = db.prepare('SELECT * FROM modules ORDER BY sort_order').all();
+  const index = siblings.findIndex((m) => m.id === mod.id);
+  const swapIndex = direction === 'up' ? index - 1 : index + 1;
+  if (swapIndex < 0 || swapIndex >= siblings.length) {
+    return res.json({ ok: true });
+  }
+
+  const neighbor = siblings[swapIndex];
+  const update = db.prepare('UPDATE modules SET sort_order = ? WHERE id = ?');
+  update.run(neighbor.sort_order, mod.id);
+  update.run(mod.sort_order, neighbor.id);
+
+  res.json({ ok: true });
+});
+
 router.post('/:moduleId/lessons', requireAuth, requireAdmin, (req, res) => {
   const mod = db.prepare('SELECT * FROM modules WHERE id = ?').get(req.params.moduleId);
   if (!mod) {
