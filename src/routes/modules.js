@@ -180,6 +180,34 @@ router.put('/lessons/:lessonId', requireAuth, requireAdmin, (req, res) => {
   res.json({ lesson: db.prepare('SELECT * FROM lessons WHERE id = ?').get(lesson.id) });
 });
 
+router.post('/lessons/:lessonId/reorder', requireAuth, requireAdmin, (req, res) => {
+  const lesson = db.prepare('SELECT * FROM lessons WHERE id = ?').get(req.params.lessonId);
+  if (!lesson) {
+    return res.status(404).json({ error: 'Aula não encontrada.' });
+  }
+
+  const { direction } = req.body || {};
+  if (direction !== 'up' && direction !== 'down') {
+    return res.status(400).json({ error: 'Direção inválida.' });
+  }
+
+  const siblings = db
+    .prepare('SELECT * FROM lessons WHERE module_id = ? ORDER BY sort_order')
+    .all(lesson.module_id);
+  const index = siblings.findIndex((l) => l.id === lesson.id);
+  const swapIndex = direction === 'up' ? index - 1 : index + 1;
+  if (swapIndex < 0 || swapIndex >= siblings.length) {
+    return res.json({ ok: true });
+  }
+
+  const neighbor = siblings[swapIndex];
+  const update = db.prepare('UPDATE lessons SET sort_order = ? WHERE id = ?');
+  update.run(neighbor.sort_order, lesson.id);
+  update.run(lesson.sort_order, neighbor.id);
+
+  res.json({ ok: true });
+});
+
 router.delete('/lessons/:lessonId', requireAuth, requireAdmin, (req, res) => {
   const result = db.prepare('DELETE FROM lessons WHERE id = ?').run(req.params.lessonId);
   if (result.changes === 0) {

@@ -144,6 +144,12 @@ select {
   padding: 0;
 }
 
+.link-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+  text-decoration: none;
+}
+
 .app-content {
   flex: 1;
   padding: 20px;
