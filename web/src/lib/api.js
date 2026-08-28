@@ -35,6 +35,8 @@ export const api = {
   updateModule: (moduleId, data) =>
     request(`/modules/${moduleId}`, { method: 'PUT', body: JSON.stringify(data) }),
   removeModule: (moduleId) => request(`/modules/${moduleId}`, { method: 'DELETE' }),
+  reorderModule: (moduleId, direction) =>
+    request(`/modules/${moduleId}/reorder`, { method: 'POST', body: JSON.stringify({ direction }) }),
   createLesson: (moduleId, data) =>
     request(`/modules/${moduleId}/lessons`, { method: 'POST', body: JSON.stringify(data) }),
   updateLesson: (lessonId, data) =>

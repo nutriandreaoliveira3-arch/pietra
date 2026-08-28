@@ -201,6 +201,11 @@ export default function AdminModules() {
     load();
   }
 
+  async function reorderModule(moduleId, direction) {
+    await api.reorderModule(moduleId, direction);
+    load();
+  }
+
   if (user?.role !== 'admin') return <Navigate to="/" replace />;
   if (loading) return <div className="page">Carregando...</div>;
   if (error) return <div className="page">{error}</div>;
@@ -210,7 +215,7 @@ export default function AdminModules() {
       <h1>Gerenciar conteúdo</h1>
       <p className="page-subtitle">Módulos e aulas do Protocolo</p>
 
-      {modules.map((mod) => (
+      {modules.map((mod, moduleIndex) => (
         <section key={mod.id} className="module-block admin-module-block">
           {editingModuleId === mod.id ? (
             <ModuleEditor
@@ -235,6 +240,22 @@ export default function AdminModules() {
                 </div>
               </div>
               <div className="admin-actions">
+                <button
+                  className="link-button"
+                  onClick={() => reorderModule(mod.id, 'up')}
+                  disabled={moduleIndex === 0}
+                  title="Mover módulo pra cima"
+                >
+                  ▲
+                </button>
+                <button
+                  className="link-button"
+                  onClick={() => reorderModule(mod.id, 'down')}
+                  disabled={moduleIndex === modules.length - 1}
+                  title="Mover módulo pra baixo"
+                >
+                  ▼
+                </button>
                 <button className="link-button" onClick={() => setEditingModuleId(mod.id)}>
                   Editar
                 </button>
