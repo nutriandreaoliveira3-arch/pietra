@@ -196,6 +196,11 @@ export default function AdminModules() {
     load();
   }
 
+  async function reorderLesson(lessonId, direction) {
+    await api.reorderLesson(lessonId, direction);
+    load();
+  }
+
   if (user?.role !== 'admin') return <Navigate to="/" replace />;
   if (loading) return <div className="page">Carregando...</div>;
   if (error) return <div className="page">{error}</div>;
@@ -241,7 +246,7 @@ export default function AdminModules() {
           )}
 
           <ul className="lesson-list">
-            {mod.lessons.map((lesson) => (
+            {mod.lessons.map((lesson, lessonIndex) => (
               <li key={lesson.id} className="admin-lesson-item">
                 {editingLessonId === lesson.id ? (
                   <LessonEditor
@@ -258,6 +263,22 @@ export default function AdminModules() {
                     <div className="admin-lesson-header">
                       <strong>{lesson.title}</strong>
                       <div className="admin-actions">
+                        <button
+                          className="link-button"
+                          onClick={() => reorderLesson(lesson.id, 'up')}
+                          disabled={lessonIndex === 0}
+                          title="Mover pra cima"
+                        >
+                          ▲
+                        </button>
+                        <button
+                          className="link-button"
+                          onClick={() => reorderLesson(lesson.id, 'down')}
+                          disabled={lessonIndex === mod.lessons.length - 1}
+                          title="Mover pra baixo"
+                        >
+                          ▼
+                        </button>
                         <button className="link-button" onClick={() => setEditingLessonId(lesson.id)}>
                           Editar
                         </button>

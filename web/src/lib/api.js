@@ -40,6 +40,8 @@ export const api = {
   updateLesson: (lessonId, data) =>
     request(`/modules/lessons/${lessonId}`, { method: 'PUT', body: JSON.stringify(data) }),
   removeLesson: (lessonId) => request(`/modules/lessons/${lessonId}`, { method: 'DELETE' }),
+  reorderLesson: (lessonId, direction) =>
+    request(`/modules/lessons/${lessonId}/reorder`, { method: 'POST', body: JSON.stringify({ direction }) }),
   products: () => request('/modules/products'),
   adminUsers: () => request('/admin/users'),
   adminCreateUser: (data) => request('/admin/users', { method: 'POST', body: JSON.stringify(data) }),
