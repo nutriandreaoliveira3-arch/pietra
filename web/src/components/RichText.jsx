@@ -38,9 +38,24 @@ function renderBlock(block, key) {
 }
 
 // Entende o texto que a Andréa cola vindo de outros editores: parágrafos
-// separados por linha em branco, **negrito**, listas com */-, e #/##/###
-// como títulos — cada título vira um botão que expande/recolhe o texto
-// abaixo dele, pra não deixar tudo como um texto corrido só.
+// separados por linha em branco, **negrito**, listas com */-, e # como
+// título — vira um botão que expande/recolhe o texto abaixo dele. Um "##"
+// (dois ou mais #) dentro de um botão vira um sub-botão aninhado nele —
+// útil pra casos como "janela de alimentação" dentro de cada horário de
+// jejum, que só faz sentido depois que a pessoa já abriu o botão de fora.
+function renderSection(section, key) {
+  return (
+    <details key={key} className="rich-text-section">
+      <summary>{renderInline(section.title, `sum-${key}`)}</summary>
+      {section.items.map((item, ii) =>
+        item.type === 'sub'
+          ? renderSection(item.section, `${key}-${ii}`)
+          : renderBlock(item.content, `${key}-${ii}`)
+      )}
+    </details>
+  );
+}
+
 export default function RichText({ text }) {
   if (!text) return null;
 
@@ -48,16 +63,27 @@ export default function RichText({ text }) {
 
   const intro = [];
   const sections = [];
-  let current = null;
+  let currentTop = null;
+  let currentSub = null;
 
   blocks.forEach((block) => {
     const trimmed = block.trim();
-    const headingMatch = trimmed.match(/^#{1,4}\s+(.+)$/);
+    const headingMatch = trimmed.match(/^(#{1,4})\s+(.+)$/);
     if (headingMatch) {
-      current = { title: headingMatch[1], blocks: [] };
-      sections.push(current);
-    } else if (current) {
-      current.blocks.push(trimmed);
+      const level = headingMatch[1].length;
+      const title = headingMatch[2];
+      if (level === 1 || !currentTop) {
+        currentTop = { title, items: [] };
+        sections.push(currentTop);
+        currentSub = null;
+      } else {
+        currentSub = { title, items: [] };
+        currentTop.items.push({ type: 'sub', section: currentSub });
+      }
+    } else if (currentSub) {
+      currentSub.items.push({ type: 'block', content: trimmed });
+    } else if (currentTop) {
+      currentTop.items.push({ type: 'block', content: trimmed });
     } else {
       intro.push(trimmed);
     }
@@ -66,12 +92,7 @@ export default function RichText({ text }) {
   return (
     <>
       {intro.map((block, i) => renderBlock(block, `intro-${i}`))}
-      {sections.map((section, si) => (
-        <details key={si} className="rich-text-section">
-          <summary>{renderInline(section.title, `sum-${si}`)}</summary>
-          {section.blocks.map((block, bi) => renderBlock(block, `${si}-${bi}`))}
-        </details>
-      ))}
+      {sections.map((section, si) => renderSection(section, `${si}`))}
     </>
   );
 }

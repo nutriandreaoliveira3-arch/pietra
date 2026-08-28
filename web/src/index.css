@@ -385,6 +385,16 @@ select {
   color: var(--dourado);
 }
 
+.rich-text-section .rich-text-section {
+  margin: 10px 14px;
+  border-color: var(--bege);
+}
+
+.rich-text-section .rich-text-section summary {
+  font-size: 13px;
+  padding: 10px 12px;
+}
+
 .lesson-list button {
   border: 1px solid var(--dourado);
   background: none;
