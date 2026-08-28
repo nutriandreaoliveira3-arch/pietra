@@ -144,6 +144,7 @@ export default function AdminModules() {
   const [newModuleProductId, setNewModuleProductId] = useState('');
   const [newModulePhaseGated, setNewModulePhaseGated] = useState(false);
   const [newLessonTitleByModule, setNewLessonTitleByModule] = useState({});
+  const [reordering, setReordering] = useState(false);
 
   useEffect(() => {
     load();
@@ -151,7 +152,7 @@ export default function AdminModules() {
 
   function load() {
     setLoading(true);
-    Promise.all([api.modules(), api.products()])
+    return Promise.all([api.modules(), api.products()])
       .then(([modulesData, productsData]) => {
         setModules(modulesData.modules);
         setProducts(productsData.products);
@@ -197,13 +198,25 @@ export default function AdminModules() {
   }
 
   async function reorderLesson(lessonId, direction) {
-    await api.reorderLesson(lessonId, direction);
-    load();
+    if (reordering) return;
+    setReordering(true);
+    try {
+      await api.reorderLesson(lessonId, direction);
+      await load();
+    } finally {
+      setReordering(false);
+    }
   }
 
   async function reorderModule(moduleId, direction) {
-    await api.reorderModule(moduleId, direction);
-    load();
+    if (reordering) return;
+    setReordering(true);
+    try {
+      await api.reorderModule(moduleId, direction);
+      await load();
+    } finally {
+      setReordering(false);
+    }
   }
 
   if (user?.role !== 'admin') return <Navigate to="/" replace />;
@@ -243,7 +256,7 @@ export default function AdminModules() {
                 <button
                   className="link-button"
                   onClick={() => reorderModule(mod.id, 'up')}
-                  disabled={moduleIndex === 0}
+                  disabled={reordering || moduleIndex === 0}
                   title="Mover módulo pra cima"
                 >
                   ▲
@@ -251,7 +264,7 @@ export default function AdminModules() {
                 <button
                   className="link-button"
                   onClick={() => reorderModule(mod.id, 'down')}
-                  disabled={moduleIndex === modules.length - 1}
+                  disabled={reordering || moduleIndex === modules.length - 1}
                   title="Mover módulo pra baixo"
                 >
                   ▼
@@ -287,7 +300,7 @@ export default function AdminModules() {
                         <button
                           className="link-button"
                           onClick={() => reorderLesson(lesson.id, 'up')}
-                          disabled={lessonIndex === 0}
+                          disabled={reordering || lessonIndex === 0}
                           title="Mover pra cima"
                         >
                           ▲
@@ -295,7 +308,7 @@ export default function AdminModules() {
                         <button
                           className="link-button"
                           onClick={() => reorderLesson(lesson.id, 'down')}
-                          disabled={lessonIndex === mod.lessons.length - 1}
+                          disabled={reordering || lessonIndex === mod.lessons.length - 1}
                           title="Mover pra baixo"
                         >
                           ▼
