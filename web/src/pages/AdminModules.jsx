@@ -37,7 +37,7 @@ function LessonEditor({ lesson, modules, onSaved, onCancel }) {
         <textarea rows={6} value={content} onChange={(e) => setContent(e.target.value)} />
       </label>
       <label>
-        Link do vídeo (YouTube, Vimeo etc. — opcional)
+        Link (vídeo, artefato, PDF etc. — opcional)
         <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
       </label>
       <label>
@@ -296,7 +296,14 @@ export default function AdminModules() {
                         <em>Sem conteúdo ainda</em>
                       </p>
                     )}
-                    {lesson.video_url && <p>🎬 {lesson.video_url}</p>}
+                    {lesson.video_url && (
+                      <p className="lesson-link">
+                        🎬{' '}
+                        <a href={lesson.video_url} target="_blank" rel="noopener noreferrer">
+                          {lesson.video_url}
+                        </a>
+                      </p>
+                    )}
                   </>
                 )}
               </li>

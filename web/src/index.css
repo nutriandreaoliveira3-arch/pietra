@@ -395,6 +395,15 @@ select {
   padding: 10px 12px;
 }
 
+.lesson-link {
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.lesson-link a {
+  color: var(--dourado);
+}
+
 .lesson-list button {
   border: 1px solid var(--dourado);
   background: none;
