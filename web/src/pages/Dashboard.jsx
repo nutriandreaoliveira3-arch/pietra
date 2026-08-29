@@ -13,6 +13,10 @@ export default function Dashboard() {
           <span className="nav-card-title">Protocolo</span>
           <span className="nav-card-desc">Módulos e aulas do Emagrecimento Blindado</span>
         </Link>
+        <Link to="/manipulacao-blindada" className="nav-card">
+          <span className="nav-card-title">Manipulação Blindada</span>
+          <span className="nav-card-desc">Suas fórmulas manipuladas, liberadas pela Andréa</span>
+        </Link>
         <Link to="/diario" className="nav-card">
           <span className="nav-card-title">Diário alimentar</span>
           <span className="nav-card-desc">Registre suas refeições do dia</span>

@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import SetPassword from './pages/SetPassword';
 import Dashboard from './pages/Dashboard';
 import Modules from './pages/Modules';
+import ManipulacaoBlindada from './pages/ManipulacaoBlindada';
 import Diary from './pages/Diary';
 import Progress from './pages/Progress';
 import MealPlan from './pages/MealPlan';
@@ -24,6 +25,7 @@ export default function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/modulos" element={<Modules />} />
+            <Route path="/manipulacao-blindada" element={<ManipulacaoBlindada />} />
             <Route path="/diario" element={<Diary />} />
             <Route path="/progresso" element={<Progress />} />
             <Route path="/plano-alimentar" element={<MealPlan />} />

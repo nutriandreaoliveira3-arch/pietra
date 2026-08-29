@@ -68,8 +68,10 @@ router.post('/lessons/:lessonId/complete', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
+const MODULE_KINDS = ['protocolo', 'manipulado'];
+
 router.post('/', requireAuth, requireAdmin, (req, res) => {
-  const { title, description, product_id, phase_gated } = req.body || {};
+  const { title, description, product_id, phase_gated, kind } = req.body || {};
   if (!title) {
     return res.status(400).json({ error: 'Informe o título do módulo.' });
   }
@@ -79,12 +81,15 @@ router.post('/', requireAuth, requireAdmin, (req, res) => {
       return res.status(400).json({ error: 'Produto inválido.' });
     }
   }
+  if (kind !== undefined && !MODULE_KINDS.includes(kind)) {
+    return res.status(400).json({ error: 'Tipo de módulo inválido.' });
+  }
 
   const maxOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS max FROM modules').get().max;
   const id = uuidv4();
   db.prepare(
-    'INSERT INTO modules (id, title, description, product_id, phase_gated, sort_order) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(id, title, description || '', product_id || null, phase_gated ? 1 : 0, maxOrder + 1);
+    'INSERT INTO modules (id, title, description, product_id, phase_gated, kind, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(id, title, description || '', product_id || null, phase_gated ? 1 : 0, kind || 'protocolo', maxOrder + 1);
 
   res.status(201).json({ module: db.prepare('SELECT * FROM modules WHERE id = ?').get(id) });
 });
@@ -95,19 +100,23 @@ router.put('/:moduleId', requireAuth, requireAdmin, (req, res) => {
     return res.status(404).json({ error: 'Módulo não encontrado.' });
   }
 
-  const { title, description, product_id, phase_gated } = req.body || {};
+  const { title, description, product_id, phase_gated, kind } = req.body || {};
   if (product_id) {
     const product = db.prepare('SELECT id FROM products WHERE id = ?').get(product_id);
     if (!product) {
       return res.status(400).json({ error: 'Produto inválido.' });
     }
   }
+  if (kind !== undefined && !MODULE_KINDS.includes(kind)) {
+    return res.status(400).json({ error: 'Tipo de módulo inválido.' });
+  }
 
-  db.prepare('UPDATE modules SET title = ?, description = ?, product_id = ?, phase_gated = ? WHERE id = ?').run(
+  db.prepare('UPDATE modules SET title = ?, description = ?, product_id = ?, phase_gated = ?, kind = ? WHERE id = ?').run(
     title ?? mod.title,
     description ?? mod.description,
     product_id === undefined ? mod.product_id : product_id || null,
     phase_gated === undefined ? mod.phase_gated : phase_gated ? 1 : 0,
+    kind === undefined ? mod.kind : kind,
     mod.id
   );
 

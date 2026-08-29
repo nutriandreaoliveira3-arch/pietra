@@ -132,6 +132,9 @@ if (!moduleColumns.includes('product_id')) {
 if (!moduleColumns.includes('phase_gated')) {
   db.exec('ALTER TABLE modules ADD COLUMN phase_gated INTEGER NOT NULL DEFAULT 0');
 }
+if (!moduleColumns.includes('kind')) {
+  db.exec("ALTER TABLE modules ADD COLUMN kind TEXT NOT NULL DEFAULT 'protocolo'");
+}
 
 const userColumns = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name);
 if (!userColumns.includes('water_goal_ml')) {
