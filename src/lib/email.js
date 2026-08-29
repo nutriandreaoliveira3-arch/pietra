@@ -30,4 +30,42 @@ async function sendActivationEmail({ to, name, activationToken }) {
   });
 }
 
-module.exports = { sendActivationEmail };
+async function sendManipuladoOrderEmail({ clientName, clientEmail, formulaTitles }) {
+  const pharmacyEmail = process.env.MANIPULACAO_PHARMACY_EMAIL;
+  if (!pharmacyEmail) {
+    console.warn('MANIPULACAO_PHARMACY_EMAIL não configurado — pedido de manipulado não foi enviado por e-mail.');
+    return;
+  }
+  if (!resend) {
+    console.warn(`RESEND_API_KEY não configurado — pedido de manipulado para ${pharmacyEmail} não foi enviado.`);
+    return;
+  }
+
+  const itemsHtml = formulaTitles.map((title) => `<li>${title}</li>`).join('');
+
+  await resend.emails.send({
+    from: process.env.EMAIL_FROM || 'BLINDADA <onboarding@resend.dev>',
+    to: pharmacyEmail,
+    subject: `Novo pedido de manipulado — ${clientName}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2 style="color:#1a1a1a;">Novo pedido de manipulado</h2>
+        <p><strong>Paciente:</strong> ${clientName}${clientEmail ? ` (${clientEmail})` : ''}</p>
+        <p><strong>Fórmulas liberadas:</strong></p>
+        <ul>${itemsHtml}</ul>
+        <p style="font-size:13px;color:#666;">Enviado automaticamente pelo app Emagrecimento Blindado.</p>
+      </div>
+    `,
+  });
+}
+
+function manipuladoWhatsappUrl({ clientName, formulaTitles }) {
+  const phone = (process.env.MANIPULACAO_PHARMACY_WHATSAPP || '5511984955667').replace(/\D/g, '');
+  const lines = [
+    `Olá! Preciso preparar as fórmulas manipuladas abaixo para a paciente ${clientName}:`,
+    ...formulaTitles.map((title) => `- ${title}`),
+  ];
+  return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`;
+}
+
+module.exports = { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl };
