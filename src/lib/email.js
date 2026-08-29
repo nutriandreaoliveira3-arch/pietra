@@ -60,7 +60,7 @@ async function sendManipuladoOrderEmail({ clientName, clientEmail, formulaTitles
 }
 
 function manipuladoWhatsappUrl({ clientName, formulaTitles }) {
-  const phone = (process.env.MANIPULACAO_PHARMACY_WHATSAPP || '5511984955667').replace(/\D/g, '');
+  const phone = (process.env.MANIPULACAO_PHARMACY_WHATSAPP || '5511949226745').replace(/\D/g, '');
   const lines = [
     `Olá! Preciso preparar as fórmulas manipuladas abaixo para a paciente ${clientName}:`,
     ...formulaTitles.map((title) => `- ${title}`),
