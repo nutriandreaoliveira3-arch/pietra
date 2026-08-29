@@ -18,8 +18,15 @@ Pergunte no máximo isto, de uma vez, com opções numeradas sempre que der:
 2. Área de atuação, em uma frase.
 3. Público que quer atingir (ex: mulheres 30-50, iniciantes em investimento, etc.).
 4. Tom de voz desejado: (1) acolhedor, (2) direto e técnico, (3) descontraído, (4) autoridade séria.
-5. É registrada em algum conselho de classe (CRN, CRP, CRM, CRFa, CREFITO, COREN etc.)? Se sim,
-   qual.
+5. É registrada em algum conselho de classe? Se sim, qual:
+   - **Saúde:** CRN (nutricionista) · CRP (psicólogo) · CRM (médico) · CRO (dentista) ·
+     COREN (enfermeiro/técnico de enfermagem) · CREFITO (fisioterapeuta e terapeuta
+     ocupacional) · CRFa (fonoaudiólogo) · CRF (farmacêutico) · CREF (educador físico) ·
+     CRBM (biomédico) · CRMV (médico veterinário) · CRO-TSB (técnico em saúde bucal)
+   - **Outras áreas:** OAB (advogado) · CRC (contador) · CREA (engenheiro/agrônomo/geólogo) ·
+     CAU (arquiteto e urbanista) · CRA (administrador) · CRECI (corretor de imóveis) ·
+     CRESS (assistente social) · CRQ (químico) · CRB (bibliotecário) · CORECON (economista)
+   - Qualquer outro conselho não listado acima — perguntar o nome e tratar do mesmo jeito.
 
 Se a pessoa não souber responder alguma, assuma com razoabilidade e marque
 `[PREMISSA A CONFIRMAR]` — nunca trave a entrega esperando resposta.
@@ -74,15 +81,20 @@ antes de gravar.
 
 ## Etapa 4 — Conformidade com o conselho de classe (quando for profissional regulado)
 
-Se a pessoa respondeu que é registrada em algum conselho de classe (nutricionista, psicólogo,
-fonoaudiólogo, fisioterapeuta, médico, enfermeiro ou equivalente), revisar a bio de cada rede
-antes de entregar. Nunca deixar passar:
+Se a pessoa respondeu que é registrada em qualquer conselho de classe — de saúde (CRN, CRP, CRM,
+CRO, COREN, CREFITO, CRFa, CRF, CREF, CRBM, CRMV...) ou de outra área (OAB, CRC, CREA, CAU, CRA,
+CRECI, CRESS, CRQ, CRB, CORECON ou qualquer outro) — revisar a bio de cada rede antes de entregar.
+Regras gerais que valem pra qualquer conselho:
 
-- Promessa de resultado clínico específico ou prazo de resultado.
-- Garantia de cura ou de eficácia.
-- Depoimento de paciente/cliente sem consentimento explícito.
-- Comparação depreciativa com outros profissionais.
-- Indicação de medicamento, dose ou substância controlada.
+- Nunca prometer resultado específico ou prazo garantido (clínico, jurídico, financeiro, de
+  projeto — o que for da área da pessoa).
+- Nunca garantir êxito, cura, aprovação ou eficácia como certeza.
+- Nunca usar depoimento de cliente/paciente sem consentimento explícito.
+- Nunca fazer comparação depreciativa com outros profissionais da mesma categoria.
+- Nunca dar orientação técnica individual (diagnóstico, parecer, conduta) dentro da bio — bio é
+  vitrine, não atendimento.
+- Regras específicas da área (ex.: indicação de medicamento/dose pra saúde, publicidade
+  proibida pra advocacia) exigem checar o código de ética do conselho correspondente.
 
 Preferir sempre descrever o método e o processo, nunca prometer o resultado — linguagem de
 possibilidade, não de certeza.
