@@ -1,9 +1,9 @@
 ---
-name: redes-sociais-blindadas
-description: "Skill Redes Sociais Blindadas: Respeitando o Código de Ética de Cada Conselho — produto pronto pra vender que entrega identidade visual (paleta de cores e tipografia), bio pronta pra colar e orientações de câmera pra quem nunca organizou presença em redes sociais (Instagram, TikTok, YouTube, LinkedIn e Stories), sempre revisando conformidade com o conselho de classe do cliente antes da entrega final. Use quando o usuário disser que não sabe por onde começar nas redes, pedir paleta de cores, tipografia, bio de perfil, ou dica de como aparecer em vídeo/câmera pela primeira vez."
+name: claudio-skill-redes-sociais-com-etica
+description: "Claudio Skill Redes Sociais com Ética — produto pronto pra vender que entrega identidade visual (paleta de cores e tipografia), bio pronta pra colar e orientações de câmera pra quem nunca organizou presença em redes sociais (Instagram, TikTok, YouTube, LinkedIn e Stories), sempre revisando conformidade com o conselho de classe do cliente antes da entrega final. Use quando o usuário disser que não sabe por onde começar nas redes, pedir paleta de cores, tipografia, bio de perfil, ou dica de como aparecer em vídeo/câmera pela primeira vez."
 ---
 
-# Skill Redes Sociais Blindadas
+# Claudio Skill Redes Sociais com Ética
 ### Respeitando o Código de Ética de Cada Conselho
 
 > Produto pronto pra vender — não é uma função do aplicativo Pietra. Entrega, num único
