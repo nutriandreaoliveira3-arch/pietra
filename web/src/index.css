@@ -318,6 +318,7 @@ select {
 
 .rich-text-section {
   margin: 10px 0;
+  background: var(--branco);
   border: 1px solid var(--cinza-claro);
   border-radius: 10px;
   overflow: hidden;
@@ -387,7 +388,8 @@ select {
 
 .rich-text-section .rich-text-section {
   margin: 10px 14px;
-  border-color: var(--bege);
+  background: var(--bege);
+  border-color: var(--cinza-claro);
 }
 
 .rich-text-section .rich-text-section summary {
