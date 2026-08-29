@@ -103,13 +103,19 @@ if (existingModules.count === 0) {
 const devEmail = process.env.SEED_ADMIN_EMAIL;
 const devPassword = process.env.SEED_ADMIN_PASSWORD;
 if (devEmail && devPassword) {
-  const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(devEmail);
+  const normalizedDevEmail = devEmail.toLowerCase().trim();
+  const existingUser = db.prepare('SELECT id, role, status FROM users WHERE email = ?').get(normalizedDevEmail);
   if (!existingUser) {
     db.prepare(
       `INSERT INTO users (id, name, email, password_hash, role, status)
        VALUES (?, ?, ?, ?, 'admin', 'active')`
-    ).run(uuidv4(), 'Admin', devEmail, bcrypt.hashSync(devPassword, 10));
-    console.log(`Usuário admin criado: ${devEmail}`);
+    ).run(uuidv4(), 'Admin', normalizedDevEmail, bcrypt.hashSync(devPassword, 10));
+    console.log(`Usuário admin criado: ${normalizedDevEmail}`);
+  } else if (existingUser.role !== 'admin' || existingUser.status !== 'active') {
+    // A conta já existia (ex: criada antes de SEED_ADMIN_EMAIL estar configurada, ou via
+    // Admin → Clientes/Greenn) — promove pra admin sem mexer na senha já cadastrada.
+    db.prepare("UPDATE users SET role = 'admin', status = 'active' WHERE id = ?").run(existingUser.id);
+    console.log(`Usuário existente promovido a admin: ${normalizedDevEmail}`);
   } else {
     console.log('Usuário admin já existe, ignorado.');
   }

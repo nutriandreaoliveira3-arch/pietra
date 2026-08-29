@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import RichText from '../components/RichText';
 
-export default function Modules() {
+export default function ManipulacaoBlindada() {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,7 +15,7 @@ export default function Modules() {
     setLoading(true);
     api
       .modules()
-      .then((data) => setModules(data.modules.filter((mod) => mod.kind !== 'manipulado')))
+      .then((data) => setModules(data.modules.filter((mod) => mod.kind === 'manipulado')))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
@@ -30,8 +30,11 @@ export default function Modules() {
 
   return (
     <div className="page">
-      <h1>Protocolo</h1>
-      <p className="page-subtitle">Emagrecimento Blindado</p>
+      <h1>Manipulação Blindada</h1>
+      <p className="page-subtitle">Suas fórmulas manipuladas, liberadas pela Andréa conforme sua evolução</p>
+      {modules.length === 0 && (
+        <p>Nenhuma fórmula manipulada liberada ainda. A Andréa vai liberar assim que fizer sentido pra você.</p>
+      )}
       {modules.map((mod) => (
         <section key={mod.id} className={`module-block ${mod.locked ? 'module-locked' : ''}`}>
           <h2>
@@ -44,7 +47,7 @@ export default function Modules() {
           {mod.locked ? (
             <p className="module-locked-msg">
               {mod.lockReason === 'phase'
-                ? 'Essa fase ainda não foi liberada pra você. Continue evoluindo que a Andréa libera em breve!'
+                ? 'Essa fórmula ainda não foi liberada pra você. A Andréa libera conforme sua evolução.'
                 : `Disponível para quem tem o protocolo${mod.product ? ` "${mod.product.name}"` : ''}.`}
             </p>
           ) : (

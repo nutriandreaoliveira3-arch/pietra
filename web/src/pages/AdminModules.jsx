@@ -68,6 +68,7 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
   const [description, setDescription] = useState(mod.description || '');
   const [productId, setProductId] = useState(mod.product_id || '');
   const [phaseGated, setPhaseGated] = useState(!!mod.phase_gated);
+  const [kind, setKind] = useState(mod.kind || 'protocolo');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -81,6 +82,7 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
         description,
         product_id: productId || null,
         phase_gated: phaseGated,
+        kind,
       });
       onSaved();
     } catch (err) {
@@ -105,6 +107,13 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
         títulos e negrito), use o botão <strong>"+ Nova aula"</strong> lá embaixo, não este campo.
       </p>
       <label>
+        Aba onde aparece
+        <select value={kind} onChange={(e) => setKind(e.target.value)}>
+          <option value="protocolo">Protocolo</option>
+          <option value="manipulado">Manipulação Blindada</option>
+        </select>
+      </label>
+      <label>
         Protocolo (produto) — quem não comprou este vê o módulo trancado
         <select value={productId} onChange={(e) => setProductId(e.target.value)}>
           <option value="">Sem protocolo (aberto para todas)</option>
@@ -117,7 +126,9 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
       </label>
       <label className="checkbox-label">
         <input type="checkbox" checked={phaseGated} onChange={(e) => setPhaseGated(e.target.checked)} />
-        Fase — começa trancada pra todas, eu libero uma por uma em Clientes
+        {kind === 'manipulado'
+          ? 'Começa trancada pra todas — eu libero fórmula por fórmula em Clientes'
+          : 'Fase — começa trancada pra todas, eu libero uma por uma em Clientes'}
       </label>
       {error && <p className="auth-error">{error}</p>}
       <div className="admin-form-actions">
@@ -143,6 +154,7 @@ export default function AdminModules() {
   const [newModuleTitle, setNewModuleTitle] = useState('');
   const [newModuleProductId, setNewModuleProductId] = useState('');
   const [newModulePhaseGated, setNewModulePhaseGated] = useState(false);
+  const [newModuleKind, setNewModuleKind] = useState('protocolo');
   const [newLessonTitleByModule, setNewLessonTitleByModule] = useState({});
   const [reordering, setReordering] = useState(false);
 
@@ -168,11 +180,13 @@ export default function AdminModules() {
       title: newModuleTitle.trim(),
       description: '',
       product_id: newModuleProductId || null,
-      phase_gated: newModulePhaseGated,
+      phase_gated: newModuleKind === 'manipulado' ? true : newModulePhaseGated,
+      kind: newModuleKind,
     });
     setNewModuleTitle('');
     setNewModuleProductId('');
     setNewModulePhaseGated(false);
+    setNewModuleKind('protocolo');
     load();
   }
 
@@ -226,7 +240,7 @@ export default function AdminModules() {
   return (
     <div className="page">
       <h1>Gerenciar conteúdo</h1>
-      <p className="page-subtitle">Módulos e aulas do Protocolo</p>
+      <p className="page-subtitle">Módulos e aulas do Protocolo e da Manipulação Blindada</p>
 
       {modules.map((mod, moduleIndex) => (
         <section key={mod.id} className="module-block admin-module-block">
@@ -245,8 +259,10 @@ export default function AdminModules() {
               <div>
                 <h2>{mod.title}</h2>
                 <p className="admin-status">
-                  {mod.product ? `Protocolo: ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
-                  {mod.phase_gated ? ' · Fase (liberação manual por cliente)' : ''}
+                  {mod.kind === 'manipulado' ? 'Manipulação Blindada' : 'Protocolo'}
+                  {' · '}
+                  {mod.product ? `Protocolo (produto): ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
+                  {mod.phase_gated ? ' · liberação manual por cliente' : ''}
                 </p>
                 <div className="module-desc">
                   <RichText text={mod.description} />
@@ -365,6 +381,10 @@ export default function AdminModules() {
             value={newModuleTitle}
             onChange={(e) => setNewModuleTitle(e.target.value)}
           />
+          <select value={newModuleKind} onChange={(e) => setNewModuleKind(e.target.value)}>
+            <option value="protocolo">Protocolo</option>
+            <option value="manipulado">Manipulação Blindada</option>
+          </select>
           <select value={newModuleProductId} onChange={(e) => setNewModuleProductId(e.target.value)}>
             <option value="">Sem protocolo</option>
             {products.map((p) => (
@@ -373,14 +393,18 @@ export default function AdminModules() {
               </option>
             ))}
           </select>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={newModulePhaseGated}
-              onChange={(e) => setNewModulePhaseGated(e.target.checked)}
-            />
-            É uma fase (começa trancada)
-          </label>
+          {newModuleKind === 'manipulado' ? (
+            <p className="admin-hint">Manipulados sempre começam trancados — você libera fórmula por fórmula em Clientes.</p>
+          ) : (
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={newModulePhaseGated}
+                onChange={(e) => setNewModulePhaseGated(e.target.checked)}
+              />
+              É uma fase (começa trancada)
+            </label>
+          )}
           <button type="submit">+ Criar módulo</button>
         </form>
       </section>
