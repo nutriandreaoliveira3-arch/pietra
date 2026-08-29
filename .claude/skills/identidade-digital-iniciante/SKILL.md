@@ -18,6 +18,8 @@ Pergunte no máximo isto, de uma vez, com opções numeradas sempre que der:
 2. Área de atuação, em uma frase.
 3. Público que quer atingir (ex: mulheres 30-50, iniciantes em investimento, etc.).
 4. Tom de voz desejado: (1) acolhedor, (2) direto e técnico, (3) descontraído, (4) autoridade séria.
+5. É registrada em algum conselho de classe (CRN, CRP, CRM, CRFa, CREFITO, COREN etc.)? Se sim,
+   qual.
 
 Se a pessoa não souber responder alguma, assuma com razoabilidade e marque
 `[PREMISSA A CONFIRMAR]` — nunca trave a entrega esperando resposta.
@@ -70,10 +72,35 @@ Checklist pronto pra gravar o primeiro vídeo com presença de quem já tem prá
 Entregar sempre em formato de checklist curto, pronto pra colar num bloco de notas do celular
 antes de gravar.
 
+## Etapa 4 — Conformidade com o conselho de classe (quando for profissional regulado)
+
+Se a pessoa respondeu que é registrada em algum conselho de classe (nutricionista, psicólogo,
+fonoaudiólogo, fisioterapeuta, médico, enfermeiro ou equivalente), revisar a bio de cada rede
+antes de entregar. Nunca deixar passar:
+
+- Promessa de resultado clínico específico ou prazo de resultado.
+- Garantia de cura ou de eficácia.
+- Depoimento de paciente/cliente sem consentimento explícito.
+- Comparação depreciativa com outros profissionais.
+- Indicação de medicamento, dose ou substância controlada.
+
+Preferir sempre descrever o método e o processo, nunca prometer o resultado — linguagem de
+possibilidade, não de certeza.
+
+As regras variam por conselho e mudam com o tempo. Em caso de dúvida, orientar a pessoa a
+confirmar direto com o próprio conselho antes de publicar — nunca afirmar que algo é permitido
+sem ter certeza.
+
+Fechar essa etapa sempre com uma linha:
+`⚠️ REVISÃO ÉTICA: [trechos de risco identificados, ou "sem pontos de risco identificados"]`
+
+Se a pessoa não é regulada por conselho de classe, pular esta etapa sem comentário.
+
 ## Ordem de entrega
 
-Sempre nessa sequência: paleta de cores → tipografia → bios das 5 redes → checklist de câmera.
-Tudo pronto pra usar no mesmo dia, sem exigir que a pessoa reformule nada.
+Sempre nessa sequência: paleta de cores → tipografia → bios das 5 redes → checklist de câmera →
+revisão ética (se aplicável). Tudo pronto pra usar no mesmo dia, sem exigir que a pessoa
+reformule nada.
 
 ## Estilo
 
