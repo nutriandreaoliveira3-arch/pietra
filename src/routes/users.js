@@ -2,7 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
-const { sendActivationEmail } = require('../lib/email');
+const { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl } = require('../lib/email');
 
 const router = express.Router();
 
@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { name, email, productIds } = req.body || {};
+  const { name, email, productIds, moduleIds } = req.body || {};
   if (!name || !email) {
     return res.status(400).json({ error: 'Informe nome e e-mail.' });
   }
@@ -59,6 +59,16 @@ router.post('/', async (req, res) => {
     }
   }
 
+  const selectedModuleIds = Array.isArray(moduleIds) ? moduleIds : [];
+  const selectedModules = [];
+  for (const moduleId of selectedModuleIds) {
+    const mod = db.prepare('SELECT id, title FROM modules WHERE id = ?').get(moduleId);
+    if (!mod) {
+      return res.status(400).json({ error: 'Módulo inválido.' });
+    }
+    selectedModules.push(mod);
+  }
+
   const id = uuidv4();
   const activationToken = uuidv4();
   db.prepare(
@@ -69,10 +79,24 @@ router.post('/', async (req, res) => {
   const grantProduct = db.prepare('INSERT OR IGNORE INTO user_products (user_id, product_id) VALUES (?, ?)');
   ids.forEach((productId) => grantProduct.run(id, productId));
 
+  const grantModule = db.prepare('INSERT OR IGNORE INTO user_module_unlocks (user_id, module_id) VALUES (?, ?)');
+  selectedModules.forEach((mod) => grantModule.run(id, mod.id));
+
   try {
     await sendActivationEmail({ to: normalizedEmail, name, activationToken });
   } catch (err) {
     console.error(`Falha ao enviar e-mail de ativação para ${normalizedEmail}:`, err.message);
+  }
+
+  let manipuladoWhatsapp = null;
+  if (selectedModules.length > 0) {
+    const formulaTitles = selectedModules.map((mod) => mod.title);
+    try {
+      await sendManipuladoOrderEmail({ clientName: name, clientEmail: normalizedEmail, formulaTitles });
+    } catch (err) {
+      console.error(`Falha ao enviar pedido de manipulado pra farmácia (${name}):`, err.message);
+    }
+    manipuladoWhatsapp = manipuladoWhatsappUrl({ clientName: name, formulaTitles });
   }
 
   res.status(201).json({
@@ -81,6 +105,7 @@ router.post('/', async (req, res) => {
         .prepare('SELECT id, name, email, role, status, activation_token, created_at FROM users WHERE id = ?')
         .get(id)
     ),
+    manipuladoWhatsapp,
   });
 });
 

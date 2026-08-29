@@ -103,10 +103,12 @@ export default function AdminUsers() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [productIds, setProductIds] = useState([]);
+  const [newManipuladoIds, setNewManipuladoIds] = useState([]);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [newActivationUrl, setNewActivationUrl] = useState('');
+  const [newManipuladoWhatsapp, setNewManipuladoWhatsapp] = useState('');
   const [copiedId, setCopiedId] = useState('');
   const [editingDoc, setEditingDoc] = useState(null);
 
@@ -133,13 +135,21 @@ export default function AdminUsers() {
     setCreateError('');
     setSuccessMsg('');
     setNewActivationUrl('');
+    setNewManipuladoWhatsapp('');
     try {
-      const { user: created } = await api.adminCreateUser({ name, email, productIds });
+      const { user: created, manipuladoWhatsapp } = await api.adminCreateUser({
+        name,
+        email,
+        productIds,
+        moduleIds: newManipuladoIds,
+      });
       setSuccessMsg(`Conta criada! E-mail de ativação enviado para ${email}.`);
       setNewActivationUrl(created.activationUrl || '');
+      setNewManipuladoWhatsapp(manipuladoWhatsapp || '');
       setName('');
       setEmail('');
       setProductIds([]);
+      setNewManipuladoIds([]);
       load();
     } catch (err) {
       setCreateError(err.message);
@@ -214,6 +224,20 @@ export default function AdminUsers() {
             Protocolos liberados
             <ProductChecklist products={products} selectedIds={productIds} onChange={setProductIds} />
           </label>
+          {manipuladoModules.length > 0 && (
+            <label>
+              Manipulação Blindada — fórmulas liberadas já na criação
+              <ProductChecklist
+                products={manipuladoModules.map((m) => ({ id: m.id, name: m.title }))}
+                selectedIds={newManipuladoIds}
+                onChange={setNewManipuladoIds}
+              />
+              <p className="admin-hint">
+                Selecionadas aqui: o pedido já sai automático pro e-mail da farmácia, e aparece um
+                botão pra você mandar pelo WhatsApp também.
+              </p>
+            </label>
+          )}
           {createError && <p className="auth-error">{createError}</p>}
           {successMsg && <p className="admin-success">{successMsg}</p>}
           {newActivationUrl && (
@@ -221,6 +245,13 @@ export default function AdminUsers() {
               <button type="button" onClick={() => copyLink('new', newActivationUrl)}>
                 {copiedId === 'new' ? 'Link copiado!' : 'Copiar link pra mandar você mesma'}
               </button>
+            </div>
+          )}
+          {newManipuladoWhatsapp && (
+            <div className="admin-form-actions">
+              <a className="link-button" href={newManipuladoWhatsapp} target="_blank" rel="noopener noreferrer">
+                Enviar pedido pro WhatsApp da farmácia
+              </a>
             </div>
           )}
           <div className="admin-form-actions">
