@@ -31,13 +31,16 @@ async function sendActivationEmail({ to, name, activationToken }) {
 }
 
 async function sendManipuladoOrderEmail({ clientName, clientEmail, formulaTitles }) {
-  const pharmacyEmail = process.env.MANIPULACAO_PHARMACY_EMAIL;
-  if (!pharmacyEmail) {
+  const pharmacyEmails = (process.env.MANIPULACAO_PHARMACY_EMAIL || '')
+    .split(',')
+    .map((email) => email.trim())
+    .filter(Boolean);
+  if (pharmacyEmails.length === 0) {
     console.warn('MANIPULACAO_PHARMACY_EMAIL não configurado — pedido de manipulado não foi enviado por e-mail.');
     return;
   }
   if (!resend) {
-    console.warn(`RESEND_API_KEY não configurado — pedido de manipulado para ${pharmacyEmail} não foi enviado.`);
+    console.warn(`RESEND_API_KEY não configurado — pedido de manipulado para ${pharmacyEmails.join(', ')} não foi enviado.`);
     return;
   }
 
@@ -45,7 +48,7 @@ async function sendManipuladoOrderEmail({ clientName, clientEmail, formulaTitles
 
   await resend.emails.send({
     from: process.env.EMAIL_FROM || 'BLINDADA <onboarding@resend.dev>',
-    to: pharmacyEmail,
+    to: pharmacyEmails,
     subject: `Novo pedido de manipulado — ${clientName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
