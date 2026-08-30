@@ -6,6 +6,7 @@ import SetPassword from './pages/SetPassword';
 import Dashboard from './pages/Dashboard';
 import Modules from './pages/Modules';
 import ManipulacaoBlindada from './pages/ManipulacaoBlindada';
+import Bonus from './pages/Bonus';
 import Diary from './pages/Diary';
 import Progress from './pages/Progress';
 import MealPlan from './pages/MealPlan';
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/modulos" element={<Modules />} />
             <Route path="/manipulacao-blindada" element={<ManipulacaoBlindada />} />
+            <Route path="/bonus" element={<Bonus />} />
             <Route path="/diario" element={<Diary />} />
             <Route path="/progresso" element={<Progress />} />
             <Route path="/plano-alimentar" element={<MealPlan />} />

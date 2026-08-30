@@ -26,6 +26,7 @@ export default function Layout() {
         </NavLink>
         <NavLink to="/modulos">Protocolo</NavLink>
         <NavLink to="/manipulacao-blindada">Manipulados</NavLink>
+        <NavLink to="/bonus">Bônus</NavLink>
         <NavLink to="/diario">Diário</NavLink>
         <NavLink to="/progresso">Progresso</NavLink>
         <NavLink to="/plano-alimentar">Plano</NavLink>

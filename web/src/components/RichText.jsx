@@ -1,8 +1,10 @@
 const URL_PATTERN = /https?:\/\/[^\s<>"]+[^\s<>".,;:)\]]/;
+const IMAGE_URL_PATTERN = /\.(?:png|jpe?g|gif|webp|avif|svg)$/i;
 
 // Divide o bloco inteiro (não linha a linha) pra **negrito** funcionar mesmo
 // quando a quebra de linha cai bem no meio do trecho marcado. Um link colado
-// (https://...) também vira token separado, pra virar <a> clicável.
+// (https://...) também vira token separado — se apontar direto pra um
+// arquivo de imagem vira uma <img> exibida na tela; senão vira <a> clicável.
 function renderInline(block, keyPrefix) {
   const splitter = new RegExp(`(\\*\\*[^*]+\\*\\*|${URL_PATTERN.source}|\\n)`, 'g');
   const tokens = block.split(splitter).filter((token) => token !== '');
@@ -12,6 +14,13 @@ function renderInline(block, keyPrefix) {
       return <strong key={`${keyPrefix}-${i}`}>{token.slice(2, -2)}</strong>;
     }
     if (URL_PATTERN.test(token)) {
+      if (IMAGE_URL_PATTERN.test(token)) {
+        return (
+          <a key={`${keyPrefix}-${i}`} href={token} target="_blank" rel="noopener noreferrer">
+            <img className="rich-text-image" src={token} alt="" loading="lazy" />
+          </a>
+        );
+      }
       return (
         <a key={`${keyPrefix}-${i}`} href={token} target="_blank" rel="noopener noreferrer">
           {token}

@@ -68,7 +68,7 @@ router.post('/lessons/:lessonId/complete', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
-const MODULE_KINDS = ['protocolo', 'manipulado'];
+const MODULE_KINDS = ['protocolo', 'manipulado', 'bonus'];
 
 router.post('/', requireAuth, requireAdmin, (req, res) => {
   const { title, description, product_id, phase_gated, kind } = req.body || {};
