@@ -109,6 +109,7 @@ export default function AdminUsers() {
   const [successMsg, setSuccessMsg] = useState('');
   const [newActivationUrl, setNewActivationUrl] = useState('');
   const [newManipuladoWhatsapp, setNewManipuladoWhatsapp] = useState('');
+  const [manipuladoWhatsappByUser, setManipuladoWhatsappByUser] = useState({});
   const [copiedId, setCopiedId] = useState('');
   const [editingDoc, setEditingDoc] = useState(null);
 
@@ -191,8 +192,10 @@ export default function AdminUsers() {
   async function toggleModule(userId, moduleId, hasIt) {
     if (hasIt) {
       await api.adminRevokeModule(userId, moduleId);
+      setManipuladoWhatsappByUser((prev) => ({ ...prev, [userId]: '' }));
     } else {
-      await api.adminGrantModule(userId, moduleId);
+      const { manipuladoWhatsapp } = await api.adminGrantModule(userId, moduleId);
+      setManipuladoWhatsappByUser((prev) => ({ ...prev, [userId]: manipuladoWhatsapp || '' }));
     }
     load();
   }
@@ -337,6 +340,18 @@ export default function AdminUsers() {
                         );
                       })}
                     </div>
+                    {manipuladoWhatsappByUser[u.id] && (
+                      <div className="admin-form-actions">
+                        <a
+                          className="link-button"
+                          href={manipuladoWhatsappByUser[u.id]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Enviar pedido pro WhatsApp da farmácia
+                        </a>
+                      </div>
+                    )}
                   </>
                 )}
                 {u.role !== 'admin' && (
