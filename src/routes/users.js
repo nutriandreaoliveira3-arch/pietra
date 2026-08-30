@@ -133,12 +133,12 @@ router.delete('/:userId/products/:productId', (req, res) => {
   res.json({ ok: true });
 });
 
-router.post('/:userId/modules/:moduleId', (req, res) => {
-  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(req.params.userId);
+router.post('/:userId/modules/:moduleId', async (req, res) => {
+  const user = db.prepare('SELECT id, name, email FROM users WHERE id = ?').get(req.params.userId);
   if (!user) {
     return res.status(404).json({ error: 'Usuária não encontrada.' });
   }
-  const mod = db.prepare('SELECT id FROM modules WHERE id = ?').get(req.params.moduleId);
+  const mod = db.prepare('SELECT id, title, kind FROM modules WHERE id = ?').get(req.params.moduleId);
   if (!mod) {
     return res.status(404).json({ error: 'Módulo não encontrado.' });
   }
@@ -146,7 +146,18 @@ router.post('/:userId/modules/:moduleId', (req, res) => {
     user.id,
     mod.id
   );
-  res.json({ ok: true });
+
+  let manipuladoWhatsapp = null;
+  if (mod.kind === 'manipulado') {
+    try {
+      await sendManipuladoOrderEmail({ clientName: user.name, clientEmail: user.email, formulaTitles: [mod.title] });
+    } catch (err) {
+      console.error(`Falha ao enviar pedido de manipulado pra farmácia (${user.name}):`, err.message);
+    }
+    manipuladoWhatsapp = manipuladoWhatsappUrl({ clientName: user.name, formulaTitles: [mod.title] });
+  }
+
+  res.json({ ok: true, manipuladoWhatsapp });
 });
 
 router.delete('/:userId/modules/:moduleId', (req, res) => {
