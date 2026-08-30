@@ -312,6 +312,13 @@ select {
   margin-bottom: 4px;
 }
 
+.rich-text-image {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 6px 0 10px;
+}
+
 .lesson-content ul li::marker {
   color: var(--dourado);
 }

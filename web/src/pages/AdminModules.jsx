@@ -111,6 +111,7 @@ function ModuleEditor({ mod, products, onSaved, onCancel }) {
         <select value={kind} onChange={(e) => setKind(e.target.value)}>
           <option value="protocolo">Protocolo</option>
           <option value="manipulado">Manipulação Blindada</option>
+          <option value="bonus">Bônus</option>
         </select>
       </label>
       <label>
@@ -259,7 +260,11 @@ export default function AdminModules() {
               <div>
                 <h2>{mod.title}</h2>
                 <p className="admin-status">
-                  {mod.kind === 'manipulado' ? 'Manipulação Blindada' : 'Protocolo'}
+                  {mod.kind === 'manipulado'
+                    ? 'Manipulação Blindada'
+                    : mod.kind === 'bonus'
+                    ? 'Bônus'
+                    : 'Protocolo'}
                   {' · '}
                   {mod.product ? `Protocolo (produto): ${mod.product.name}` : 'Sem protocolo (aberto para todas)'}
                   {mod.phase_gated ? ' · liberação manual por cliente' : ''}
@@ -384,6 +389,7 @@ export default function AdminModules() {
           <select value={newModuleKind} onChange={(e) => setNewModuleKind(e.target.value)}>
             <option value="protocolo">Protocolo</option>
             <option value="manipulado">Manipulação Blindada</option>
+            <option value="bonus">Bônus</option>
           </select>
           <select value={newModuleProductId} onChange={(e) => setNewModuleProductId(e.target.value)}>
             <option value="">Sem protocolo</option>
