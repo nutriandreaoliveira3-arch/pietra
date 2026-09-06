@@ -8,6 +8,18 @@ export default function Dashboard() {
     <div className="page">
       <h1>Olá, {user?.name?.split(' ')[0] || 'bem-vinda'}</h1>
       <p className="page-subtitle">O que você quer fazer hoje?</p>
+      <a
+        href="https://claude.ai/code/artifact/046f8cc5-560d-4008-87a5-d2a63b2b5070"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="elite-banner"
+      >
+        <span className="elite-banner-eyebrow">Novidade</span>
+        <span className="elite-banner-title">Emagrecimento Blindado Elite</span>
+        <span className="elite-banner-desc">
+          Um acompanhamento premium e personalizado, com suporte próximo em cada etapa. Conheça a proposta →
+        </span>
+      </a>
       <div className="card-grid">
         <Link to="/modulos" className="nav-card">
           <span className="nav-card-title">Protocolo</span>

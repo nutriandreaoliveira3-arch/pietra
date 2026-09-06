@@ -194,6 +194,37 @@ select {
   margin-bottom: 20px;
 }
 
+.elite-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: linear-gradient(145deg, #1a1a1a, #262420);
+  border: 1px solid var(--dourado);
+  border-radius: 12px;
+  padding: 18px 20px;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.elite-banner-eyebrow {
+  color: var(--dourado);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.elite-banner-title {
+  color: var(--branco);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.elite-banner-desc {
+  color: #d8d2c8;
+  font-size: 13px;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
