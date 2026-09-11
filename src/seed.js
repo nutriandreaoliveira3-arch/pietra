@@ -19,10 +19,6 @@ const products = [
   { key: 'suplementacao_antioxidante_antiinflamatoria', name: 'Suplementação Antioxidante Anti-inflamatória' },
   { key: 'suplementacao_ansiedade_compulsao_glp1', name: 'Suplementação Ansiedade e Compulsão GLP-1' },
   { key: 'suplementacao_termogenica', name: 'Suplementação Termogênica' },
-  // Nome sem sufixo casa por aproximação com "Editor de Vídeo Blindado Pró"
-  // também (matchProduct em src/routes/webhooks.js), então um cadastro só
-  // libera as duas versões vendidas na Greenn.
-  { key: 'editor_video_blindado', name: 'Editor de Vídeo Blindado' },
   { key: 'receitas_blindadas', name: 'Receitas Blindadas' },
   { key: 'pare_de_comer_por_ansiedade', name: 'Pare de Comer por Ansiedade' },
 ];
@@ -106,37 +102,16 @@ if (existingModules.count === 0) {
   console.log('Módulos já existem, seed de conteúdo ignorado.');
 }
 
-// Independente do bloco acima (que só roda em banco vazio) — cria o módulo
-// do Editor de Vídeo Blindado se ainda não existir, vinculado ao produto
-// correspondente, com um link pra ferramenta (que roda separada, em
-// video.blindadokp.com.br). Idempotente: roda em todo start, mas só insere
-// uma vez.
-const editorVideoProduct = db.prepare('SELECT id FROM products WHERE key = ?').get('editor_video_blindado');
-const editorVideoModule = db.prepare('SELECT id FROM modules WHERE title = ?').get('Editor de Vídeo Blindado');
-if (editorVideoProduct && !editorVideoModule) {
-  const moduleId = uuidv4();
-  const nextSortOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM modules').get().next;
-  db.prepare(
-    'INSERT INTO modules (id, title, description, product_id, sort_order, kind) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(
-    moduleId,
-    'Editor de Vídeo Blindado',
-    'Grave 1 vídeo e exporte pronto em todos os formatos — Stories, Reels, Post, TikTok, LinkedIn, YouTube e YouTube Shorts.',
-    editorVideoProduct.id,
-    nextSortOrder,
-    'bonus'
-  );
-  db.prepare(
-    'INSERT INTO lessons (id, module_id, title, content, video_url, sort_order) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(
-    uuidv4(),
-    moduleId,
-    'Como acessar o Editor de Vídeo Blindado',
-    'O Editor de Vídeo Blindado é uma ferramenta própria: você grava 1 vídeo e ele exporta pronto em vários formatos, já com legenda automática, transição, corte de silêncio, e espaço pra foto, logotipo e música da sua marca. Clique no link abaixo pra abrir.',
-    'https://video.blindadokp.com.br',
-    0
-  );
-  console.log('Módulo "Editor de Vídeo Blindado" criado.');
+// "Editor de Vídeo Blindado" foi cadastrado aqui por engano na PR #41 — é
+// produto só de checkout do site blindadokp, sem relação com o pietra. Remove
+// o produto e o módulo criados por aquela PR (cascata apaga aulas, progresso
+// e o acesso liberado pra clientes). Idempotente: depois da primeira remoção
+// o SELECT não acha mais nada e vira no-op.
+const obsoleteEditorVideoProduct = db.prepare('SELECT id FROM products WHERE key = ?').get('editor_video_blindado');
+if (obsoleteEditorVideoProduct) {
+  db.prepare('DELETE FROM modules WHERE product_id = ?').run(obsoleteEditorVideoProduct.id);
+  db.prepare('DELETE FROM products WHERE id = ?').run(obsoleteEditorVideoProduct.id);
+  console.log('Produto/módulo "Editor de Vídeo Blindado" removido do catálogo do app (é só do blindadokp).');
 }
 
 // Mesmo padrão acima, pro módulo "Receitas Blindadas": cria o módulo vinculado

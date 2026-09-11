@@ -2,6 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { isModuleLocked } = require('../lib/moduleAccess');
 
 const router = express.Router();
 
@@ -26,13 +27,7 @@ router.get('/', requireAuth, (req, res) => {
     let locked = false;
     let lockReason = null;
     if (!isAdmin) {
-      if (mod.product_id && !entitledProductIds.has(mod.product_id)) {
-        locked = true;
-        lockReason = 'product';
-      } else if (mod.phase_gated && !unlockedModuleIds.has(mod.id)) {
-        locked = true;
-        lockReason = 'phase';
-      }
+      ({ locked, lockReason } = isModuleLocked(mod, { entitledProductIds, unlockedModuleIds }));
     }
     const modLessons = lessons.filter((l) => l.module_id === mod.id);
 

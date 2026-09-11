@@ -9,6 +9,12 @@ const STATUS_LABELS = {
   inactive: 'Inativa',
 };
 
+function formatLastSeen(lastSeenAt) {
+  if (!lastSeenAt) return 'nunca acessou';
+  const date = new Date(`${lastSeenAt.replace(' ', 'T')}Z`);
+  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
 function ProductChecklist({ products, selectedIds, onChange }) {
   function toggle(productId) {
     if (selectedIds.includes(productId)) {
@@ -277,6 +283,14 @@ export default function AdminUsers() {
                 <br />
                 <span className="admin-status">{STATUS_LABELS[u.status] || u.status}</span>
                 {u.role === 'admin' && <span className="admin-status"> · admin</span>}
+                {u.role !== 'admin' && (
+                  <span className="admin-status">
+                    {' · '}
+                    {u.completedLessons}/{u.totalLessons} aulas concluídas ({u.progressPercent}%)
+                    {' · '}
+                    último acesso: {formatLastSeen(u.last_seen_at)}
+                  </span>
+                )}
                 {u.role !== 'admin' && u.activationUrl && (
                   <>
                     {' · '}
