@@ -2,6 +2,7 @@ require('dotenv').config();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
+const comportamentoAlimentar = require('./seedData/comportamentoAlimentar');
 
 // Nomes precisam bater (ao menos por substring, veja matchProduct em
 // src/routes/webhooks.js) com o nome do produto configurado na Greenn, senão
@@ -170,6 +171,26 @@ if (ansiedadeProduct && !ansiedadeModule) {
     0
   );
   console.log('Módulo "Pare de Comer por Ansiedade" criado.');
+}
+
+// Módulo bônus "Comportamento Alimentar & Sabotagem no Emagrecimento" — sem produto
+// vinculado (bônus já é sempre aberto pra todo mundo, ver src/lib/moduleAccess.js).
+// Conteúdo completo vem de src/seedData/comportamentoAlimentar.js.
+const comportamentoModule = db.prepare('SELECT id FROM modules WHERE title = ?').get(comportamentoAlimentar.moduleTitle);
+if (!comportamentoModule) {
+  const moduleId = uuidv4();
+  const nextSortOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM modules').get().next;
+  db.prepare(
+    'INSERT INTO modules (id, title, description, sort_order, kind) VALUES (?, ?, ?, ?, ?)'
+  ).run(moduleId, comportamentoAlimentar.moduleTitle, comportamentoAlimentar.moduleDescription, nextSortOrder, 'bonus');
+
+  const insertComportamentoLesson = db.prepare(
+    'INSERT INTO lessons (id, module_id, title, content, sort_order) VALUES (?, ?, ?, ?, ?)'
+  );
+  comportamentoAlimentar.lessons.forEach((lesson, index) => {
+    insertComportamentoLesson.run(uuidv4(), moduleId, lesson.title, lesson.content, index);
+  });
+  console.log(`Módulo "${comportamentoAlimentar.moduleTitle}" criado (${comportamentoAlimentar.lessons.length} aulas).`);
 }
 
 const devEmail = process.env.SEED_ADMIN_EMAIL;
