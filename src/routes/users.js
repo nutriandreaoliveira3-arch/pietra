@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 const { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl } = require('../lib/email');
+const { isModuleLocked } = require('../lib/moduleAccess');
 
 const router = express.Router();
 
@@ -10,6 +11,35 @@ router.use(requireAuth, requireAdmin);
 
 function activationUrl(token) {
   return `${process.env.APP_URL || 'http://localhost:3000'}/definir-senha?token=${token}`;
+}
+
+// Quantas aulas a cliente tem disponíveis hoje (considerando os módulos que ela
+// já desbloqueou, incluindo bônus que são sempre abertos) e quantas ela já
+// concluiu — usado pra Andréa acompanhar evolução em Admin → Clientes.
+function computeProgress(userId) {
+  const modules = db.prepare('SELECT * FROM modules').all();
+  const lessons = db.prepare('SELECT id, module_id FROM lessons').all();
+  const entitledProductIds = new Set(
+    db.prepare('SELECT product_id FROM user_products WHERE user_id = ?').all(userId).map((r) => r.product_id)
+  );
+  const unlockedModuleIds = new Set(
+    db.prepare('SELECT module_id FROM user_module_unlocks WHERE user_id = ?').all(userId).map((r) => r.module_id)
+  );
+  const completedLessonIds = new Set(
+    db.prepare('SELECT lesson_id FROM lesson_progress WHERE user_id = ?').all(userId).map((r) => r.lesson_id)
+  );
+
+  const unlockedModuleIdSet = new Set(
+    modules
+      .filter((mod) => !isModuleLocked(mod, { entitledProductIds, unlockedModuleIds }).locked)
+      .map((mod) => mod.id)
+  );
+  const availableLessons = lessons.filter((l) => unlockedModuleIdSet.has(l.module_id));
+  const totalLessons = availableLessons.length;
+  const completedLessons = availableLessons.filter((l) => completedLessonIds.has(l.id)).length;
+  const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+  return { totalLessons, completedLessons, progressPercent };
 }
 
 function withProducts(user) {
@@ -27,13 +57,14 @@ function withProducts(user) {
     productIds,
     moduleIds,
     activationUrl: activation_token ? activationUrl(activation_token) : null,
+    ...(user.role === 'admin' ? {} : computeProgress(user.id)),
   };
 }
 
 router.get('/', (req, res) => {
   const users = db
     .prepare(
-      'SELECT id, name, email, role, status, activation_token, created_at FROM users ORDER BY created_at DESC'
+      'SELECT id, name, email, role, status, activation_token, created_at, last_seen_at FROM users ORDER BY created_at DESC'
     )
     .all();
   res.json({ users: users.map(withProducts) });

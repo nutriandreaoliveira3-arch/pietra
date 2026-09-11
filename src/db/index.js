@@ -140,6 +140,9 @@ const userColumns = db.prepare('PRAGMA table_info(users)').all().map((c) => c.na
 if (!userColumns.includes('water_goal_ml')) {
   db.exec('ALTER TABLE users ADD COLUMN water_goal_ml INTEGER NOT NULL DEFAULT 2000');
 }
+if (!userColumns.includes('last_seen_at')) {
+  db.exec('ALTER TABLE users ADD COLUMN last_seen_at TEXT');
+}
 
 const diaryColumns = db.prepare('PRAGMA table_info(diary_entries)').all().map((c) => c.name);
 if (!diaryColumns.includes('calories_kcal')) {

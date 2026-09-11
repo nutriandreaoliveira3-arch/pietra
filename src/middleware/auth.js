@@ -17,6 +17,10 @@ function requireAuth(req, res, next) {
       return res.status(403).json({ error: 'Acesso inativo. Verifique sua assinatura.' });
     }
 
+    if (user.role !== 'admin') {
+      db.prepare("UPDATE users SET last_seen_at = datetime('now') WHERE id = ?").run(user.id);
+    }
+
     req.user = user;
     next();
   } catch (err) {
