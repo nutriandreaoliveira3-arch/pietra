@@ -193,6 +193,38 @@ if (!comportamentoModule) {
   console.log(`Módulo "${comportamentoAlimentar.moduleTitle}" criado (${comportamentoAlimentar.lessons.length} aulas).`);
 }
 
+// Módulo-link "Página Completa" do mesmo material acima, num link único e
+// navegável (versão em página com sumário) — colocado ANTES dos demais bônus.
+// Não tem produto vinculado (bônus já é sempre aberto pra todo mundo).
+const COMPORTAMENTO_PAGINA_TITLE = 'Comportamento Alimentar & Sabotagem no Emagrecimento (Página Completa)';
+const comportamentoPaginaModule = db.prepare('SELECT id FROM modules WHERE title = ?').get(COMPORTAMENTO_PAGINA_TITLE);
+if (!comportamentoPaginaModule) {
+  const firstBonusOrder = db.prepare("SELECT MIN(sort_order) AS min FROM modules WHERE kind = 'bonus'").get().min ?? 0;
+  db.prepare('UPDATE modules SET sort_order = sort_order + 1 WHERE sort_order >= ?').run(firstBonusOrder);
+
+  const moduleId = uuidv4();
+  db.prepare(
+    'INSERT INTO modules (id, title, description, sort_order, kind) VALUES (?, ?, ?, ?, ?)'
+  ).run(
+    moduleId,
+    COMPORTAMENTO_PAGINA_TITLE,
+    'Versão em página única, com sumário navegável, dos 33 padrões de comportamento alimentar que mais atrapalham o emagrecimento.',
+    firstBonusOrder,
+    'bonus'
+  );
+  db.prepare(
+    'INSERT INTO lessons (id, module_id, title, content, video_url, sort_order) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(
+    uuidv4(),
+    moduleId,
+    'Abrir página completa',
+    'Toque no link abaixo pra abrir a versão completa, em página única, com sumário navegável pelos 33 padrões de comportamento alimentar e sabotagem no emagrecimento.',
+    'https://claude.ai/code/artifact/009f9e1c-231f-4247-b223-916e38baace4?org=a084b575-9dc4-4a2e-9dd0-652cc143e7a2',
+    0
+  );
+  console.log(`Módulo "${COMPORTAMENTO_PAGINA_TITLE}" criado.`);
+}
+
 const devEmail = process.env.SEED_ADMIN_EMAIL;
 const devPassword = process.env.SEED_ADMIN_PASSWORD;
 if (devEmail && devPassword) {
