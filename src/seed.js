@@ -23,6 +23,8 @@ const products = [
   // também (matchProduct em src/routes/webhooks.js), então um cadastro só
   // libera as duas versões vendidas na Greenn.
   { key: 'editor_video_blindado', name: 'Editor de Vídeo Blindado' },
+  { key: 'receitas_blindadas', name: 'Receitas Blindadas' },
+  { key: 'pare_de_comer_por_ansiedade', name: 'Pare de Comer por Ansiedade' },
 ];
 
 const insertProduct = db.prepare(
@@ -135,6 +137,64 @@ if (editorVideoProduct && !editorVideoModule) {
     0
   );
   console.log('Módulo "Editor de Vídeo Blindado" criado.');
+}
+
+// Mesmo padrão acima, pro módulo "Receitas Blindadas": cria o módulo vinculado
+// ao produto com uma aula placeholder, pra dona preencher as receitas de
+// verdade depois pelo Admin → Conteúdo.
+const receitasProduct = db.prepare('SELECT id FROM products WHERE key = ?').get('receitas_blindadas');
+const receitasModule = db.prepare('SELECT id FROM modules WHERE title = ?').get('Receitas Blindadas');
+if (receitasProduct && !receitasModule) {
+  const moduleId = uuidv4();
+  const nextSortOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM modules').get().next;
+  db.prepare(
+    'INSERT INTO modules (id, title, description, product_id, sort_order, kind) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(
+    moduleId,
+    'Receitas Blindadas',
+    'Receitas práticas para o seu dia a dia dentro do protocolo.',
+    receitasProduct.id,
+    nextSortOrder,
+    'bonus'
+  );
+  db.prepare(
+    'INSERT INTO lessons (id, module_id, title, content, sort_order) VALUES (?, ?, ?, ?, ?)'
+  ).run(
+    uuidv4(),
+    moduleId,
+    'Receitas',
+    'Em breve.',
+    0
+  );
+  console.log('Módulo "Receitas Blindadas" criado.');
+}
+
+// Mesmo padrão acima, pro módulo "Pare de Comer por Ansiedade".
+const ansiedadeProduct = db.prepare('SELECT id FROM products WHERE key = ?').get('pare_de_comer_por_ansiedade');
+const ansiedadeModule = db.prepare('SELECT id FROM modules WHERE title = ?').get('Pare de Comer por Ansiedade');
+if (ansiedadeProduct && !ansiedadeModule) {
+  const moduleId = uuidv4();
+  const nextSortOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 AS next FROM modules').get().next;
+  db.prepare(
+    'INSERT INTO modules (id, title, description, product_id, sort_order, kind) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(
+    moduleId,
+    'Pare de Comer por Ansiedade',
+    'Estratégias práticas para lidar com a fome emocional e a compulsão alimentar.',
+    ansiedadeProduct.id,
+    nextSortOrder,
+    'bonus'
+  );
+  db.prepare(
+    'INSERT INTO lessons (id, module_id, title, content, sort_order) VALUES (?, ?, ?, ?, ?)'
+  ).run(
+    uuidv4(),
+    moduleId,
+    'Conteúdo',
+    'Em breve.',
+    0
+  );
+  console.log('Módulo "Pare de Comer por Ansiedade" criado.');
 }
 
 const devEmail = process.env.SEED_ADMIN_EMAIL;
