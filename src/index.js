@@ -44,6 +44,15 @@ app.use('/api/supplements', supplementRoutes);
 app.use('/api/water', waterRoutes);
 app.use('/api/admin/users', userRoutes);
 
+const LANDING_HOSTS = new Set(['emagrecimentoblindado.com.br', 'www.emagrecimentoblindado.com.br']);
+const landingDir = path.join(__dirname, '..', 'landing-pages', 'emagrecimento-blindado-elite');
+const landingStatic = express.static(landingDir);
+
+app.use((req, res, next) => {
+  if (!LANDING_HOSTS.has(req.hostname)) return next();
+  landingStatic(req, res, () => res.status(404).send('Página não encontrada.'));
+});
+
 const webDist = path.join(__dirname, '..', 'web', 'dist');
 app.use(express.static(webDist));
 app.get('*', (req, res, next) => {
