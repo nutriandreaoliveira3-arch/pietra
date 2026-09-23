@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emagrecimento Blindado — Apresentação</title>
+<meta name="description" content="Programa de acompanhamento nutricional estratégico e personalizado para mulheres 35+.">
+<link rel="icon" href="assets/selo-aao.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Rubik:wght@300;400;500;600&display=swap">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;background:#0d0c0a;overflow:hidden}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #canvas{position:relative;width:1920px;height:1080px;transform-origin:center center;flex:none}
+  .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .5s ease}
+  .slide.active{opacity:1;visibility:visible}
+
+  #nav{position:fixed;left:0;right:0;bottom:22px;display:flex;align-items:center;justify-content:center;gap:18px;z-index:20}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28);border:none;padding:0;cursor:pointer;transition:background .2s}
+  .dot.active{background:#B4915A}
+  .arrow{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#EFE6D8;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;backdrop-filter:blur(4px);user-select:none}
+  .arrow:hover{background:rgba(255,255,255,.14)}
+  .arrow.prev{left:22px}
+  .arrow.next{right:22px}
+  #counter{position:fixed;top:22px;right:28px;color:rgba(255,255,255,.55);font:400 13px/1 'Rubik',sans-serif;letter-spacing:.05em;z-index:20}
+
+  @media (max-width:720px){
+    .arrow{width:40px;height:40px;font-size:16px}
+    #counter{font-size:11px;top:14px;right:16px}
+    #nav{bottom:14px}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="canvas">
+
+    <section id="capa" class="slide active" style="background:#1C1A17; color:#E8E1D3; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:40px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="width:200px; height:200px; object-fit:contain; border-radius:24px">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:24px">
+        <p style="font-size:22px; letter-spacing:6px; text-transform:uppercase; color:#B4915A; font-weight:500">Programa de Acompanhamento Nutricional Premium</p>
+        <div style="width:64px; height:1px; background:#B4915A"></div>
+      </div>
+      <h1 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:128px; font-weight:500; letter-spacing:6px; text-align:center; line-height:1.05; color:#FBF8F3">EMAGRECIMENTO<br>BLINDADO</h1>
+      <p style="font-size:30px; line-height:1.5; text-align:center; width:1160px; color:#C9C0AE; font-weight:300">Programa de acompanhamento nutricional estratégico e personalizado para mulheres 35+ que desejam cuidar da composição corporal, saúde, energia e qualidade de vida com uma estratégia compatível com a própria rotina.</p>
+    </section>
+
+    <section id="publico" class="slide" style="background:#FBF8F3; color:#3A342C; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; gap:36px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#8A6A34; font-weight:500">Para quem é o programa</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:58px; font-weight:500; color:#1C1A17; line-height:1.2; width:1550px">Quando você cuida de tudo — menos de você</h2>
+      </div>
+      <p style="font-size:22px; line-height:1.55; color:#5C5344; font-weight:300; width:1500px">Você administra trabalho, empresa, equipe, família, compromissos e decisões todos os dias. Mas talvez tenha percebido que, depois dos 35, seu corpo e sua energia já não respondem da mesma forma — enquanto sua rotina deixa cada vez menos espaço para cuidar de você.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0px 80px">
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Rotina intensa e pouco tempo para organizar a própria alimentação</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Dificuldade em manter constância</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Sensação de metabolismo diferente</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Mudanças relacionadas à fase hormonal</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Dificuldade em preservar massa muscular</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Menor firmeza corporal</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Falta de energia</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Diversas tentativas anteriores sem conseguir manter os resultados</p></div>
+        <div style="display:flex; align-items:center; padding:16px 0; border-bottom:1px solid #E0D5BE"><p style="font-size:24px; font-weight:400; color:#3A342C; line-height:1.35">Dificuldade de conciliar saúde, trabalho e vida pessoal</p></div>
+      </div>
+      <p style="font-size:21px; color:#8A6A34; font-style:italic; font-weight:400; width:1500px; line-height:1.5">O Emagrecimento Blindado foi criado especialmente para mulheres que precisam de uma estratégia compatível com uma vida real, exigente e dinâmica.</p>
+    </section>
+
+    <section id="diferencial" class="slide" style="background:#EFE6D8; color:#1C1A17; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:56px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="display:flex; flex-direction:column; gap:20px; width:1400px">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#8A6A34; font-weight:500">O diferencial</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:56px; font-weight:500; color:#1C1A17; line-height:1.25">Não é mais uma dieta. É uma estratégia construída em torno de você</h2>
+        <p style="font-size:22px; line-height:1.5; color:#5C5344; font-weight:300; width:1300px">Não existe um protocolo único para todas as mulheres. Cada acompanhamento começa pela compreensão da história, rotina, objetivos, fase de vida e resposta individual da cliente.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:24px">
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Avaliação individual completa</h3></div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Composição corporal e preservação de massa muscular</h3></div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Saúde metabólica</h3></div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Comportamento alimentar</h3></div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Rotina real da sua vida</h3></div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:12px; padding:32px; display:flex; flex-direction:column; justify-content:center"><h3 style="font-size:26px; font-weight:600; color:#1C1A17; line-height:1.3">Ajustes contínuos ao longo do processo</h3></div>
+      </div>
+      <p style="font-size:22px; font-style:italic; color:#8A6A34; font-weight:400; width:1300px; line-height:1.5">O programa não foi criado para atender todas as pessoas. Foi desenvolvido para mulheres 35+ que procuram um acompanhamento próximo, individualizado e estratégico.</p>
+    </section>
+
+    <section id="metodo" class="slide" style="background:#1C1A17; color:#E8E1D3; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:88px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="display:flex; flex-direction:column; gap:20px; align-items:center">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#B4915A; font-weight:500; text-align:center">Como funciona o método</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:58px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.2">Uma jornada, uma estratégia individual para cada mulher</h2>
+      </div>
+      <div style="display:flex; flex-direction:row; align-items:flex-start; justify-content:center">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Diagnóstico</p></div>
+        <p style="font-size:26px; color:#6E6555; width:24px; text-align:center">→</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Estratégia personalizada</p></div>
+        <p style="font-size:26px; color:#6E6555; width:24px; text-align:center">→</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Ajustes metabólicos e nutricionais</p></div>
+        <p style="font-size:26px; color:#6E6555; width:24px; text-align:center">→</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Acompanhamento</p></div>
+        <p style="font-size:26px; color:#6E6555; width:24px; text-align:center">→</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Consolidação</p></div>
+        <p style="font-size:26px; color:#6E6555; width:24px; text-align:center">→</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; width:220px"><div style="width:16px; height:16px; border-radius:50%; background:#B4915A"></div><p style="font-size:22px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.35">Manutenção</p></div>
+      </div>
+      <p style="font-size:22px; color:#8A7F6B; font-style:italic; text-align:center; width:1200px">Diferentes estratégias e protocolos podem ser utilizados conforme a avaliação e a evolução individual de cada cliente.</p>
+    </section>
+
+    <section id="situacoes" class="slide" style="background:#FBF8F3; color:#3A342C; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; gap:56px; justify-content:center">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="display:flex; flex-direction:column; gap:20px; width:1400px">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#8A6A34; font-weight:500">Situações especiais</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:56px; font-weight:500; color:#1C1A17; line-height:1.25">Para quem usa, já usou ou considera utilizar medicamentos para emagrecimento</h2>
+      </div>
+      <div style="display:flex; flex-direction:row; gap:40px">
+        <div style="flex:1; background:#EFE6D8; border-radius:12px; padding:44px; display:flex; flex-direction:column; gap:18px">
+          <h3 style="font-size:28px; font-weight:600; color:#1C1A17; line-height:1.35">O Emagrecimento Blindado não prescreve nem recomenda o início desses medicamentos</h3>
+          <p style="font-size:24px; font-weight:300; color:#5C5344; line-height:1.5">Essa decisão é médica.</p>
+        </div>
+        <div style="flex:1; background:#EFE6D8; border-radius:12px; padding:44px; display:flex; flex-direction:column; gap:18px">
+          <h3 style="font-size:28px; font-weight:600; color:#1C1A17; line-height:1.35">Quando há indicação médica definida</h3>
+          <p style="font-size:24px; font-weight:300; color:#5C5344; line-height:1.5">O acompanhamento nutricional pode ser adaptado para auxiliar em alimentação, ingestão proteica, preservação de massa muscular, rotina, composição corporal e manutenção dos resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="entrega" class="slide" style="background:#EFE6D8; color:#1C1A17; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:48px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#8A6A34; font-weight:500">O que você recebe</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:56px; font-weight:500; color:#1C1A17; line-height:1.2; width:1500px">O que acontece quando você entra no programa</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px">
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:14px; padding:40px; display:flex; flex-direction:column; gap:14px">
+          <p style="font-family:'Cormorant Garamond', Georgia, serif; font-size:38px; font-weight:600; color:#B4915A; line-height:1">01</p>
+          <h3 style="font-size:25px; font-weight:600; color:#1C1A17; line-height:1.3">Diagnóstico profundo</h3>
+          <p style="font-size:18px; color:#5C5344; line-height:1.5; font-weight:300">Entendimento do seu momento, histórico, rotina, objetivos, dificuldades e necessidades individuais.</p>
+        </div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:14px; padding:40px; display:flex; flex-direction:column; gap:14px">
+          <p style="font-family:'Cormorant Garamond', Georgia, serif; font-size:38px; font-weight:600; color:#B4915A; line-height:1">02</p>
+          <h3 style="font-size:25px; font-weight:600; color:#1C1A17; line-height:1.3">Estratégia personalizada</h3>
+          <p style="font-size:18px; color:#5C5344; line-height:1.5; font-weight:300">Construção de uma estratégia nutricional baseada na sua realidade, fase de vida, composição corporal e objetivos. Nada de protocolo genérico.</p>
+        </div>
+        <div style="background:#FBF8F3; border:1px solid #DCCBA5; border-radius:14px; padding:40px; display:flex; flex-direction:column; gap:14px">
+          <p style="font-family:'Cormorant Garamond', Georgia, serif; font-size:38px; font-weight:600; color:#B4915A; line-height:1">03</p>
+          <h3 style="font-size:25px; font-weight:600; color:#1C1A17; line-height:1.3">Acompanhamento e ajustes</h3>
+          <p style="font-size:18px; color:#5C5344; line-height:1.5; font-weight:300">Monitoramento da evolução, suporte, ajustes de estratégia e adaptação conforme a resposta do organismo e a rotina da cliente.</p>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px 40px; border-top:1px solid #DCCBA5; padding-top:28px">
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Orientação alimentar prática</p>
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Estratégias para viagens e compromissos sociais</p>
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Suporte próximo</p>
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Ferramentas práticas para a rotina</p>
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Orientação para manutenção</p>
+        <p style="font-size:18px; color:#5C5344; line-height:1.4">Ajustes contínuos ao longo do processo</p>
+      </div>
+    </section>
+
+    <section id="autoridade" class="slide" style="background:#FBF8F3; color:#1C1A17; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:row; align-items:center; gap:96px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <img src="assets/andrea-oliveira.webp" alt="Andréa Oliveira, nutricionista clínica" style="width:400px; height:760px; object-fit:cover; border-radius:12px">
+      <div style="flex:1; display:flex; flex-direction:column; gap:26px">
+        <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#B4915A; font-weight:500">Quem conduz o seu acompanhamento</p>
+        <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:64px; font-weight:500; color:#1C1A17; line-height:1.15">Andréa Oliveira</h2>
+        <p style="font-size:26px; color:#5C5344; font-weight:400">Nutricionista clínica · Atuação desde 2003</p>
+        <p style="font-size:17px; letter-spacing:1px; color:#8A7F6B; font-weight:400">CRN3 15233</p>
+        <p style="font-size:23px; color:#5C5344; line-height:1.6; font-weight:300; width:820px">Mais de duas décadas de experiência clínica aplicadas a uma metodologia desenvolvida especialmente para os desafios da mulher depois dos 35 anos. Especialista em emagrecimento feminino, com atuação em nutrição esportiva, obesidade, emagrecimento e fitoterapia. O acompanhamento combina experiência clínica, estratégia nutricional e um olhar individual para cada fase, objetivo e rotina.</p>
+      </div>
+    </section>
+
+    <section id="principio" class="slide" style="background:#1C1A17; color:#FBF8F3; font-family:'Rubik', sans-serif; padding:128px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:48px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="position:absolute; top:64px; right:64px; width:64px; height:64px; object-fit:contain; border-radius:14px">
+      <div style="width:64px; height:1px; background:#B4915A"></div>
+      <p style="font-family:'Cormorant Garamond', Georgia, serif; font-style:italic; font-size:54px; font-weight:400; line-height:1.45; text-align:center; width:1400px; color:#FBF8F3">Não existe uma estratégia única para todas as mulheres. O acompanhamento precisa respeitar a fase, a rotina, os objetivos e a resposta individual de cada uma.</p>
+      <div style="width:64px; height:1px; background:#B4915A"></div>
+    </section>
+
+    <section id="proximo-passo" class="slide" style="background:#1C1A17; color:#E8E1D3; font-family:'Rubik', sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:44px">
+      <img src="assets/selo-aao.webp" alt="Selo AAO" style="width:200px; height:200px; object-fit:contain; border-radius:24px">
+      <p style="font-size:20px; letter-spacing:4px; text-transform:uppercase; color:#B4915A; font-weight:500; text-align:center">Próximo passo</p>
+      <h2 style="font-family:'Cormorant Garamond', Georgia, serif; font-size:50px; font-weight:500; color:#FBF8F3; text-align:center; line-height:1.3; width:1350px">Se você se identificou com essa proposta, o próximo passo é uma conversa</h2>
+      <p style="font-size:26px; color:#C9C0AE; text-align:center; width:1100px; font-weight:300; line-height:1.6">Nossa equipe pode organizar uma conversa com Andréa para entender o seu momento, seus objetivos e avaliar se o Emagrecimento Blindado é adequado para você.</p>
+      <p style="background:#B4915A; color:#1C1A17; font-size:23px; font-weight:600; letter-spacing:1px; padding:24px 48px; border-radius:40px; text-align:center">QUERO CONVERSAR COM A ANDRÉA</p>
+      <p style="position:absolute; left:128px; bottom:64px; font-size:20px; color:#6E6555; width:400px">Emagrecimento Blindado</p>
+      <p style="position:absolute; right:128px; bottom:64px; font-size:20px; color:#6E6555; text-align:right; width:400px">Andréa Oliveira · Nutricionista</p>
+    </section>
+
+  </div>
+</div>
+
+<div class="arrow prev" id="prevBtn" aria-label="Slide anterior">‹</div>
+<div class="arrow next" id="nextBtn" aria-label="Próximo slide">›</div>
+<div id="counter">01 / 09</div>
+<div id="nav"></div>
+
+<script>
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var current = 0;
+  var canvas = document.getElementById('canvas');
+  var nav = document.getElementById('nav');
+  var counter = document.getElementById('counter');
+
+  for (var i = 0; i < total; i++) {
+    var b = document.createElement('button');
+    b.className = 'dot' + (i === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'Ir para o slide ' + (i + 1));
+    (function(idx){ b.addEventListener('click', function(){ goTo(idx); }); })(i);
+    nav.appendChild(b);
+  }
+  var dots = nav.querySelectorAll('.dot');
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total || idx === current) return;
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', function(){ goTo(current - 1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ goTo(current + 1); });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { goTo(current + 1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); e.preventDefault(); }
+  });
+
+  var touchStartX = null;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx > 60) goTo(current - 1);
+    if (dx < -60) goTo(current + 1);
+    touchStartX = null;
+  }, {passive:true});
+
+  function fitCanvas() {
+    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    canvas.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fitCanvas);
+  fitCanvas();
+</script>
+
+</body>
+</html>

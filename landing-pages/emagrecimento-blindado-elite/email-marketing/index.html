@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deixa Eu Me Apresentar — Modelo de E-mail</title>
+<meta name="description" content="Modelo de e-mail de apresentação — Emagrecimento Blindado.">
+<style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>
+  :root{
+    --cream:#FAF5EA;
+    --paper:#FFFFFF;
+    --navy:#122246;
+    --navy-2:#1C3560;
+    --gold:#A9822E;
+    --gold-bright:#C8A24B;
+    --ink:#241F16;
+    --ink-soft:#6E6656;
+    --line:#E4D9C2;
+    --tag-bg:#F1E7D2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#0B1424;
+      --paper:#12203A;
+      --navy:#F5EFE1;
+      --navy-2:#E9DFC8;
+      --gold:#D8B25F;
+      --gold-bright:#E8C978;
+      --ink:#F1EADA;
+      --ink-soft:#B9AF98;
+      --line:#2B3B5C;
+      --tag-bg:#1B2C4C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream:#0B1424;
+    --paper:#12203A;
+    --navy:#F5EFE1;
+    --navy-2:#E9DFC8;
+    --gold:#D8B25F;
+    --gold-bright:#E8C978;
+    --ink:#F1EADA;
+    --ink-soft:#B9AF98;
+    --line:#2B3B5C;
+    --tag-bg:#1B2C4C;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Karla", -apple-system, "Segoe UI", sans-serif;
+    padding:40px 16px 64px;
+  }
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; margin:0;}
+
+  .page-label{
+    max-width:640px;
+    margin:0 auto 18px;
+    color:var(--ink-soft);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .email{
+    max-width:640px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+
+  .band{
+    background:var(--navy);
+    padding:22px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .wordmark{
+    font-family:"Fraunces", Georgia, serif;
+    color:var(--cream);
+    font-size:15px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .wordmark b{color:var(--gold-bright); font-weight:600;}
+  .band .sub{
+    color:var(--gold-bright);
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    opacity:.85;
+  }
+
+  .subject-block{
+    padding:26px 40px 4px;
+  }
+  .field{
+    display:flex;
+    gap:10px;
+    font-size:13px;
+    color:var(--ink-soft);
+    padding:3px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .field:last-child{border-bottom:none;}
+  .field .k{width:64px; flex:none; text-transform:uppercase; letter-spacing:.06em; font-size:11px; padding-top:2px;}
+  .field .v{color:var(--ink); font-size:14px;}
+  .field .v.subject{font-family:"Fraunces", Georgia, serif; font-size:17px;}
+
+  .photo-wrap{
+    padding:28px 40px 0;
+  }
+  .photo{
+    position:relative;
+    border:1px solid var(--gold);
+    padding:10px;
+  }
+  .photo-inner{
+    aspect-ratio:4/5;
+    max-height:340px;
+    background:
+      linear-gradient(135deg, var(--tag-bg), var(--paper));
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+    padding:24px;
+    overflow:hidden;
+  }
+  .photo-inner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
+    display:block;
+  }
+  .photo-inner .icon{
+    width:40px; height:40px;
+    border:1.5px solid var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold);
+    font-family:"Fraunces", serif;
+    font-size:18px;
+  }
+  .photo-inner .cap{
+    font-family:"Fraunces", Georgia, serif;
+    font-size:15px;
+    color:var(--ink);
+  }
+  .photo-inner .cap-sub{
+    font-size:12px;
+    color:var(--ink-soft);
+    max-width:280px;
+    line-height:1.5;
+  }
+  .corner{position:absolute; width:12px; height:12px; border-color:var(--gold); border-style:solid;}
+  .corner.tl{top:-1px; left:-1px; border-width:2px 0 0 2px;}
+  .corner.tr{top:-1px; right:-1px; border-width:2px 2px 0 0;}
+  .corner.bl{bottom:-1px; left:-1px; border-width:0 0 2px 2px;}
+  .corner.br{bottom:-1px; right:-1px; border-width:0 2px 2px 0;}
+
+  .body-copy{
+    padding:30px 40px 8px;
+    font-size:15.5px;
+    line-height:1.72;
+    color:var(--ink);
+  }
+  .body-copy p{margin:0 0 16px;}
+  .body-copy .lede{font-family:"Fraunces", Georgia, serif; font-size:19px; line-height:1.5; color:var(--ink);}
+  .body-copy em{
+    font-style:normal;
+    border-bottom:1px solid var(--gold);
+  }
+
+  .quote{
+    margin:22px 40px;
+    padding:16px 20px;
+    background:var(--tag-bg);
+    border-left:3px solid var(--gold);
+    font-family:"Fraunces", Georgia, serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--ink);
+  }
+
+  .cta-wrap{
+    padding:4px 40px 34px;
+  }
+  .cta{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--navy);
+    font-family:"Karla", sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.03em;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:2px;
+  }
+
+  .sign{
+    padding:0 40px 30px;
+    border-top:1px solid var(--line);
+    margin:0 40px;
+    padding-top:22px;
+  }
+  .sign .name{font-family:"Fraunces", Georgia, serif; font-size:17px;}
+  .sign .role{font-size:12.5px; color:var(--ink-soft); letter-spacing:.02em;}
+
+  .footer{
+    background:var(--tag-bg);
+    padding:18px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .footer .fmark{
+    font-family:"Fraunces", Georgia, serif;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .footer .fmark b{color:var(--gold); font-weight:600;}
+  .footer .funsub{
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+
+  .howto{
+    max-width:640px;
+    margin:26px auto 0;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 28px;
+  }
+  .howto h2{font-size:15px; margin-bottom:12px;}
+  .howto ol{margin:0; padding-left:18px; color:var(--ink); font-size:14px; line-height:1.7;}
+  .howto li{margin-bottom:6px;}
+  .howto li b{color:var(--gold);}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Karla:wght@400;500;700&display=swap">
+</head>
+<body>
+
+<div class="page-label">Pré-visualização — como o e-mail vai ficar</div>
+
+<div class="email">
+  <div class="band">
+    <div class="wordmark">Emagrecimento <b>Blindado</b></div>
+    <div class="sub">Elite</div>
+  </div>
+
+  <div class="subject-block">
+    <div class="field"><div class="k">De</div><div class="v">Andréa Oliveira &lt;contato@emagrecimentoblindado.com.br&gt;</div></div>
+    <div class="field"><div class="k">Assunto</div><div class="v subject">Deixa eu me apresentar de verdade</div></div>
+  </div>
+
+  <div class="photo-wrap">
+    <div class="photo">
+      <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+      <div class="photo-inner">
+        <img src="assets/andrea-oliveira.webp" alt="Andréa Oliveira">
+      </div>
+    </div>
+  </div>
+
+  <div class="body-copy">
+    <p class="lede">Oi! Eu sou a Andréa.</p>
+    <p>Eu sou nutricionista, e queria me apresentar de verdade — porque você está na minha lista, mas talvez ainda não saiba quem eu sou nem por que eu faço o que faço.</p>
+    <p>Há alguns anos eu atendo mulheres 35+ que já tentaram de tudo pra emagrecer: dieta restritiva, corte de carboidrato, treino puxado, chá disso, suplemento daquilo. E o que eu mais escuto no consultório é sempre a mesma frase:</p>
+  </div>
+
+  <div class="quote">"Eu sei o que fazer. Eu simplesmente não consigo manter."</div>
+
+  <div class="body-copy">
+    <p>Foi por isso que criei o <em>Emagrecimento Blindado</em>.</p>
+    <p>Não é mais uma dieta. É um método que olha pro que costuma ser ignorado nesse processo: metabolismo, hormônios, comportamento alimentar e a rotina real — não a rotina ideal que só existe em teoria.</p>
+    <p>O trabalho é construir, com acompanhamento, um processo que faça sentido pra sua vida — sem promessa mágica, sem prazo de propaganda. Cada corpo responde de um jeito, e é por isso que o acompanhamento pesa tanto quanto o método.</p>
+    <p>Se você chegou até aqui, provavelmente já cansou de solução genérica. Eu quero te mostrar um caminho diferente.</p>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="cta" href="#">CONHECER O EMAGRECIMENTO BLINDADO →</a>
+  </div>
+
+  <div class="sign">
+    <div class="name">Andréa Oliveira</div>
+    <div class="role">Nutricionista · Emagrecimento Blindado</div>
+  </div>
+
+  <div class="footer">
+    <div class="fmark">Emagrecimento <b>Blindado</b></div>
+    <div class="funsub">Você recebeu este e-mail por fazer parte da lista Blindada.</div>
+  </div>
+</div>
+
+<div class="howto">
+  <h2>Como enviar de verdade</h2>
+  <ol>
+    <li><b>1.</b> Copie o texto de cada bloco acima (assunto, corpo, frase de destaque) e cole no seu provedor de e-mail (Gmail, RD Station, Mailchimp etc.).</li>
+    <li><b>2.</b> A foto já está aplicada no bloco acima — não precisa trocar nada, só copiar a imagem pro seu editor de e-mail.</li>
+    <li><b>3.</b> Troque o link do botão pela página real do Emagrecimento Blindado antes de disparar.</li>
+    <li><b>4.</b> Se quiser, eu monto o HTML final pronto pra colar direto na ferramenta de disparo — é só me confirmar qual você usa.</li>
+  </ol>
+</div>
+
+</body>
+</html>
