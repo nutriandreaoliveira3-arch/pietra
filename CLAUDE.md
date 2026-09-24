@@ -62,6 +62,16 @@ Ambas protegidas por `requireAdmin` middleware (`src/middleware/auth.js`).
   `npm install && npm run build` dentro de `web/` **antes** de fazer push — o ambiente sandbox
   aqui roda Linux x64, igual o Railway.
 
+## Skills de Instagram (`ig-*`) — contexto obrigatório de marca
+
+As skills `.claude/skills/ig-*` vêm de um repositório público e estão em inglês. Sempre que
+qualquer uma delas for usada (`/ig-reel`, `/ig-carousel` etc.), seguir **obrigatoriamente**
+`.claude/instagram-marca.md`: tudo em português do Brasil, voz da marca BLINDADA e regras éticas da
+nutrição. Se houver conflito com a skill original, esse arquivo prevalece. Ler o arquivo antes da
+primeira execução de uma skill `ig-*` na conversa, caso ele ainda não esteja no contexto.
+
+@.claude/instagram-marca.md
+
 ## Fluxo de trabalho neste repo
 
 - Branch de trabalho: `claude/app-window-recovery-guc1zt` (branch designada da sessão). Ao voltar
