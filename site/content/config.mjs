@@ -32,19 +32,33 @@ export default {
     nomeCurto: 'Andréa',
     // Nome profissional usado durante muitos anos (TV, rádio, jornais, Google).
     nomeAnterior: 'Andréa Marim',
+    // Outras formas do nome atual usadas em redes e materiais (vão para os
+    // dados estruturados do Google, não para o texto das páginas).
+    outrosNomes: ['Andréa Oliveira'],
     // ATENÇÃO: o Código de Ética do Nutricionista exige nome + nº de CRN em
     // qualquer divulgação profissional. Confirmar a situação do CRN antes de
     // publicar o site com o título "Nutricionista".
     profissao: 'Nutricionista',
-    crn: null, // ex.: 'CRN-3 00000' — PENDENTE
+    // PENDENTE. O perfil antigo no Minha Vida exibe "CRN 15233/SP" (nome
+    // Andréa Marim). Só preencher depois de confirmar a situação atual do
+    // registro no CRN-3.
+    crn: null,
     anosDeExperiencia: null, // ex.: 20 — PENDENTE (número, sem arredondar pra cima)
     cidade: null, // ex.: 'São Paulo, SP' — PENDENTE
     atendimento: null, // ex.: 'Atendimento online para todo o Brasil' — PENDENTE
+    // ENCONTRADO EM FONTES PÚBLICAS (entrevista no blog E de Repente 50,
+    // 15/02/2019, e ficha de fontes da Revista SuplementAção nº 56, 2019):
+    //   - Graduação em Nutrição — Universidade Bandeirantes de São Paulo
+    //   - Especialização em Nutrição Esportiva — Universidade São Judas Tadeu
+    //   - Formação complementar: fitoterápicos e suplementação para
+    //     emagrecimento; nutrição funcional; probióticos e prebióticos;
+    //     nutrição e estética
+    // Só descomentar depois que a Andréa confirmar (e, se possível, com ano).
     formacoes: [
-      // { titulo: 'Graduação em Nutrição', instituicao: '...', ano: '...' }
+      // { titulo: 'Graduação em Nutrição', instituicao: 'Universidade Bandeirantes de São Paulo', ano: null },
     ],
     especializacoes: [
-      // { titulo: '...', instituicao: '...', ano: '...' }
+      // { titulo: 'Especialização em Nutrição Esportiva', instituicao: 'Universidade São Judas Tadeu', ano: null },
     ],
     // Marcos profissionais (linha do tempo da página Sobre).
     trajetoria: [
@@ -217,20 +231,8 @@ export default {
     ],
   },
 
-  // Participações na mídia. Muitas foram com o nome Andréa Marim — isso é
-  // justamente o que ajuda o Google a ligar os dois nomes.
-  // tipo: 'TV' | 'Rádio' | 'Jornal' | 'Revista' | 'Portal' | 'Entrevista' | 'Podcast'
-  imprensa: [
-    // {
-    //   veiculo: 'Nome do programa ou jornal',
-    //   tipo: 'TV',
-    //   titulo: 'Tema da participação',
-    //   ano: '2015',
-    //   url: 'https://...',          // link da matéria/vídeo (opcional)
-    //   logo: 'img/imprensa/x.webp', // arquivo em site/static/img/imprensa (opcional)
-    //   comoAndreaMarim: true,        // participação feita com o nome anterior
-    // },
-  ],
+  // Participações na mídia: ficam em content/imprensa.mjs (acervo completo,
+  // com status de cada link, categoria e o que aparece ou não no site).
 
   // PENDENTE: depoimentos REAIS, com autorização por escrito de cada pessoa.
   // Nunca usar antes e depois, número de quilos ou promessa de resultado.
@@ -286,8 +288,8 @@ export default {
       descricao: 'Artigos sobre comportamento alimentar, rotina, consistência e manutenção de resultados, escritos por Andréa Augusto de Oliveira.',
     },
     imprensa: {
-      titulo: 'Imprensa e participações | Andréa Augusto de Oliveira (Andréa Marim)',
-      descricao: 'Participações em TV, rádio, jornais e entrevistas ao longo da trajetória de Andréa Augusto de Oliveira, também conhecida como Andréa Marim.',
+      titulo: 'Na mídia | Andréa Augusto de Oliveira (Andréa Marim)',
+      descricao: 'Participações em TV, revistas, jornais e portais ao longo da trajetória de Andréa Augusto de Oliveira, anteriormente conhecida como Andréa Marim.',
     },
     contato: {
       titulo: 'Contato | Andréa Augusto de Oliveira',

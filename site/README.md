@@ -17,7 +17,8 @@ conteúdo.
 
 | O quê | Arquivo |
 |---|---|
-| CRN, CNPJ, WhatsApp, e-mail, Instagram, link do Raio-X, textos dos botões, cores, fontes, imagens, imprensa, depoimentos, trajetória, SEO | `content/config.mjs` |
+| CRN, CNPJ, WhatsApp, e-mail, Instagram, link do Raio-X, textos dos botões, cores, fontes, imagens, depoimentos, trajetória, SEO | `content/config.mjs` |
+| Acervo "Na mídia" (TV, revistas, jornais, portais, vídeos) | `content/imprensa.mjs` → gera `LEVANTAMENTO-MIDIA.csv` e `.md` |
 | Perguntas frequentes | `content/faq.mjs` |
 | Artigos da página Conteúdos | `content/artigos/*.mjs` (veja o README da pasta) |
 | Textos das seções das páginas | `pages.mjs` |

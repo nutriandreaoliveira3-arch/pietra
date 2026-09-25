@@ -7,6 +7,7 @@ import {
   eyebrow, secao, faq, breadcrumbs, assinaturaProfissional, textoPuro,
 } from './lib/ui.mjs';
 import { PERSON_ID, WEBSITE_ID } from './lib/layout.mjs';
+import { midia as MIDIA, CATEGORIAS, PAPEIS } from './content/imprensa.mjs';
 
 const N = C.pessoa.nome;
 const NA = C.pessoa.nomeAnterior;
@@ -162,29 +163,38 @@ function blocoSobre() {
   });
 }
 
-function cardImprensa(m) {
-  const tag = m.url ? 'a' : 'div';
-  const attrs = m.url ? ` href="${esc(m.url)}" target="_blank" rel="noopener"` : '';
-  const logo = m.logo ? `<img src="${u(m.logo)}" alt="" loading="lazy" width="160" height="60" class="midia__logo">` : '';
-  return `<li><${tag} class="midia"${attrs}>
-  ${logo}<span class="midia__tipo">${esc(m.tipo)}${m.ano ? ` · ${esc(m.ano)}` : ''}</span>
-  <span class="midia__veiculo">${esc(m.veiculo)}</span>
-  ${m.titulo ? `<span class="midia__titulo">${esc(m.titulo)}</span>` : ''}
-  ${m.comoAndreaMarim ? `<span class="midia__nome">Como ${esc(NA)}</span>` : ''}
-  ${m.url ? `<span class="midia__link">Ver ${m.tipo === 'TV' || m.tipo === 'Podcast' ? 'participação' : 'matéria'} ${icons.externo}<span class="sr-only">(abre em nova aba)</span></span>` : ''}
-</${tag}></li>`;
+// ------------------------------------------------------------- Na mídia
+const midiaPublica = MIDIA.filter((m) => m.exibirNoSite);
+const destaquesMidia = midiaPublica.filter((m) => m.destaque);
+const nomeCategoria = (id) => CATEGORIAS.find((c) => c.id === id)?.nome || id;
+const anoDe = (d) => (d ? String(d).slice(0, 4) : null);
+const veiculosUnicos = () => [...new Set(midiaPublica.filter((m) => !/^Vídeo no /.test(m.veiculo)).map((m) => m.veiculo.replace(/ \(.*\)$/, '')))];
+
+function cardImprensa(m, { comCategoria = true } = {}) {
+  const ano = anoDe(m.data);
+  const ehVideo = m.formatos.includes('vídeo');
+  const papel = PAPEIS[m.papel] || m.papel;
+  const rotuloLink = ehVideo ? 'Assistir' : m.formatos.includes('PDF') ? 'Ver PDF' : 'Ler matéria';
+  return `<li><article class="midia">
+  <p class="midia__tipo">${comCategoria ? `${esc(nomeCategoria(m.categoria))}${ano ? ' · ' : ''}` : ''}${ano ? `<time datetime="${esc(m.data)}">${esc(ano)}</time>` : ''}</p>
+  <p class="midia__veiculo">${esc(m.veiculo)}${m.programa ? `<span class="midia__programa"> · ${esc(m.programa)}</span>` : ''}</p>
+  <h3 class="midia__titulo">${esc(m.titulo)}</h3>
+  <p class="midia__papel">${esc(papel)} <span class="midia__nome">como ${esc(NA)}</span></p>
+  <a class="midia__link" href="${esc(m.url)}" target="_blank" rel="noopener" data-cta="midia-${esc(m.id)}">${ehVideo ? icons.play : icons.externo}<span>${rotuloLink}</span><span class="sr-only">: ${esc(m.titulo)}, ${esc(m.veiculo)} (abre em nova aba)</span></a>
+</article></li>`;
 }
 
-function gradeImprensa(limite) {
-  const itens = limite ? C.imprensa.slice(0, limite) : C.imprensa;
-  if (itens.length) return `<ul class="midias">${itens.map(cardImprensa).join('')}</ul>`;
-  pend('Participações na mídia: veículo, tipo, ano, link (config.imprensa)');
-  if (!ctx.preview) return '';
-  return `<ul class="midias">${['TV', 'Rádio', 'Jornal'].map((t) => `<li><div class="midia midia--vazia"><span class="midia__tipo">${t}</span><span class="midia__veiculo">Nome do veículo</span><span class="midia__titulo">Tema da participação · ano</span><span class="pend">Pendente</span></div></li>`).join('')}</ul>`;
+function gradeImprensa(lista) {
+  if (lista.length) return `<ul class="midias">${lista.map((m) => cardImprensa(m)).join('')}</ul>`;
+  pend('Participações na mídia (content/imprensa.mjs)');
+  return '';
 }
+
+// Faixa tipográfica com os veículos (sem logos de terceiros).
+const faixaVeiculos = () =>
+  `<ul class="veiculos" aria-label="Veículos em que Andréa já participou">${veiculosUnicos().map((v) => `<li>${esc(v)}</li>`).join('')}</ul>`;
 
 function blocoMidia() {
-  const tem = C.imprensa.length > 0;
   return secao({
     id: 'na-midia',
     classe: 'secao--linha',
@@ -192,10 +202,11 @@ function blocoMidia() {
     conteudo: `<div class="cab-secao">
   ${eyebrow('Na mídia')}
   <h2 id="titulo-midia">Uma trajetória acompanhada pelo público</h2>
-  <p class="lead">Ao longo dos anos, ${esc(C.pessoa.nomeCurto)} participou de programas de televisão, rádio, jornais e entrevistas — muitas vezes com o nome profissional ${esc(NA)}.</p>
+  <p class="lead">Participações em programas de TV, revistas, jornais e grandes portais — boa parte delas com o nome profissional ${esc(NA)}, usado por muitos anos.</p>
 </div>
-${gradeImprensa(6)}
-<div class="acoes acoes--centro">${btn(tem ? 'Ver participações e imprensa' : 'Imprensa e participações', u('imprensa/'), { tipo: 'link', icone: 'seta', track: 'home-imprensa' })}</div>`,
+${faixaVeiculos()}
+${gradeImprensa(destaquesMidia.slice(0, 6))}
+<div class="acoes acoes--centro">${btn('Ver todas as participações', u('imprensa/'), { tipo: 'secundario', icone: 'seta', track: 'home-imprensa' })}</div>`,
   });
 }
 
@@ -377,9 +388,9 @@ ${temFormacao ? secao({
 }) : (listaForm(P_.formacoes, 'Formação acadêmica (config.pessoa.formacoes)'), listaForm(P_.especializacoes, 'Especializações e cursos (config.pessoa.especializacoes)'), '')}
 ${secao({
   rotulo: 'titulo-acervo',
-  conteudo: `<div class="cab-secao">${eyebrow('Acervo')}<h2 id="titulo-acervo">Na mídia, como ${esc(NA)}</h2><p class="lead">Registros de participações em televisão, rádio e imprensa feitas com o nome profissional anterior — parte da mesma trajetória.</p></div>
-${acervo}${gradeImprensa(3)}
-<div class="acoes acoes--centro">${btn('Ver todas as participações', u('imprensa/'), { tipo: 'link', icone: 'seta', track: 'sobre-imprensa' })}</div>`,
+  conteudo: `<div class="cab-secao">${eyebrow('Acervo')}<h2 id="titulo-acervo">Na mídia, como ${esc(NA)}</h2><p class="lead">Participações em TV, revistas, jornais e portais feitas com o nome profissional anterior — parte da mesma trajetória.</p></div>
+${acervo}${gradeImprensa(destaquesMidia.slice(0, 3))}
+<div class="acoes acoes--centro">${btn('Ver todas as participações', u('imprensa/'), { tipo: 'secundario', icone: 'seta', track: 'sobre-imprensa' })}</div>`,
 })}
 ${blocoCtaFinal({ titulo: 'Quer entender por onde começar?', texto: 'O Raio-X do Emagrecimento é o primeiro passo para conhecer o seu momento — e a estratégia que faz sentido para ele.' })}`;
   return {
@@ -583,35 +594,72 @@ ${a.imagem ? `<div class="container container--texto"><img class="artigo__img" s
 }
 
 function imprensa() {
-  const crumbs = [HOME, { nome: 'Imprensa', path: 'imprensa/' }];
-  const tipos = [...new Set(C.imprensa.map((m) => m.tipo))];
-  const grupos = tipos.length
-    ? tipos.map((t) => `<section class="grupo-midia" aria-labelledby="g-${esc(t)}"><h2 id="g-${esc(t)}">${esc(t)}</h2><ul class="midias">${C.imprensa.filter((m) => m.tipo === t).map(cardImprensa).join('')}</ul></section>`).join('')
-    : gradeImprensa() || '<div class="vazio"><p>O acervo de participações está sendo reunido e será publicado aqui em breve.</p></div>';
+  const crumbs = [HOME, { nome: 'Na mídia', path: 'imprensa/' }];
+  const porCategoria = CATEGORIAS.map((c) => ({ ...c, itens: midiaPublica.filter((m) => m.categoria === c.id).sort((x, y) => String(y.data || '').localeCompare(String(x.data || ''))) }));
+  const numeros = porCategoria.filter((c) => c.itens.length);
+  const resumo = `<ul class="numeros" aria-label="Resumo do acervo">${numeros.map((c) => `<li><strong>${c.itens.length}</strong><span>${esc(c.nome)}</span></li>`).join('')}</ul>`;
+  const indice = `<nav class="indice-midia" aria-label="Categorias"><ul>${numeros.map((c) => `<li><a href="#${c.id}">${esc(c.nome)}</a></li>`).join('')}</ul></nav>`;
+  const grupos = porCategoria
+    .map((c) => {
+      if (!c.itens.length) {
+        const aviso = pend(`Sem registros confirmados em "${c.nome}" (content/imprensa.mjs)`, { bloco: true });
+        return aviso ? `<section class="grupo-midia" aria-labelledby="g-${c.id}"><h2 id="g-${c.id}">${esc(c.nome)}</h2>${aviso}</section>` : '';
+      }
+      return `<section class="grupo-midia" id="${c.id}" aria-labelledby="g-${c.id}"><h2 id="g-${c.id}">${esc(c.nome)} <span class="grupo-midia__qtd">${c.itens.length}</span></h2><ul class="midias">${c.itens.map((m) => cardImprensa(m, { comCategoria: false })).join('')}</ul></section>`;
+    })
+    .join('');
   const emailImp = C.contato.emailImprensa || C.contato.email;
   const corpo = `${cabecalhoInterno({
     crumbs,
-    eyebrowTxt: 'Imprensa',
-    h1: 'Imprensa e participações',
-    lead: `Ao longo da trajetória, ${esc(N)} participou de programas de televisão, rádio, jornais e entrevistas. Grande parte desses registros foi feita com o nome profissional que ela usou por muitos anos: ${esc(NA)}.`,
+    eyebrowTxt: 'Na mídia',
+    h1: 'Na mídia',
+    lead: `Participações em TV, revistas, jornais, portais e entrevistas ao longo da trajetória de ${esc(N)}.`,
   })}
-${secao({ conteudo: grupos })}
-${C.acervo.length ? '' : ''}
+${secao({
+  classe: 'secao--compacta',
+  rotulo: 'titulo-nome',
+  conteudo: `<div class="nota-nome">
+  <h2 id="titulo-nome" class="nota-nome__titulo">Uma trajetória, dois nomes</h2>
+  <p>Durante muitos anos, ${esc(C.pessoa.nomeCurto)} atuou com o nome profissional <strong>${esc(NA)}</strong>. As participações reunidas aqui foram publicadas com esse nome e fazem parte da mesma trajetória que hoje segue como <strong>${esc(N)}</strong>.</p>
+</div>
+${resumo}
+${indice}`,
+})}
+${secao({ classe: 'secao--sem-topo', conteudo: grupos || '<div class="vazio"><p>O acervo de participações está sendo reunido e será publicado aqui em breve.</p></div>' })}
 ${secao({
   classe: 'secao--areia',
   rotulo: 'titulo-para-imprensa',
   conteudo: `<div class="container--estreito centro">
   ${eyebrow('Para jornalistas e produtores')}
   <h2 id="titulo-para-imprensa">Pautas e entrevistas</h2>
-  <p>Temas: emagrecimento sustentável, comportamento alimentar, rotina, consistência e manutenção de resultados.</p>
+  <p>Temas: emagrecimento sustentável, comportamento alimentar, alimentação da mulher após os 35, rotina, consistência e manutenção de resultados.</p>
   ${emailImp ? `<div class="acoes acoes--centro">${btn('Contato para imprensa', `mailto:${emailImp}`, { tipo: 'secundario', icone: 'seta', track: 'imprensa-email' })}</div>` : `<div class="acoes acoes--centro">${btn('Fale com a equipe', u('contato/'), { tipo: 'secundario', icone: 'seta', track: 'imprensa-contato' })}</div>${pend('E-mail para imprensa (config.contato.emailImprensa)')}`}
 </div>`,
 })}`;
+  // Cada participação vira um item "que menciona" a mesma Person do site:
+  // é o sinal mais claro para o Google de que Andréa Marim = Andréa Augusto de Oliveira.
+  const lista = {
+    '@type': 'ItemList',
+    '@id': abs('imprensa/#participacoes'),
+    name: 'Participações na mídia',
+    itemListElement: midiaPublica.map((m, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': m.formatos.includes('vídeo') ? 'VideoObject' : 'Article',
+        name: m.titulo,
+        url: m.url,
+        ...(m.data && m.data.length === 10 ? { datePublished: m.data } : {}),
+        publisher: { '@type': 'Organization', name: m.veiculo },
+        mentions: { '@id': PERSON_ID() },
+      },
+    })),
+  };
   return {
     path: 'imprensa/',
     titulo: C.seo.imprensa.titulo,
     descricao: C.seo.imprensa.descricao,
-    schema: [{ '@type': 'CollectionPage', '@id': abs('imprensa/#pagina'), url: abs('imprensa/'), name: C.seo.imprensa.titulo, about: { '@id': PERSON_ID() }, isPartOf: { '@id': WEBSITE_ID() } }, crumbSchema(crumbs)],
+    schema: [{ '@type': 'CollectionPage', '@id': abs('imprensa/#pagina'), url: abs('imprensa/'), name: C.seo.imprensa.titulo, about: { '@id': PERSON_ID() }, mainEntity: { '@id': abs('imprensa/#participacoes') }, isPartOf: { '@id': WEBSITE_ID() } }, lista, crumbSchema(crumbs)],
     corpo,
   };
 }
