@@ -3,6 +3,9 @@
 App web (PWA) da BLINDADA — Nutricionista Andréa Oliveira. Área de membros com o
 protocolo do Emagrecimento Blindado, diário alimentar e acompanhamento de peso/medidas.
 
+Este repositório também contém o **site institucional** de Andréa Augusto de Oliveira em
+`site/` — veja `site/README.md`.
+
 ## Stack
 
 - **Backend**: Node.js + Express + SQLite (`better-sqlite3`), autenticação por JWT.
