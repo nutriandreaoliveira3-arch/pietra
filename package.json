@@ -7,7 +7,9 @@
     "start": "node src/seed.js && node src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node src/seed.js",
-    "build": "npm run build:web",
+    "build": "npm run site:build && npm run build:web",
+    "site:build": "node site/build.mjs",
+    "site:previa": "node site/build.mjs --previa --servir",
     "build:web": "npm install --prefix web && npm run build --prefix web",
     "dev:web": "npm run dev --prefix web"
   },

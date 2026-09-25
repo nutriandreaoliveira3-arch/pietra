@@ -71,4 +71,45 @@ function manipuladoWhatsappUrl({ clientName, formulaTitles }) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
 
-module.exports = { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl };
+const escapeHtml = (value) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+// Aviso de nova mensagem do formulário de contato do site institucional.
+async function sendSiteContactEmail({ nome, email, whatsapp, assunto, mensagem }) {
+  const to = (process.env.SITE_CONTATO_EMAIL || '')
+    .split(',')
+    .map((e) => e.trim())
+    .filter(Boolean);
+  if (to.length === 0) {
+    console.warn('SITE_CONTATO_EMAIL não configurado — mensagem do site salva só no banco (tabela site_contacts).');
+    return;
+  }
+  if (!resend) {
+    console.warn('RESEND_API_KEY não configurado — mensagem do site salva só no banco (tabela site_contacts).');
+    return;
+  }
+  await resend.emails.send({
+    from: process.env.EMAIL_FROM || 'BLINDADA <onboarding@resend.dev>',
+    to,
+    replyTo: email,
+    subject: `Contato pelo site — ${assunto}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; color:#2F3330;">
+        <h2 style="font-weight:600;">Nova mensagem pelo site</h2>
+        <p><strong>Nome:</strong> ${escapeHtml(nome)}</p>
+        <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
+        ${whatsapp ? `<p><strong>WhatsApp:</strong> ${escapeHtml(whatsapp)}</p>` : ''}
+        <p><strong>Assunto:</strong> ${escapeHtml(assunto)}</p>
+        <p><strong>Mensagem:</strong></p>
+        <p style="white-space:pre-wrap;background:#F3EEE6;padding:12px 14px;border-radius:8px;">${escapeHtml(mensagem)}</p>
+        <p style="font-size:13px;color:#5A4A42;">Responda este e-mail para falar direto com a pessoa.</p>
+      </div>
+    `,
+  });
+}
+
+module.exports = { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl, sendSiteContactEmail };

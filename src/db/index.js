@@ -116,6 +116,17 @@ CREATE TABLE IF NOT EXISTS supplement_plans (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS site_contacts (
+  id TEXT PRIMARY KEY,
+  nome TEXT NOT NULL,
+  email TEXT NOT NULL,
+  whatsapp TEXT,
+  assunto TEXT NOT NULL,
+  mensagem TEXT NOT NULL,
+  origem TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS water_entries (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
