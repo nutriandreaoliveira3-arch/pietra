@@ -6,7 +6,7 @@ export const NAV = [
   { path: 'emagrecimento-blindado/', nome: 'Emagrecimento Blindado' },
   { path: 'raio-x/', nome: 'Raio-X' },
   { path: 'conteudos/', nome: 'Conteúdos' },
-  { path: 'imprensa/', nome: 'Imprensa' },
+  { path: 'imprensa/', nome: 'Na mídia' },
   { path: 'contato/', nome: 'Contato' },
 ];
 
@@ -19,7 +19,7 @@ export function schemaBase() {
     '@type': 'Person',
     '@id': PERSON_ID(),
     name: C.pessoa.nome,
-    alternateName: [C.pessoa.nomeAnterior],
+    alternateName: [C.pessoa.nomeAnterior, ...(C.pessoa.outrosNomes || [])],
     jobTitle: C.pessoa.profissao,
     url: abs(''),
     image: abs(C.imagens.sobre.src),

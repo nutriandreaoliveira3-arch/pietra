@@ -13,6 +13,7 @@ import C from './content/config.mjs';
 import { ctx, setPage, abs } from './lib/ui.mjs';
 import { pagina } from './lib/layout.mjs';
 import { todasAsPaginas } from './pages.mjs';
+import { midia, pistas, CATEGORIAS, PAPEIS, VERIFICADO_EM } from './content/imprensa.mjs';
 
 const RAIZ = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(RAIZ, 'dist');
@@ -100,10 +101,83 @@ ${linhas.join('\n') || '- Nenhuma'}
 `;
   if (ctx.preview) await fs.writeFile(path.join(RAIZ, 'PENDENCIAS.md'), md);
 
+  await gerarLevantamentoMidia();
+
   const total = geradas.reduce((s, g) => s + g.bytes, 0);
   console.log(`Site gerado em ${path.relative(process.cwd(), DIST) || DIST} (${ctx.preview ? 'PRÉVIA' : 'produção'}): ${geradas.length} páginas, ${(total / 1024).toFixed(0)} KB de HTML, ${Date.now() - t0} ms.`);
   if (criticas.length) console.warn('Atenção:\n' + criticas.map((c) => '  • ' + c).join('\n'));
   console.log(`${ctx.pendencias.size} pendências de conteúdo${ctx.preview ? ' — veja site/PENDENCIAS.md' : ' (rode com --previa para atualizar site/PENDENCIAS.md)'}.`);
+}
+
+// Planilha (CSV para Excel/Google Planilhas) e relatório do acervo de mídia,
+// sempre gerados a partir de content/imprensa.mjs.
+async function gerarLevantamentoMidia() {
+  const cat = (id) => CATEGORIAS.find((c) => c.id === id)?.nome || id;
+  const verif = { confirmada: 'Confirmada', parcial: 'Parcial', 'nao-verificada': 'Não verificada' };
+  const ordenado = CATEGORIAS.flatMap((c) =>
+    midia.filter((m) => m.categoria === c.id).sort((a, b) => String(b.data || '').localeCompare(String(a.data || ''))),
+  );
+  const colunas = [
+    ['Categoria', (m) => cat(m.categoria)],
+    ['Veículo', (m) => m.veiculo],
+    ['Programa / seção', (m) => m.programa || ''],
+    ['Título', (m) => m.titulo],
+    ['Data ou ano', (m) => m.data || 'não informada'],
+    ['Tema', (m) => m.tema],
+    ['Papel de Andréa', (m) => PAPEIS[m.papel] || m.papel],
+    ['Nome usado', () => C.pessoa.nomeAnterior],
+    ['Link da fonte', (m) => m.url],
+    ['Link do vídeo', (m) => m.urlVideo || ''],
+    ['Vídeo / imagem / PDF', (m) => m.formatos.join(', ')],
+    ['Status do link', (m) => m.status],
+    ['Verificação', (m) => verif[m.verificacao] || m.verificacao],
+    ['Evidência', (m) => m.evidencia],
+    ['Aparece no site', (m) => (m.exibirNoSite ? 'Sim' : 'Não')],
+    ['Destaque', (m) => (m.destaque ? 'Sim' : '')],
+    ['Motivo de não aparecer', (m) => m.motivoOculto || ''],
+    ['Observações', (m) => m.obs || ''],
+    ['Verificado em', () => VERIFICADO_EM],
+  ];
+  const cel = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const csv = '\uFEFF' + [colunas.map(([n]) => cel(n)).join(';'), ...ordenado.map((m) => colunas.map(([, f]) => cel(f(m))).join(';'))].join('\r\n') + '\r\n';
+  await fs.writeFile(path.join(RAIZ, 'LEVANTAMENTO-MIDIA.csv'), csv);
+
+  const conta = (f) => midia.filter(f).length;
+  const dataBR = (d) => (!d ? '—' : d.length === 10 ? d.split('-').reverse().join('/') : d.length === 7 ? d.split('-').reverse().join('/') : d);
+  const md = [
+    '# Levantamento de mídia — Andréa Marim → Andréa Augusto de Oliveira',
+    '',
+    `Gerado automaticamente a partir de \`site/content/imprensa.mjs\`. Links checados em ${dataBR(VERIFICADO_EM)}.`,
+    'Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Planilhas).',
+    '',
+    '## Resumo',
+    '',
+    `- Registros: **${midia.length}** · confirmados: **${conta((m) => m.verificacao === 'confirmada')}** · parciais: **${conta((m) => m.verificacao === 'parcial')}** · não verificados: **${conta((m) => m.verificacao === 'nao-verificada')}**`,
+    `- Publicados no site: **${conta((m) => m.exibirNoSite)}** · destaques na home/Sobre: **${conta((m) => m.exibirNoSite && m.destaque)}**`,
+    ...CATEGORIAS.map((c) => `- ${c.nome}: ${conta((m) => m.categoria === c.id)}`),
+    '',
+    ...CATEGORIAS.flatMap((c) => {
+      const itens = ordenado.filter((m) => m.categoria === c.id);
+      if (!itens.length) return [`## ${c.nome}`, '', 'Nenhum registro confirmado até agora.', ''];
+      return [
+        `## ${c.nome}`,
+        '',
+        '| Data | Veículo / programa | Título | Papel | Mídia | Status | Verificação | No site |',
+        '|---|---|---|---|---|---|---|---|',
+        ...itens.map((m) => `| ${dataBR(m.data)} | ${m.veiculo}${m.programa ? ' — ' + m.programa : ''} | [${m.titulo.replace(/\|/g, '/')}](${m.url}) | ${PAPEIS[m.papel]} | ${m.formatos.join(', ')} | ${m.status} | ${verif[m.verificacao]} | ${m.exibirNoSite ? (m.destaque ? 'Sim (destaque)' : 'Sim') : 'Não'} |`),
+        '',
+      ];
+    }),
+    '## Fora do site (e por quê)',
+    '',
+    ...midia.filter((m) => !m.exibirNoSite).map((m) => `- **${m.veiculo} — ${m.titulo}**: ${m.motivoOculto}`),
+    '',
+    '## Pistas para a próxima varredura (ainda não atribuídas)',
+    '',
+    ...pistas.map((p) => `- **${p.descricao}**${p.fonte ? ` — ${p.fonte}` : ''}. ${p.situacao}`),
+    '',
+  ].join('\n');
+  await fs.writeFile(path.join(RAIZ, 'LEVANTAMENTO-MIDIA.md'), md);
 }
 
 const TIPOS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain' };

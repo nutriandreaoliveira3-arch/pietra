@@ -42,7 +42,11 @@ conteúdo editável em `site/content/config.mjs`. Veja `site/README.md`.
 
 - Servido pelo mesmo Express: `/site-previa/` (noindex) e, nos domínios de `SITE_HOSTS`, na raiz.
 - Formulário → `POST /api/site/contato` (tabela `site_contacts` + e-mail para `SITE_CONTATO_EMAIL`).
-- Pendências (CRN, CNPJ, domínio, WhatsApp, link do Raio-X, imprensa...) em `site/PENDENCIAS.md`
+- Acervo de mídia (nome antigo Andréa Marim) em `site/content/imprensa.mjs` — só itens confirmados em
+  fonte; `exibirNoSite: false` para matérias que conflitam com o posicionamento. Gera
+  `site/LEVANTAMENTO-MIDIA.csv`/`.md`. Rede do sandbox bloqueia os sites de imprensa: checar links
+  pelo conector Apify (`apify--web-fetch`).
+- Pendências (CRN, CNPJ, domínio, WhatsApp, link do Raio-X...) em `site/PENDENCIAS.md`
   (gerado por `npm run site:previa`). Nunca inventar esses dados.
 
 ## Área de administração (dentro do próprio app)
