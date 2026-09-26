@@ -37,7 +37,7 @@ export const faqHome = [
   },
   {
     p: 'Como funciona o atendimento? Quais são os valores?',
-    r: '<p>Formato, duração e investimento são apresentados depois da avaliação inicial, junto com a estratégia indicada para o seu momento. Essas informações serão detalhadas aqui assim que estiverem publicadas.</p>',
+    r: '<p>O atendimento é 100% online, com hora marcada. Há dois formatos: a consulta avulsa, para uma avaliação completa e um direcionamento individualizado, e o acompanhamento trimestral, com uma consulta por semana durante 3 meses. Formatos, o que cada um inclui e valores estão na <a href="{{atendimento}}">página de atendimento</a>.</p>',
   },
   {
     p: `${C.pessoa.nome} e ${C.pessoa.nomeAnterior} são a mesma profissional?`,

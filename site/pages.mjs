@@ -15,7 +15,7 @@ const P = C.programa.nome;
 
 // ------------------------------------------------------------- utilidades
 const faqHtml = (lista) =>
-  faq(lista.map((i) => ({ p: i.p, r: i.r.replace('{{contato}}', u('contato/')).replace('{{privacidade}}', u('politica-de-privacidade/')) })));
+  faq(lista.map((i) => ({ p: i.p, r: i.r.replace('{{contato}}', u('contato/')).replace('{{privacidade}}', u('politica-de-privacidade/')).replace('{{atendimento}}', u('atendimento/')) })));
 const faqSchema = (lista) => ({
   '@type': 'FAQPage',
   mainEntity: lista.map((i) => ({ '@type': 'Question', name: i.p, acceptedAnswer: { '@type': 'Answer', text: textoPuro(i.r) } })),
@@ -419,7 +419,7 @@ function programa() {
     eyebrowTxt: `Uma metodologia de ${N}`,
     h1: esc(P),
     lead: 'Para emagrecer com estratégia, construir hábitos sustentáveis — e parar de viver recomeçando.',
-    extra: `<div class="acoes">${btnRaioX(C.ctas.raioX, { track: 'programa-topo-raio-x' })}</div>`,
+    extra: `<div class="acoes">${btnRaioX(C.ctas.raioX, { track: 'programa-topo-raio-x' })}${btn('Formatos de atendimento', u('atendimento/'), { tipo: 'secundario', track: 'programa-topo-atendimento' })}</div>`,
   })}
 ${secao({
   rotulo: 'titulo-blindar',
@@ -455,6 +455,181 @@ ${blocoCtaFinal()}`;
     schema: [
       { '@type': 'Service', '@id': abs('emagrecimento-blindado/#servico'), name: P, description: C.seo.programa.descricao, provider: { '@id': PERSON_ID() }, serviceType: 'Acompanhamento nutricional para emagrecimento', url: abs('emagrecimento-blindado/'), areaServed: 'BR' },
       faqSchema(faqPrograma),
+      crumbSchema(crumbs),
+    ],
+    corpo,
+  };
+}
+
+// ------------------------------------------------------------- atendimento
+const A = C.atendimento;
+const reais = (v) => `R$ ${v.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+const lista = (itens) => `<ul class="checks checks--compacta">${itens.map((t) => `<li>${icons.check}<span>${esc(t)}</span></li>`).join('')}</ul>`;
+const btnAgendar = (texto, mensagem, track) => btnWhatsApp(texto, { mensagem, track });
+
+function cardPlano(pl) {
+  const valor = A.exibirValores
+    ? `<p class="plano__valor"><span class="sr-only">Investimento: </span>${reais(pl.valor)}</p>`
+    : '<p class="plano__valor plano__valor--sob">Investimento informado no agendamento</p>';
+  return `<article class="plano${pl.destaque ? ' plano--destaque' : ''}" aria-labelledby="plano-${pl.id}">
+  ${pl.destaque ? '<p class="plano__selo">Acompanhamento completo</p>' : ''}
+  <h3 id="plano-${pl.id}" class="plano__nome">${esc(pl.nome)}</h3>
+  ${valor}
+  ${pl.detalhe ? `<p class="plano__detalhe">${esc(pl.detalhe)}</p>` : ''}
+  <p>${esc(pl.indicacao)}</p>
+  <p class="plano__sub">${esc(pl.avaliaTitulo)}:</p>
+  ${lista(pl.avalia)}
+  <p>${esc(pl.recebe)}</p>
+  ${pl.naoInclui ? `<p class="nota">${esc(pl.naoInclui)}</p>` : ''}
+  <div class="plano__acao">${btnAgendar(pl.destaque ? 'Quero o acompanhamento' : 'Quero agendar a consulta', pl.mensagem, `atendimento-${pl.id}`)}</div>
+</article>`;
+}
+
+function atendimento() {
+  const crumbs = [HOME, { nome: 'Atendimento', path: 'atendimento/' }];
+  const avulsa = A.planos.find((p) => p.id === 'avulsa');
+  const tri = A.planos.find((p) => p.id === 'trimestral');
+  const inclui = [
+    {
+      t: 'Plano alimentar individualizado',
+      d: 'Elaborado considerando:',
+      itens: ['seus horários', 'sua rotina profissional', 'preferências alimentares', 'refeições fora de casa', 'finais de semana', 'dificuldades', 'necessidades nutricionais', 'objetivos'],
+      fim: 'A proposta é construir uma alimentação que seja possível de aplicar na vida real.',
+    },
+    {
+      t: 'Suplementação',
+      d: 'Quando houver necessidade, é feita uma avaliação individualizada. Podem ser avaliados, conforme cada caso:',
+      itens: ['proteínas', 'creatina', 'vitaminas', 'minerais', 'fibras', 'ômega-3', 'probióticos', 'outros suplementos pertinentes à estratégia nutricional'],
+      fim: 'Não existe suplementação padrão para todos. Cada recomendação é feita de acordo com a necessidade individual.',
+    },
+    {
+      t: 'Manipulados',
+      d: 'Quando houver indicação, podem ser avaliadas formulações manipuladas individualizadas, sempre de acordo com os objetivos e as necessidades identificados durante o acompanhamento.',
+      fim: 'A utilização de manipulados não é obrigatória e só é considerada quando fizer sentido dentro da estratégia nutricional.',
+    },
+    {
+      t: 'Avaliação e acompanhamento de medidas',
+      d: 'Mesmo no atendimento online, é possível acompanhar medidas corporais. Durante a consulta, eu ensino como fazer corretamente cada medida: os pontos de referência, a posição da fita métrica e a forma correta de registrar os resultados.',
+      fim: 'Assim, estabelecemos uma referência inicial. No acompanhamento trimestral, as medidas podem ser monitoradas periodicamente, com registros padronizados ao longo das semanas.',
+    },
+    {
+      t: 'Receitas e estratégias práticas',
+      d: 'Sugestões de receitas, substituições e opções práticas para facilitar a alimentação no dia a dia.',
+      fim: 'A ideia é aumentar suas possibilidades, facilitar sua rotina e evitar que o planejamento se torne repetitivo ou difícil de manter.',
+    },
+    {
+      t: 'Acesso ao BLIM',
+      selo: 'No acompanhamento trimestral',
+      d: 'O BLIM é o meu assistente de apoio nutricional, um suporte complementar entre uma consulta e outra para ajudar em situações como:',
+      itens: ['substituições de alimentos', 'alternativas para refeições', 'organização alimentar', 'dúvidas sobre escolhas', 'sugestões práticas', 'adaptação da alimentação à rotina'],
+      fim: 'Ele ajuda você a aplicar melhor as estratégias definidas no acompanhamento. É uma ferramenta educativa e não substitui as consultas.',
+    },
+  ];
+  const ajustes = [
+    'Se algo não estiver funcionando bem, avaliamos o motivo.',
+    'Se sua rotina mudar, adaptamos.',
+    'Se sua evolução indicar necessidade de uma nova estratégia, fazemos a mudança.',
+  ];
+  const corpo = `${cabecalhoInterno({
+    crumbs,
+    eyebrowTxt: C.pessoa.atendimento,
+    h1: 'Atendimento nutricional online',
+    lead: 'Um acompanhamento pensado para quem não quer apenas receber uma dieta, mas entender o próprio processo, ajustar estratégias ao longo do caminho e ter uma condução nutricional realmente individualizada.',
+    extra: `<div class="acoes">${btnAgendar('Quero agendar meu atendimento', A.agendarMensagem, 'atendimento-topo')}${btn(A.exibirValores ? 'Ver formatos e valores' : 'Ver formatos', '#formatos', { tipo: 'secundario' })}</div>`,
+  })}
+${secao({
+  rotulo: 'titulo-online',
+  conteudo: `<div class="container--estreito prosa">
+    ${eyebrow('Como é o atendimento')}
+    <h2 id="titulo-online">De onde você estiver, com estratégia construída para a sua rotina</h2>
+    <p>O atendimento é 100% online, com hora marcada, permitindo que você seja acompanhada de onde estiver, com orientação personalizada e estratégias construídas de acordo com a sua rotina, necessidades e objetivos.</p>
+  </div>`,
+})}
+${secao({
+  id: 'formatos',
+  classe: 'secao--areia',
+  rotulo: 'titulo-formatos',
+  conteudo: `<div class="cab-secao">${eyebrow('Formatos')}<h2 id="titulo-formatos">Escolha como quer ser acompanhada</h2></div>
+<div class="planos">${[avulsa, tri].map(cardPlano).join('')}</div>`,
+})}
+${secao({
+  rotulo: 'titulo-ajustes',
+  conteudo: `<div class="dupla dupla--texto">
+  <div>
+    ${eyebrow('A grande diferença')}
+    <h2 id="titulo-ajustes">Você não recebe um plano e fica meses tentando seguir sozinha</h2>
+    <p class="lead">No acompanhamento trimestral, a estratégia pode ser ajustada durante todo o processo. Ele é construído de forma dinâmica, individualizada e próxima.</p>
+  </div>
+  <ul class="nao-e nao-e--salvia">${ajustes.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+</div>`,
+})}
+${secao({
+  classe: 'secao--areia',
+  rotulo: 'titulo-inclui',
+  conteudo: `<div class="cab-secao">${eyebrow('O que faz parte')}<h2 id="titulo-inclui">Cada parte do atendimento, com clareza</h2></div>
+<ul class="principios principios--atendimento">${inclui.map((i) => `<li>
+  ${i.selo ? `<p class="plano__selo plano__selo--claro">${esc(i.selo)}</p>` : ''}
+  <h3>${esc(i.t)}</h3>
+  <p>${esc(i.d)}</p>
+  ${i.itens ? lista(i.itens) : ''}
+  <p>${esc(i.fim)}</p>
+</li>`).join('')}</ul>`,
+})}
+${secao({
+  classe: 'secao--noite',
+  rotulo: 'titulo-semanal',
+  conteudo: `<div class="container--estreito prosa">
+    ${eyebrow('Por que semanal')}
+    <h2 id="titulo-semanal">Por que o acompanhamento semanal faz diferença?</h2>
+    <p>Porque o processo nutricional não acontece apenas no dia da consulta. Ele acontece na semana corrida, no restaurante, na viagem, no final de semana, nos imprevistos e nos momentos em que a estratégia precisa ser adaptada.</p>
+    <p>Por isso, durante os três meses, você não precisa esperar semanas para descobrir se algo precisa mudar. Nós avaliamos, ajustamos e seguimos evoluindo.</p>
+  </div>`,
+})}
+${A.exibirValores ? secao({
+  id: 'investimento',
+  rotulo: 'titulo-investimento',
+  conteudo: `<div class="container--estreito">
+    <div class="cab-secao">${eyebrow('Investimento')}<h2 id="titulo-investimento">Investimento</h2></div>
+    <dl class="investimento">
+      <div><dt>${esc(avulsa.nome)}</dt><dd>${reais(avulsa.valor)}</dd></div>
+      <div><dt>${esc(tri.nome)}<span>${esc(tri.detalhe)}</span></dt><dd>${reais(tri.valor)}</dd></div>
+    </dl>
+    <p class="nota centro">Atendimento 100% online, com hora marcada.</p>
+  </div>`,
+}) : ''}
+${secao({
+  classe: 'secao--cta',
+  rotulo: 'titulo-comecar',
+  conteudo: `<div class="container--estreito centro">
+    <h2 id="titulo-comecar">Pronta para começar?</h2>
+    <p class="lead">Você não precisa de mais uma dieta para tentar seguir sozinha. Você precisa de uma estratégia construída para você, acompanhada de perto e ajustada conforme sua evolução.</p>
+    <div class="acoes acoes--centro">${btnAgendar('Quero agendar meu atendimento', A.agendarMensagem, 'atendimento-final')}</div>
+    <p class="nota">Ainda está em dúvida sobre o seu momento? <a href="${u('raio-x/')}">Comece pelo Raio-X do Emagrecimento</a>.</p>
+  </div>`,
+})}`;
+  const oferta = (pl) => ({
+    '@type': 'Offer',
+    name: pl.nome,
+    description: pl.resumo,
+    ...(A.exibirValores ? { price: pl.valor.toFixed(2), priceCurrency: 'BRL' } : {}),
+    url: abs('atendimento/#formatos'),
+  });
+  return {
+    path: 'atendimento/',
+    titulo: C.seo.atendimento.titulo,
+    descricao: C.seo.atendimento.descricao,
+    schema: [
+      {
+        '@type': 'Service',
+        '@id': abs('atendimento/#servico'),
+        name: 'Atendimento nutricional online',
+        serviceType: 'Consulta e acompanhamento nutricional online',
+        provider: { '@id': PERSON_ID() },
+        areaServed: 'BR',
+        availableChannel: { '@type': 'ServiceChannel', name: 'Online, com hora marcada' },
+        url: abs('atendimento/'),
+        offers: A.planos.map(oferta),
+      },
       crumbSchema(crumbs),
     ],
     corpo,
@@ -848,6 +1023,7 @@ export function todasAsPaginas(artigos) {
     ['', home],
     ['sobre/', sobre],
     ['emagrecimento-blindado/', programa],
+    ['atendimento/', atendimento],
     ['raio-x/', raioX],
     ['conteudos/', () => conteudos(artigos)],
     ...artigos.map((a) => [`conteudos/${a.slug}/`, () => artigo(a, artigos.filter((r) => r !== a).slice(0, 3))]),

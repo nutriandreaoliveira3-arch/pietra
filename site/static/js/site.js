@@ -30,7 +30,7 @@
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fecharMenu(true); });
     menu.addEventListener('click', function (e) { if (e.target.closest('a')) fecharMenu(false); });
-    window.matchMedia('(min-width: 1080px)').addEventListener('change', function () { fecharMenu(false); });
+    window.matchMedia('(min-width: 1200px)').addEventListener('change', function () { fecharMenu(false); });
   }
 
   // ---------------------------------------------------------- cabeçalho

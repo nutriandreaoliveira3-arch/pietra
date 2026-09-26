@@ -159,12 +159,12 @@ body.menu-aberto { overflow: hidden; }
   .topo__acoes .btn--compacto { padding: .5rem .8rem; font-size: .85rem; }
 }
 
-@media (min-width: 1080px) {
+@media (min-width: 1200px) {
   .menu-botao, .nav__cta-mobile { display: none; }
   .nav__lista {
-    display: flex; position: static; flex-direction: row; background: none; padding: 0; overflow: visible; gap: 1.6rem;
+    display: flex; position: static; flex-direction: row; background: none; padding: 0; overflow: visible; gap: 1.25rem;
   }
-  .nav__lista a:not(.btn) { font-family: var(--fonte-texto); font-size: .92rem; padding: .5rem 0; border: 0; color: var(--grafite); font-weight: 500; }
+  .nav__lista a:not(.btn) { white-space: nowrap; font-family: var(--fonte-texto); font-size: .92rem; padding: .5rem 0; border: 0; color: var(--grafite); font-weight: 500; }
   .nav__lista a:not(.btn):hover { color: var(--salvia); }
   .nav__lista a[aria-current="page"] { color: var(--salvia); box-shadow: inset 0 -1.5px 0 var(--salvia); }
   .marca__nome { max-width: none; }
@@ -569,3 +569,32 @@ div.pend { display: block; margin: .75rem 0; }
   .topo, .wa-flutuante, .rodape__cta, .acoes { display: none !important; }
   body { background: #fff; }
 }
+
+/* ------------------------------------------------------------ atendimento */
+.planos { display: grid; gap: 1.25rem; align-items: start; }
+@media (min-width: 900px) { .planos { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+.plano { background: #fff; border: 1px solid rgba(90, 74, 66, .14); border-radius: 20px; padding: 1.75rem 1.5rem; display: grid; gap: .9rem; min-width: 0; }
+.plano p { margin: 0; }
+.plano--destaque { border: 2px solid var(--salvia); box-shadow: 0 22px 48px -30px rgba(47, 51, 48, .45); }
+.plano__selo { justify-self: start; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: var(--salvia); padding: .3rem .8rem; border-radius: 999px; }
+.plano__selo--claro { background: var(--areia); color: var(--cafe); margin-bottom: .6rem; }
+.plano__nome { font-size: 1.7rem; margin: 0; }
+.plano__valor { font-family: var(--fonte-titulo); font-size: 2.4rem; line-height: 1; color: var(--salviaEscura); }
+.plano__valor--sob { font-family: var(--fonte-texto); font-size: 1rem; color: var(--cafe); }
+.plano__detalhe { font-weight: 600; color: var(--cafe); }
+.plano__sub { font-weight: 600; margin-top: .4rem !important; }
+.plano__acao { margin-top: .5rem; }
+.plano__acao .btn { width: 100%; justify-content: center; }
+.checks--compacta { gap: .45rem; }
+.checks--compacta li { font-size: .98rem; }
+.checks--compacta .ico { width: 18px; height: 18px; }
+.nao-e--salvia li { border-left-color: var(--salvia); background: var(--offwhite); }
+.principios--atendimento > li { background: #fff; display: grid; gap: .7rem; align-content: start; }
+.principios--atendimento h3 { margin: 0; }
+.principios--atendimento .checks li { display: flex; background: none; padding: 0; border-radius: 0; }
+.secao--noite .prosa p { color: #eee8de; }
+.investimento { display: grid; gap: .75rem; margin: 0 0 1rem; }
+.investimento > div { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; background: #fff; border: 1px solid rgba(90, 74, 66, .14); border-radius: 16px; padding: 1.1rem 1.4rem; }
+.investimento dt { font-weight: 600; }
+.investimento dt span { display: block; font-weight: 400; font-size: .9rem; color: var(--cafe); }
+.investimento dd { margin: 0; font-family: var(--fonte-titulo); font-size: 1.9rem; color: var(--salviaEscura); }

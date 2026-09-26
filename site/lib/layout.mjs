@@ -4,6 +4,7 @@ import { ctx, esc, u, abs, icons, btn, btnRaioX, whatsappUrl, pend, assinaturaPr
 export const NAV = [
   { path: 'sobre/', nome: 'Sobre Andréa' },
   { path: 'emagrecimento-blindado/', nome: 'Emagrecimento Blindado' },
+  { path: 'atendimento/', nome: 'Atendimento' },
   { path: 'raio-x/', nome: 'Raio-X' },
   { path: 'conteudos/', nome: 'Conteúdos' },
   { path: 'imprensa/', nome: 'Na mídia' },

@@ -25,7 +25,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 - [ ] E-mail de contato (config.contato.email) — /contato/
 - [ ] Horário de atendimento (config.contato.horario) — /contato/
 - [ ] Prazo de resposta (config.contato.prazoResposta) — /contato/
-- [ ] Modalidade de atendimento: online/presencial (config.pessoa.atendimento) — /contato/
 - [ ] Revisão jurídica da Política de Privacidade e dos Termos de Uso — /politica-de-privacidade/
 - [ ] Data de revisão da Política (config.legal.revisaoPolitica) — /politica-de-privacidade/
 - [ ] E-mail para pedidos de privacidade/LGPD (config.legal.emailPrivacidade) — /politica-de-privacidade/

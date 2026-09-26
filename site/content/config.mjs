@@ -43,7 +43,8 @@ export default {
     crn: 'CRN-3 15233',
     anosDeExperiencia: null, // ex.: 20 — PENDENTE (número, sem arredondar pra cima)
     cidade: null, // ex.: 'São Paulo, SP' — PENDENTE
-    atendimento: null, // ex.: 'Atendimento online para todo o Brasil' — PENDENTE
+    // Confirmado pela Andréa em 26/09/2026.
+    atendimento: '100% online, com hora marcada',
     // ENCONTRADO EM FONTES PÚBLICAS (entrevista no blog E de Repente 50,
     // 15/02/2019, e ficha de fontes da Revista SuplementAção nº 56, 2019):
     //   - Graduação em Nutrição — Universidade Bandeirantes de São Paulo
@@ -93,6 +94,65 @@ export default {
     horario: null, // ex.: 'Segunda a sexta, das 9h às 18h'
     prazoResposta: null, // ex.: 'Respondemos em até 2 dias úteis'
     endereco: null, // só se houver atendimento presencial
+  },
+
+  // Página "Atendimento" (/atendimento/). Formatos e valores informados pela
+  // Andréa em 26/09/2026. Para esconder os valores do site (ex.: se a revisão
+  // jurídica ou o CRN pedir), troque `exibirValores` para false: a página
+  // continua no ar e o botão leva ao WhatsApp para consultar o investimento.
+  atendimento: {
+    exibirValores: true,
+    agendarMensagem: 'Olá, Andréa. Vim pelo site e quero agendar meu atendimento nutricional online.',
+    planos: [
+      {
+        id: 'avulsa',
+        nome: 'Consulta avulsa',
+        valor: 600,
+        resumo: 'Avaliação nutricional completa e um direcionamento individualizado.',
+        indicacao: 'Indicada para quem deseja uma avaliação nutricional completa e um direcionamento individualizado.',
+        avaliaTitulo: 'Durante a consulta, são avaliados',
+        avalia: [
+          'rotina alimentar',
+          'histórico de saúde e hábitos',
+          'objetivos',
+          'dificuldades atuais',
+          'preferências alimentares',
+          'organização das refeições',
+          'uso de suplementos',
+          'necessidade de suplementação',
+          'possibilidade de utilização de manipulados, quando houver indicação',
+          'estratégias nutricionais compatíveis com a sua realidade',
+        ],
+        recebe: 'Você recebe um plano alimentar individualizado, orientações práticas, estratégias nutricionais e recomendações de acordo com o que for identificado durante a consulta.',
+        naoInclui: 'A consulta avulsa não inclui retornos semanais nem acesso ao BLIM.',
+        mensagem: 'Olá, Andréa. Vim pelo site e quero agendar uma consulta avulsa online.',
+      },
+      {
+        id: 'trimestral',
+        nome: 'Acompanhamento trimestral',
+        valor: 2200,
+        destaque: true,
+        detalhe: '1 consulta por semana durante 3 meses',
+        resumo: 'Acompanhamento próximo, contínuo e estratégico durante 3 meses.',
+        indicacao: 'Indicado para quem deseja um acompanhamento mais próximo, contínuo e estratégico durante 3 meses. Você terá 1 consulta por semana, permitindo avaliar de perto sua evolução e fazer ajustes sempre que necessário.',
+        avaliaTitulo: 'Ao longo do acompanhamento, avaliamos',
+        avalia: [
+          'adaptação ao plano alimentar',
+          'dificuldades da semana',
+          'fome e saciedade',
+          'rotina',
+          'organização alimentar',
+          'resposta às estratégias propostas',
+          'evolução das medidas',
+          'necessidade de ajustes',
+          'suplementação',
+          'manipulados, quando houver indicação',
+          'mudanças de estratégia conforme sua evolução',
+        ],
+        recebe: 'Inclui plano alimentar individualizado, acompanhamento das medidas, receitas e estratégias práticas e acesso ao BLIM.',
+        mensagem: 'Olá, Andréa. Vim pelo site e quero agendar o acompanhamento trimestral online.',
+      },
+    ],
   },
 
   // Formulário da página Contato. As mensagens chegam no e-mail definido na
@@ -301,6 +361,10 @@ export default {
     privacidade: {
       titulo: 'Política de Privacidade | Andréa Augusto de Oliveira',
       descricao: 'Como os dados pessoais enviados pelo site são coletados, usados e protegidos, de acordo com a LGPD.',
+    },
+    atendimento: {
+      titulo: 'Atendimento nutricional online | Andréa Augusto de Oliveira',
+      descricao: 'Consulta avulsa e acompanhamento trimestral com consultas semanais, 100% online e com hora marcada, com a nutricionista Andréa Augusto de Oliveira.',
     },
     termos: {
       titulo: 'Termos de Uso | Andréa Augusto de Oliveira',
