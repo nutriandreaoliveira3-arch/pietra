@@ -27,6 +27,7 @@ export function schemaBase() {
     knowsAbout: ['Emagrecimento sustentável', 'Comportamento alimentar', 'Nutrição', 'Hábitos alimentares', 'Manutenção de peso'],
   };
   if (sameAs.length) person.sameAs = sameAs;
+  if (C.pessoa.crn) person.identifier = { '@type': 'PropertyValue', propertyID: 'CRN', value: C.pessoa.crn };
   return [
     {
       '@type': 'WebSite',

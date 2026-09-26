@@ -19,10 +19,10 @@
 
 export default {
   site: {
-    // PENDENTE: domínio definitivo. Usado em canonical, sitemap e Open Graph.
-    // Trocar assim que o domínio for comprado/definido.
+    // Domínio definitivo (confirmado pela Andréa em 26/09/2026). Usado em
+    // canonical, sitemap e Open Graph.
     url: 'https://www.andreaaugustodeoliveira.com.br',
-    dominioConfirmado: false,
+    dominioConfirmado: true,
     idioma: 'pt-BR',
     locale: 'pt_BR',
   },
@@ -39,10 +39,8 @@ export default {
     // qualquer divulgação profissional. Confirmar a situação do CRN antes de
     // publicar o site com o título "Nutricionista".
     profissao: 'Nutricionista',
-    // PENDENTE. O perfil antigo no Minha Vida exibe "CRN 15233/SP" (nome
-    // Andréa Marim). Só preencher depois de confirmar a situação atual do
-    // registro no CRN-3.
-    crn: null,
+    // Confirmado pela Andréa em 26/09/2026 (mesmo registro usado como Andréa Marim).
+    crn: 'CRN-3 15233',
     anosDeExperiencia: null, // ex.: 20 — PENDENTE (número, sem arredondar pra cima)
     cidade: null, // ex.: 'São Paulo, SP' — PENDENTE
     atendimento: null, // ex.: 'Atendimento online para todo o Brasil' — PENDENTE
@@ -78,8 +76,8 @@ export default {
   },
 
   contato: {
-    // Só números, com DDI 55 + DDD. ex.: '5511999999999' — PENDENTE
-    whatsapp: null,
+    // Só números, com DDI 55 + DDD. (11) 99900-3259
+    whatsapp: '5511999003259',
     // Mensagem que já aparece escrita quando a visitante abre o WhatsApp.
     whatsappMensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber mais sobre o Emagrecimento Blindado.',
     email: null, // PENDENTE

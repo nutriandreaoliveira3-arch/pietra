@@ -383,7 +383,7 @@ export const midia = [
     status: 'ativo',
     verificacao: 'confirmada',
     evidencia: 'Perfil registra colaboração regular com Mãe com Prosa, Alto Astral, Minha Vida, Daqui Dali e Caras, e participação nas revistas Suplementação, Viva Saúde, Segredos da Mente, Ana Maria, Pense Leve, Máxima, Dieta Já e Capricho.',
-    obs: 'O perfil exibe "CRN 15233/SP". Não usar esse número no site sem confirmar a situação atual do registro.',
+    obs: 'O perfil exibe "CRN 15233/SP", o mesmo registro atual de Andréa (CRN-3 15233).',
     exibirNoSite: true,
     destaque: false,
   },

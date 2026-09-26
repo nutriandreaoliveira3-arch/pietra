@@ -71,6 +71,11 @@ const site404 = (req, res) => res.status(404).sendFile(path.join(siteDir, '404.h
 
 app.use((req, res, next) => {
   if (!SITE_HOSTS.has(req.hostname) || req.path.startsWith('/api/')) return next();
+  // Domínio sem "www" → versão com "www" (um endereço só para o Google).
+  const comWww = `www.${req.hostname}`;
+  if (!req.hostname.startsWith('www.') && SITE_HOSTS.has(comWww)) {
+    return res.redirect(301, `https://${comWww}${req.originalUrl}`);
+  }
   siteStatic(req, res, () => site404(req, res));
 });
 app.use(
