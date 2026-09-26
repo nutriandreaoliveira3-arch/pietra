@@ -34,7 +34,20 @@ export default {
     nomeAnterior: 'Andréa Marim',
     // Outras formas do nome atual usadas em redes e materiais (vão para os
     // dados estruturados do Google, não para o texto das páginas).
-    outrosNomes: ['Andréa Oliveira'],
+    outrosNomes: ['Andréa Oliveira', 'Andréa de Oliveira Marim'],
+    // Perfis e páginas que são da própria Andréa em outros sites. Vão para o
+    // `sameAs` dos dados estruturados: é assim que o Google entende que todos
+    // esses perfis (inclusive os antigos, como Andréa Marim) são a mesma pessoa.
+    perfisAnteriores: [
+      'https://www.minhavida.com.br/especialistas/33996-andrea-marim',
+    ],
+    // Projeto da época Andréa Marim. Ano confirmado pela Andréa em 26/09/2026.
+    projetoAnterior: {
+      nome: 'Nutrir Sonhos',
+      desde: 2018,
+      youtube: 'https://www.youtube.com/@nutrirsonhos2783',
+      instagram: 'https://www.instagram.com/nutrirsonhosandreamarim/',
+    },
     // ATENÇÃO: o Código de Ética do Nutricionista exige nome + nº de CRN em
     // qualquer divulgação profissional. Confirmar a situação do CRN antes de
     // publicar o site com o título "Nutricionista".

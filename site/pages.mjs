@@ -335,6 +335,16 @@ ${blocoCtaFinal()}`;
   };
 }
 
+function projetoAnterior() {
+  const pa = C.pessoa.projetoAnterior;
+  if (!pa) return '';
+  const links = [
+    pa.youtube && `<a href="${esc(pa.youtube)}" target="_blank" rel="noopener">YouTube<span class="sr-only"> (abre em nova aba)</span></a>`,
+    pa.instagram && `<a href="${esc(pa.instagram)}" target="_blank" rel="noopener">Instagram<span class="sr-only"> (abre em nova aba)</span></a>`,
+  ].filter(Boolean);
+  return `<p>Em ${esc(pa.desde)}, ainda como ${esc(NA)}, criou o projeto <strong>${esc(pa.nome)}</strong>, com conteúdos de nutrição no ${links.join(' e no ')}. Esse material continua no ar como registro da trajetória.</p>`;
+}
+
 function sobre() {
   const crumbs = [HOME, { nome: 'Sobre Andréa', path: 'sobre/' }];
   const P_ = C.pessoa;
@@ -365,6 +375,8 @@ ${secao({
   <div class="prosa">
     <h2 id="titulo-historia">Uma trajetória que continua</h2>
     <p>Durante muitos anos, ${esc(C.pessoa.nomeCurto)} atuou e ficou conhecida pelo público como ${esc(NA)}. Com esse nome, construiu uma trajetória de atendimento clínico e de comunicação em saúde, com participações em televisão, rádio, jornais e outros veículos.</p>
+    ${projetoAnterior()}
+    <p>${esc(NA)}, Andréa Oliveira e ${esc(N)} são a mesma profissional${C.pessoa.crn ? `, com o mesmo registro: ${esc(C.pessoa.crn)}` : ''}.</p>
     <p>Depois de um período afastada da atividade profissional, ela retoma o trabalho com o seu nome atual, ${esc(N)} — com a mesma essência e uma proposta amadurecida pela experiência.</p>
     <p>Nessa nova fase, criou o <a href="${u('emagrecimento-blindado/')}">${esc(P)}</a>, uma metodologia para ajudar mulheres a emagrecer com estratégia, construir hábitos sustentáveis e parar de viver recomeçando.</p>
     ${C.pessoa.anosDeExperiencia ? `<p class="destaque-num"><strong>${esc(C.pessoa.anosDeExperiencia)}+</strong> anos de trajetória profissional</p>` : pend('Anos de experiência (config.pessoa.anosDeExperiencia)', { bloco: true })}
