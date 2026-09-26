@@ -127,7 +127,7 @@ function footer() {
     C.contato.email && `<a class="rede" href="mailto:${esc(C.contato.email)}" aria-label="Enviar e-mail para ${esc(C.contato.email)}">${icons.email}</a>`,
   ].filter(Boolean);
   if (!C.contato.instagram) pend('Link do Instagram (config.contato.instagram)');
-  const legal = [
+  const legal = C.legal.pessoaFisica ? '' : [
     C.legal.razaoSocial ? esc(C.legal.razaoSocial) : pend('Razão social (config.legal.razaoSocial)'),
     C.legal.cnpj ? `CNPJ ${esc(C.legal.cnpj)}` : pend('CNPJ (config.legal.cnpj)'),
   ]

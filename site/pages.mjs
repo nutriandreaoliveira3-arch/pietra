@@ -775,7 +775,7 @@ function privacidade() {
 <div class="container container--texto prosa legal">
 <p>Esta política explica como os dados pessoais enviados por este site são tratados, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD).</p>
 <h2>1. Quem é a controladora dos dados</h2>
-<p>${esc(N)}${L.razaoSocial ? `, por meio de ${esc(L.razaoSocial)}` : ''}${L.cnpj ? `, CNPJ ${esc(L.cnpj)}` : ''}. ${!L.razaoSocial || !L.cnpj ? pend('Razão social e CNPJ na Política (config.legal)') : ''}</p>
+<p>${L.pessoaFisica ? `${esc(N)}, ${assinaturaProfissional()}, profissional autônoma (pessoa física).` : `${esc(N)}${L.razaoSocial ? `, por meio de ${esc(L.razaoSocial)}` : ''}${L.cnpj ? `, CNPJ ${esc(L.cnpj)}` : ''}. ${!L.razaoSocial || !L.cnpj ? pend('Razão social e CNPJ na Política (config.legal)') : ''}`}</p>
 <h2>2. Quais dados coletamos</h2>
 <ul>
 <li><strong>Formulário de contato:</strong> nome, e-mail, WhatsApp (opcional), assunto e mensagem.</li>

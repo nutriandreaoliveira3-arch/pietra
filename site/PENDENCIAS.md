@@ -15,9 +15,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 - [ ] Nomes oficiais das 7 áreas do Raio-X (config.raioX.areas) — /, /raio-x/
 - [ ] Anos de experiência (config.pessoa.anosDeExperiencia) — /, /sobre/
 - [ ] Depoimentos reais e autorizados (config.depoimentos) — /
-- [ ] Link do Instagram (config.contato.instagram) — todas as páginas
-- [ ] Razão social (config.legal.razaoSocial) — todas as páginas
-- [ ] CNPJ (config.legal.cnpj) — todas as páginas
 - [ ] Marcos da trajetória profissional: períodos, cargos, atendimentos (config.pessoa.trajetoria) — /sobre/
 - [ ] Formação acadêmica (config.pessoa.formacoes) — /sobre/
 - [ ] Especializações e cursos (config.pessoa.especializacoes) — /sobre/
@@ -31,6 +28,5 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 - [ ] Modalidade de atendimento: online/presencial (config.pessoa.atendimento) — /contato/
 - [ ] Revisão jurídica da Política de Privacidade e dos Termos de Uso — /politica-de-privacidade/
 - [ ] Data de revisão da Política (config.legal.revisaoPolitica) — /politica-de-privacidade/
-- [ ] Razão social e CNPJ na Política (config.legal) — /politica-de-privacidade/
 - [ ] E-mail para pedidos de privacidade/LGPD (config.legal.emailPrivacidade) — /politica-de-privacidade/
 - [ ] Data de revisão dos Termos (config.legal.revisaoTermos) — /termos-de-uso/

@@ -65,8 +65,13 @@ export default {
   },
 
   legal: {
-    razaoSocial: null, // PENDENTE
-    cnpj: null, // PENDENTE
+    // Atuação como pessoa física (sem CNPJ por enquanto). A identificação
+    // pública é nome + CRN. NUNCA publicar CPF no site (risco de fraude e
+    // exposição desnecessária de dado pessoal — LGPD). Se abrir empresa,
+    // preencher razão social e CNPJ e mudar pessoaFisica para false.
+    pessoaFisica: true,
+    razaoSocial: null,
+    cnpj: null,
     enderecoComercial: null, // PENDENTE (se houver)
     // E-mail para pedidos de titulares de dados (LGPD). PENDENTE.
     emailPrivacidade: null,
@@ -82,7 +87,7 @@ export default {
     whatsappMensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber mais sobre o Emagrecimento Blindado.',
     email: null, // PENDENTE
     emailImprensa: null, // PENDENTE (pode ser o mesmo)
-    instagram: null, // ex.: 'https://www.instagram.com/usuario' — PENDENTE
+    instagram: 'https://www.instagram.com/nutriandreaoliveira/',
     youtube: null,
     // Não inventar: só preencher quando definido.
     horario: null, // ex.: 'Segunda a sexta, das 9h às 18h'
