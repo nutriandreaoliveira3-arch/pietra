@@ -1,12 +1,11 @@
 # Pendências do site
 
-Gerado automaticamente por `node site/build.mjs` em 2026-09-25. Não editar à mão:
+Gerado automaticamente por `node site/build.mjs` em 2026-09-26. Não editar à mão:
 preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 ## Críticas (antes de divulgar o site)
 
-- [ ] Domínio ainda não confirmado — canonical/sitemap usam https://www.andreaaugustodeoliveira.com.br
-- [ ] CRN não informado — o Código de Ética exige nome + CRN em divulgação profissional
+- Nenhuma
 
 ## Conteúdo e dados
 
@@ -16,11 +15,9 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 - [ ] Nomes oficiais das 7 áreas do Raio-X (config.raioX.areas) — /, /raio-x/
 - [ ] Anos de experiência (config.pessoa.anosDeExperiencia) — /, /sobre/
 - [ ] Depoimentos reais e autorizados (config.depoimentos) — /
-- [ ] Número do WhatsApp (config.contato.whatsapp) — /, /sobre/, /emagrecimento-blindado/, /contato/
 - [ ] Link do Instagram (config.contato.instagram) — todas as páginas
 - [ ] Razão social (config.legal.razaoSocial) — todas as páginas
 - [ ] CNPJ (config.legal.cnpj) — todas as páginas
-- [ ] Número do CRN (config.pessoa.crn) — todas as páginas
 - [ ] Marcos da trajetória profissional: períodos, cargos, atendimentos (config.pessoa.trajetoria) — /sobre/
 - [ ] Formação acadêmica (config.pessoa.formacoes) — /sobre/
 - [ ] Especializações e cursos (config.pessoa.especializacoes) — /sobre/
