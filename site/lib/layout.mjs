@@ -15,7 +15,7 @@ export const PERSON_ID = () => abs('#andrea');
 export const WEBSITE_ID = () => abs('#site');
 
 export function schemaBase() {
-  const sameAs = [C.contato.instagram, C.contato.youtube].filter(Boolean);
+  const sameAs = [C.contato.instagram, C.contato.youtube, ...(C.pessoa.perfisAnteriores || [])].filter(Boolean);
   const person = {
     '@type': 'Person',
     '@id': PERSON_ID(),
@@ -29,7 +29,18 @@ export function schemaBase() {
   };
   if (sameAs.length) person.sameAs = sameAs;
   if (C.pessoa.crn) person.identifier = { '@type': 'PropertyValue', propertyID: 'CRN', value: C.pessoa.crn };
+  const pa = C.pessoa.projetoAnterior;
+  const projeto = pa && {
+    '@type': 'Organization',
+    '@id': abs('#nutrir-sonhos'),
+    name: pa.nome,
+    alternateName: `${pa.nome} ${C.pessoa.nomeAnterior}`,
+    foundingDate: String(pa.desde),
+    founder: { '@id': PERSON_ID() },
+    sameAs: [pa.youtube, pa.instagram].filter(Boolean),
+  };
   return [
+    ...(projeto ? [projeto] : []),
     {
       '@type': 'WebSite',
       '@id': WEBSITE_ID(),

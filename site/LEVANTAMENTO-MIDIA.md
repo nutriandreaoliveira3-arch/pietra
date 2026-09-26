@@ -5,12 +5,12 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 
 ## Resumo
 
-- Registros: **30** · confirmados: **27** · parciais: **2** · não verificados: **1**
+- Registros: **31** · confirmados: **28** · parciais: **2** · não verificados: **1**
 - Publicados no site: **21** · destaques na home/Sobre: **8**
 - TV: 4
 - Rádio: 0
 - Revistas: 8
-- Jornais: 3
+- Jornais: 4
 - Portais e internet: 11
 - Vídeos e entrevistas: 4
 
@@ -47,6 +47,7 @@ Nenhum registro confirmado até agora.
 | 11/10/2022 | Diário do Nordeste — Ser Saúde | [Araçá: saiba para que serve e os benefícios da fruta](https://diariodonordeste.verdesmares.com.br/ser-saude/araca-saiba-para-que-serve-e-os-beneficios-da-fruta-1.3287706) | Especialista consultada | texto, imagem | ativo | Confirmada | Sim |
 | 23/03/2020 | Sampi / Arraso (Piracicaba) | [Boa alimentação é essencial para a defesa contra o coronavírus](https://sampi.net.br/piracicaba/noticias/1730075/arraso/2020/03/boa-alimentacao-e-essencial-para-a-defesa-contra-o-coronavirus) | Especialista consultada | texto, imagem | ativo | Confirmada | Não |
 | 25/11/2017 | Jornal NovaMetrópole — Corpo | [Projeto Verão: para turbinar os músculos](https://jornalnovametropole.com.br/wp/projeto-verao-para-turbinar-os-musculos/) | Entrevistada | texto, imagem | ativo | Confirmada | Não |
+| — | Jornal da Franca | [Folha poderosa: entenda os benefícios da couve para a dieta detox](https://www.jornaldafranca.com.br/folha-poderosa-entenda-os-beneficios-da-couve-para-a-dieta-detox/) | Especialista consultada | texto | ativo | Confirmada | Não |
 
 ## Portais e internet
 
@@ -79,6 +80,7 @@ Nenhum registro confirmado até agora.
 - **Revista SuplementAção — Dieta: Cetogênica**: Associa a estratégia a "redução em curto prazo", o que conflita com o posicionamento atual (sem dietas restritivas nem prazos).
 - **Viva Saúde — Mais garapa**: Confirmar visualmente a citação no PDF antes de publicar.
 - **Revista Dieta Já — Dieta dos 31 Dias**: Título de dieta com prazo fixo conflita com o posicionamento atual.
+- **Jornal da Franca — Folha poderosa: entenda os benefícios da couve para a dieta detox**: Tema "dieta detox" e suco para emagrecer conflitam com o posicionamento atual (mesmo critério das matérias de chá).
 - **Jornal NovaMetrópole — Projeto Verão: para turbinar os músculos**: Título "Projeto Verão" conflita com o posicionamento atual (sem estética de projeto verão).
 - **Sampi / Arraso (Piracicaba) — Boa alimentação é essencial para a defesa contra o coronavírus**: Tema de pandemia e recomendações específicas (shot, própolis) podem ser lidos hoje como alegação terapêutica.
 - **Terra (conteúdo Alto Astral) — Chá para emagrecer: perca peso com receitas simples e poderosas**: Título da matéria promete perda de peso ("perca peso"), o que conflita com as regras éticas do site.
