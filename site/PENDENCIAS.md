@@ -1,6 +1,6 @@
 # Pendências do site
 
-Gerado automaticamente por `node site/build.mjs` em 2026-09-26. Não editar à mão:
+Gerado automaticamente por `node site/build.mjs` em 2026-09-27. Não editar à mão:
 preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 ## Críticas (antes de divulgar o site)

@@ -389,10 +389,10 @@ ${secao({
   conteudo: `<div class="cab-secao">${eyebrow('Como ela trabalha')}<h2 id="titulo-principios">Princípios do trabalho</h2></div>
 <ul class="principios">${principios.map(([t, d]) => `<li><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('')}</ul>`,
 })}
-${secao({
+${trajetoria ? secao({
   rotulo: 'titulo-trajetoria',
   conteudo: `<div class="container--estreito"><div class="cab-secao cab-secao--esq">${eyebrow('Trajetória')}<h2 id="titulo-trajetoria">Marcos profissionais</h2></div>${trajetoria}</div>`,
-})}
+}) : ''}
 ${temFormacao ? secao({
   classe: 'secao--linha',
   rotulo: 'titulo-formacao',
