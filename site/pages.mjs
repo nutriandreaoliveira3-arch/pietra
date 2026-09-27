@@ -8,6 +8,9 @@ import {
 } from './lib/ui.mjs';
 import { PERSON_ID, WEBSITE_ID } from './lib/layout.mjs';
 import { midia as MIDIA, CATEGORIAS, PAPEIS } from './content/imprensa.mjs';
+import { createRequire } from 'node:module';
+
+const { definicaoPublica } = createRequire(import.meta.url)('../src/lib/raiox.js');
 
 const N = C.pessoa.nome;
 const NA = C.pessoa.nomeAnterior;
@@ -116,27 +119,65 @@ ${listaPilares({ cta: `<p>Cada pilar, em detalhe.</p>${btn(C.ctas.metodo, u('ema
 }
 
 function areasRaioX() {
-  if (!C.raioX.areasConfirmadas) pend('Nomes oficiais das 7 áreas do Raio-X (config.raioX.areas)');
   return `<ol class="areas">${C.raioX.areas.map((a, i) => `<li><span aria-hidden="true">${i + 1}</span>${esc(a)}</li>`).join('')}</ol>`;
 }
 
-function blocoRaioX({ direto = true, titulo = 'h2' } = {}) {
+const RX = C.raioX;
+const rxNome = () => esc(RX.nome).replace('™', '<sup class="tm">™</sup>');
+
+// Círculo 360º: "RAIO-X 360º" no centro e os pilares ao redor.
+function roda360() {
+  const cx = 240, cy = 200, r = 128;
+  const nos = RX.areas.map((nome, i) => {
+    const ang = (-90 + (360 / RX.areas.length) * i) * (Math.PI / 180);
+    const x = cx + r * Math.cos(ang);
+    const y = cy + r * Math.sin(ang);
+    const lado = Math.abs(Math.cos(ang)) < 0.2 ? 'middle' : Math.cos(ang) > 0 ? 'start' : 'end';
+    const dx = lado === 'start' ? 16 : lado === 'end' ? -16 : 0;
+    const dy = lado === 'middle' ? (Math.sin(ang) < 0 ? -18 : 30) : 6;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" class="roda__no"/><text x="${(x + dx).toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${lado}" class="roda__txt">${esc(nome.toUpperCase())}</text>`;
+  }).join('');
+  return `<figure class="roda">
+  <svg viewBox="0 0 480 400" role="img" aria-labelledby="roda-titulo">
+    <title id="roda-titulo">${esc(RX.nomeCurto)}: ${esc(RX.areas.join(', '))}</title>
+    <circle cx="${cx}" cy="${cy}" r="${r}" class="roda__anel"/>
+    <circle cx="${cx}" cy="${cy}" r="${r - 22}" class="roda__anel roda__anel--fino"/>
+    <circle cx="${cx}" cy="${cy}" r="70" class="roda__centro"/>
+    <text x="${cx}" y="${cy - 6}" text-anchor="middle" class="roda__c1">RAIO-X</text>
+    <text x="${cx}" y="${cy + 26}" text-anchor="middle" class="roda__c2">360º</text>
+    ${nos}
+  </svg>
+</figure>`;
+}
+
+function formula360() {
+  return `<p class="formula" aria-label="${esc(RX.formula.join(' mais '))}">${RX.formula.map((f) => `<span>${esc(f.toUpperCase())}</span>`).join('<b aria-hidden="true">+</b>')}</p>`;
+}
+
+function metodo360() {
+  return `<ol class="metodo360">${RX.metodo.map((m) => `<li>${esc(m)}</li>`).join('')}</ol>`;
+}
+
+function blocoRaioX({ titulo = 'h2', pagina = false } = {}) {
+  const inicio = raioXInicio();
   return secao({
     id: 'raio-x',
-    classe: 'secao--noite',
+    classe: 'secao--raiox',
     rotulo: 'titulo-raio-x',
-    conteudo: `<div class="dupla">
-  <div>
-    ${eyebrow(C.raioX.nome)}
-    <${titulo} id="titulo-raio-x">Antes de tentar mais uma estratégia, descubra onde o seu processo está mais vulnerável.</${titulo}>
-    <p class="lead">O Raio-X passa por ${C.raioX.areas.length} áreas e oferece uma visão ampla do seu momento atual. É o ponto de partida para decisões mais precisas.</p>
-    <div class="acoes">${btnRaioX(C.ctas.raioXAlternativo, { direto, tipo: 'claro', track: 'secao-raio-x' })}</div>
-    <p class="aviso-claro">O Raio-X é uma ferramenta de percepção e orientação inicial. Não é diagnóstico e não substitui avaliação individual.</p>
+    conteudo: `<div class="rx">
+  <div class="rx__texto">
+    <p class="rx__marca">${rxNome()}</p>
+    <${titulo} id="titulo-raio-x">Antes de definir sua estratégia, precisamos entender o que realmente está acontecendo com sua alimentação, sua rotina e seu comportamento.</${titulo}>
+    <p>O emagrecimento não acontece isoladamente. Sono, estresse, alimentação, massa muscular, rotina, ambiente social, comportamento alimentar e fase hormonal podem interferir na capacidade de manter mudanças ao longo do tempo.</p>
+    <p>Por isso, o acompanhamento começa com uma avaliação ampla e individualizada. O ${esc(RX.nomeCurto)} organiza essas informações para identificar quais pontos merecem maior atenção e quais devem ser priorizados na construção da sua estratégia nutricional.</p>
+    ${formula360()}
+    <div class="acoes">
+      ${btn(C.ctas.raioX, inicio.href, { tipo: 'ouro', externo: inicio.externo, icone: 'seta', track: pagina ? 'raio-x-pagina-comecar' : 'secao-raio-x' })}
+      ${pagina ? '' : btn(C.ctas.raioXAlternativo, u('raio-x/'), { tipo: 'contorno-ouro', track: 'secao-raio-x-entender' })}
+    </div>
+    <p class="aviso-claro">Não é diagnóstico médico, exame clínico nem avaliação psicológica, e não promete resultados. É uma ferramenta estratégica de avaliação nutricional, comportamental e de estilo de vida.</p>
   </div>
-  <div class="raio-x__areas">
-    <p class="raio-x__rotulo">As ${C.raioX.areas.length} áreas avaliadas</p>
-    ${areasRaioX()}
-  </div>
+  ${roda360()}
 </div>`,
   });
 }
@@ -236,7 +277,7 @@ function blocoParaQuem() {
 }
 
 const etapas = [
-  { t: 'Faça seu Raio-X', d: `Responda ao questionário e mapeie as ${C.raioX.areas.length} áreas do seu processo.` },
+  { t: 'Faça seu Raio-X 360º', d: 'Responda ao questionário sobre alimentação, comportamento, rotina, ambiente e adesão.' },
   { t: 'Entenda seu momento atual', d: 'Veja em quais pontos o seu emagrecimento está mais vulnerável hoje.' },
   { t: 'Conheça a estratégia indicada', d: 'Descubra qual caminho faz mais sentido para a sua fase.' },
   { t: 'Comece o seu processo', d: 'Com clareza sobre o próximo passo, e não com mais um recomeço.' },
@@ -282,7 +323,7 @@ function blocoFaq(lista, titulo = 'Perguntas frequentes') {
   });
 }
 
-function blocoCtaFinal({ titulo = 'Você não precisa de mais um recomeço. Precisa de clareza sobre o próximo passo.', texto = 'Comece entendendo o seu momento. O Raio-X mostra onde o seu processo está mais vulnerável — e o que faz sentido fazer a seguir.' } = {}) {
+function blocoCtaFinal({ titulo = 'Você não precisa de mais um recomeço. Precisa de clareza sobre o próximo passo.', texto = 'Comece entendendo o seu momento. O Raio-X 360º mostra quais pontos merecem mais atenção no seu processo — e o que faz sentido priorizar.' } = {}) {
   return secao({
     id: 'comece',
     classe: 'secao--cta',
@@ -308,7 +349,7 @@ function home() {
         ${btnRaioX(C.ctas.raioX, { track: 'hero-raio-x' })}
         ${btn(C.ctas.trajetoria, u('sobre/'), { tipo: 'secundario', track: 'hero-sobre' })}
       </div>
-      <p class="hero__nota">Raio-X em ${C.raioX.areas.length} áreas · uma leitura do seu momento atual</p>
+      <p class="hero__nota">Raio-X 360º · corpo, comportamento, rotina, ambiente e adesão</p>
     </div>
     <figure class="hero__foto">${foto(img, { prioridade: true, sizes: '(min-width: 960px) 440px, 88vw' })}</figure>
   </div>
@@ -404,7 +445,7 @@ ${secao({
 ${acervo}${gradeImprensa(destaquesMidia.slice(0, 3))}
 <div class="acoes acoes--centro">${btn('Ver todas as participações', u('imprensa/'), { tipo: 'secundario', icone: 'seta', track: 'sobre-imprensa' })}</div>`,
 })}
-${blocoCtaFinal({ titulo: 'Quer entender por onde começar?', texto: 'O Raio-X do Emagrecimento é o primeiro passo para conhecer o seu momento — e a estratégia que faz sentido para ele.' })}`;
+${blocoCtaFinal({ titulo: 'Quer entender por onde começar?', texto: 'O Raio-X 360º do Emagrecimento é o primeiro passo para conhecer o seu momento — e a estratégia que faz sentido para ele.' })}`;
   return {
     path: 'sobre/',
     titulo: C.seo.sobre.titulo,
@@ -616,7 +657,7 @@ ${secao({
     <h2 id="titulo-comecar">Pronta para começar?</h2>
     <p class="lead">Você não precisa de mais uma dieta para tentar seguir sozinha. Você precisa de uma estratégia construída para você, acompanhada de perto e ajustada conforme sua evolução.</p>
     <div class="acoes acoes--centro">${btnAgendar('Quero agendar meu atendimento', A.agendarMensagem, 'atendimento-final')}</div>
-    <p class="nota">Ainda está em dúvida sobre o seu momento? <a href="${u('raio-x/')}">Comece pelo Raio-X do Emagrecimento</a>.</p>
+    <p class="nota">Ainda está em dúvida sobre o seu momento? <a href="${u('raio-x/')}">Comece pelo Raio-X 360º</a>.</p>
   </div>`,
 })}`;
   const oferta = (pl) => ({
@@ -649,47 +690,117 @@ ${secao({
 }
 
 function raioX() {
-  const crumbs = [HOME, { nome: 'Raio-X', path: 'raio-x/' }];
+  const crumbs = [HOME, { nome: RX.nomeCurto, path: 'raio-x/' }];
   const inicio = raioXInicio();
+  const comecar = (track, tipo = 'primario') => btn(C.ctas.raioX, inicio.href, { tipo, externo: inicio.externo, icone: 'seta', track });
+  const recebe = [
+    ['Painel das dimensões', 'Alimentação, fome e saciedade, comportamento alimentar, sono, estresse, rotina, ambiente social, atividade física, massa muscular, intestino, fase hormonal, organização, adesão, histórico de dietas e prontidão para mudança, cada uma com um status visual.'],
+    ['Os 3 pontos para trabalhar agora', 'As áreas que, pelo seu relato, merecem prioridade na construção da estratégia.'],
+    ['Pontos fortes e barreiras', 'O que já joga a seu favor e o que costuma atrapalhar a sua constância.'],
+    ['Seu perfil de emagrecimento', 'Um resumo personalizado, em linguagem simples e cuidadosa, sobre o que parece influenciar o seu processo.'],
+  ];
+  const naoE = [
+    'Não é diagnóstico médico nem exame clínico.',
+    'Não é avaliação psicológica nem diagnóstico de transtorno alimentar.',
+    'Não gera dieta nem prescrição automática.',
+    'Não promete emagrecimento, prazo ou quantidade de quilos.',
+  ];
+  const status = [
+    ['favoravel', 'Favorável', 'O seu relato indica uma boa base nesta área.'],
+    ['atencao', 'Atenção', 'Um ponto a observar dentro do seu contexto.'],
+    ['estrategia', 'Precisa de estratégia', 'Pede ajustes planejados no acompanhamento.'],
+    ['prioridade', 'Prioridade', 'Merece atenção primeiro na construção da estratégia.'],
+  ];
   const corpo = `${cabecalhoInterno({
     crumbs,
-    eyebrowTxt: 'Questionário',
-    h1: esc(C.raioX.nome),
-    lead: 'Descubra onde o seu processo de emagrecimento está travando — antes de tentar mais uma estratégia.',
-    extra: `<div class="acoes">${btn('Começar meu Raio-X', inicio.href, { externo: inicio.externo, icone: 'seta', track: 'raio-x-topo-comecar' })}</div>`,
+    eyebrowTxt: 'Avaliação estratégica',
+    h1: rxNome(),
+    lead: 'Finalmente, um olhar para o seu processo como um todo — e não apenas mais uma dieta.',
+    extra: `<div class="acoes">${comecar('raio-x-topo-comecar')}${btn('Como funciona', '#como-funciona-raio-x', { tipo: 'secundario' })}</div><p class="nota">Leva ${esc(RX.tempo)} · salva a cada etapa · funciona no celular</p>`,
   })}
+${blocoRaioX({ pagina: true })}
 ${secao({
-  rotulo: 'titulo-o-que-e',
-  conteudo: `<div class="dupla">
-  <div class="prosa">
-    <h2 id="titulo-o-que-e">O que é o Raio-X</h2>
-    <p>Um questionário que passa por ${C.raioX.areas.length} áreas do seu processo de emagrecimento. Em vez de olhar só para “o que comer”, ele ajuda a enxergar o conjunto: rotina, comportamento, consistência e o que acontece depois do resultado.</p>
-    <p>O resultado é uma percepção ampla do seu momento atual — e um ponto de partida mais preciso para as próximas decisões.</p>
-  </div>
-  <div class="caixa">
-    <p class="raio-x__rotulo">As ${C.raioX.areas.length} áreas</p>
-    ${areasRaioX()}
-  </div>
-</div>`,
+  id: 'como-funciona-raio-x',
+  rotulo: 'titulo-metodo-rx',
+  conteudo: `<div class="cab-secao">${eyebrow('O método')}<h2 id="titulo-metodo-rx">Da avaliação ao ajuste, em etapas</h2>
+<p class="lead">O Raio-X é o primeiro passo de um processo que continua durante todo o acompanhamento.</p></div>
+${metodo360()}`,
 })}
 ${secao({
   classe: 'secao--areia',
-  rotulo: 'titulo-passos-raio',
-  conteudo: `<div class="cab-secao">${eyebrow('Passo a passo')}<h2 id="titulo-passos-raio">Como funciona</h2></div>
-<ol class="etapas">${[
-    ['Responda com calma', 'Seja sincera: não existem respostas certas ou erradas.'],
-    ['Receba a leitura do seu momento', 'Veja em quais áreas o processo está mais vulnerável.'],
-    ['Conheça a estratégia indicada', 'E decida, com clareza, o próximo passo.'],
-  ].map(([t, d], i) => `<li class="etapa"><span class="etapa__num" aria-hidden="true">${i + 1}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('')}</ol>
-<div class="acoes acoes--centro">${btn('Começar meu Raio-X', inicio.href, { externo: inicio.externo, icone: 'seta', track: 'raio-x-meio-comecar' })}</div>
-<p class="nota centro">O Raio-X é uma ferramenta de percepção e orientação inicial. Não é diagnóstico e não substitui avaliação nutricional ou médica individual.</p>`,
+  rotulo: 'titulo-recebe',
+  conteudo: `<div class="cab-secao">${eyebrow('Ao finalizar')}<h2 id="titulo-recebe">O que você recebe</h2></div>
+<ul class="principios">${recebe.map(([t, d]) => `<li><h3>${esc(t)}</h3><p>${esc(d)}</p></li>`).join('')}</ul>
+<div class="legenda-status" role="list" aria-label="Como ler os status">${status.map(([id, t, d]) => `<div role="listitem" class="legenda-status__item"><span class="selo selo--${id}">${esc(t)}</span><p>${esc(d)}</p></div>`).join('')}</div>
+<p class="nota centro">Os status organizam o seu relato. Não são diagnósticos.</p>`,
 })}
-${blocoFaq(faqRaioX, 'Dúvidas sobre o Raio-X')}`;
+${secao({
+  rotulo: 'titulo-nao-e-rx',
+  conteudo: `<div class="dupla dupla--texto">
+  <div>
+    ${eyebrow('Com clareza')}
+    <h2 id="titulo-nao-e-rx">O que o Raio-X 360º não é</h2>
+    <p class="lead">Uma ferramenta estratégica de avaliação nutricional, comportamental e de estilo de vida. Quando alguma resposta sugerir necessidade de avaliação médica ou psicológica, isso será indicado com cuidado.</p>
+  </div>
+  <ul class="nao-e">${naoE.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+</div>`,
+})}
+${blocoFaq(faqRaioX, 'Dúvidas sobre o Raio-X 360º')}
+${secao({
+  classe: 'secao--raiox secao--compacta',
+  rotulo: 'titulo-rx-final',
+  conteudo: `<div class="container--estreito centro">
+    <h2 id="titulo-rx-final">Pronta para entender o seu processo como um todo?</h2>
+    <div class="acoes acoes--centro">${comecar('raio-x-final-comecar', 'ouro')}</div>
+  </div>`,
+})}`;
   return {
     path: 'raio-x/',
     titulo: C.seo.raioX.titulo,
     descricao: C.seo.raioX.descricao,
     schema: [faqSchema(faqRaioX), crumbSchema(crumbs)],
+    corpo,
+  };
+}
+
+// Questionário em etapas. A página é um "casco": o conteúdo é montado pelo
+// js/raiox.js a partir da definição embutida (mesma do servidor).
+function raioXQuestionario() {
+  const crumbs = [HOME, { nome: RX.nomeCurto, path: 'raio-x/' }, { nome: 'Questionário', path: 'raio-x/questionario/' }];
+  const def = definicaoPublica();
+  const agendar = whatsappUrl('Olá, Andréa. Acabei de fazer o Raio-X 360º do Emagrecimento e quero agendar meu atendimento.');
+  const cfg = {
+    total: def.etapas.length,
+    agendar,
+    atendimento: u('atendimento/'),
+    privacidade: u('politica-de-privacidade/'),
+  };
+  const corpo = `<section class="rxq" aria-labelledby="rxq-titulo">
+  <div class="container rxq__in">
+    <header class="rxq__topo">
+      <p class="rx__marca">${rxNome()}</p>
+      <h1 id="rxq-titulo" class="rxq__titulo" tabindex="-1">Questionário</h1>
+      <div class="rxq__progresso" data-rxq-progresso hidden>
+        <p class="rxq__etapa" data-rxq-etapa aria-live="polite"></p>
+        <div class="rxq__barra" role="progressbar" aria-valuemin="0" aria-valuemax="${cfg.total}" aria-valuenow="0" aria-label="Progresso do questionário" data-rxq-barra><span></span></div>
+      </div>
+    </header>
+    <div class="rxq__corpo" data-rxq>
+      <noscript><p class="aviso">Para responder ao questionário, ative o JavaScript do navegador ou <a href="${u('contato/')}">fale com a Andréa</a>.</p></noscript>
+      <p class="nota" data-rxq-carregando>Carregando o questionário…</p>
+    </div>
+  </div>
+</section>
+<script type="application/json" id="rxq-def">${JSON.stringify({ ...def, cfg }).replace(/</g, '\\u003c')}</script>`;
+  return {
+    path: 'raio-x/questionario/',
+    titulo: `Questionário | ${RX.nomeCurto} do Emagrecimento`,
+    descricao: C.seo.raioX.descricao,
+    noindex: true,
+    semFlutuante: true,
+    classe: 'pagina-rxq',
+    scripts: ['js/raiox.js'],
+    schema: [crumbSchema(crumbs)],
     corpo,
   };
 }
@@ -742,7 +853,7 @@ ${a.imagem ? `<div class="container container--texto"><img class="artigo__img" s
 <aside class="container container--texto" aria-label="Próximo passo">
   <div class="caixa-cta">
     <p class="caixa-cta__titulo">Quer entender onde o seu processo trava?</p>
-    <p>O Raio-X do Emagrecimento avalia ${C.raioX.areas.length} áreas do seu momento atual.</p>
+    <p>O Raio-X 360º olha para alimentação, comportamento, rotina, ambiente e adesão.</p>
     ${btnRaioX(C.ctas.raioXCurto, { track: 'artigo-raio-x' })}
   </div>
   <div class="autor">
@@ -926,7 +1037,7 @@ ${secao({
   <aside class="contato__lado" aria-label="Outros canais">
     <div class="caixa caixa--destaque">
       <p class="eyebrow">Primeiro passo recomendado</p>
-      <p class="caixa__titulo">${esc(C.raioX.nome)}</p>
+      <p class="caixa__titulo">${rxNome()}</p>
       <p>Descubra em quais áreas o seu processo está mais vulnerável.</p>
       ${btn(C.ctas.raioXCurto, inicio.href, { externo: inicio.externo, icone: 'seta', track: 'contato-raio-x' })}
     </div>
@@ -966,17 +1077,17 @@ function privacidade() {
 <h2>2. Quais dados coletamos</h2>
 <ul>
 <li><strong>Formulário de contato:</strong> nome, e-mail, WhatsApp (opcional), assunto e mensagem.</li>
-<li><strong>Questionário Raio-X:</strong> as respostas que você fornecer ao preenchê-lo.</li>
+<li><strong>${esc(C.raioX.nomeCurto)}:</strong> nome, e-mail, WhatsApp (opcional) e as respostas do questionário, que incluem informações sobre alimentação, rotina, sono, comportamento alimentar e saúde (por exemplo, sintomas, medicamentos e fase hormonal). Informações de saúde são <strong>dados pessoais sensíveis</strong> e só são coletadas com o seu consentimento específico, dado antes de começar o questionário.</li>
 <li><strong>Navegação:</strong> dados técnicos básicos (como endereço IP e tipo de navegador), registrados pelo servidor para segurança e funcionamento do site${C.analytics.ga4 || C.analytics.metaPixel ? ', e dados de medição de audiência por meio de ferramentas de terceiros' : ''}.</li>
 </ul>
 <p>Não solicite nem envie pelo formulário informações de saúde detalhadas. Elas serão tratadas apenas no contexto de uma avaliação individual, com os cuidados que a lei exige para dados sensíveis.</p>
 <h2>3. Para que usamos os dados</h2>
 <ul>
 <li>Responder ao seu contato e esclarecer dúvidas.</li>
-<li>Entregar a leitura do Raio-X e apresentar a estratégia indicada.</li>
+<li>Organizar as respostas do ${esc(C.raioX.nomeCurto)} em um painel, apoiar a análise nutricional individual e apresentar a estratégia indicada. O painel não é diagnóstico e não gera prescrição automática.</li>
 <li>Cumprir obrigações legais e manter a segurança do site.</li>
 </ul>
-<p>A base legal é o seu consentimento e, quando aplicável, os procedimentos preliminares a um contrato que você solicitou.</p>
+<p>A base legal é o seu consentimento e, quando aplicável, os procedimentos preliminares a um contrato que você solicitou. Para os dados de saúde do ${esc(C.raioX.nomeCurto)}, a base legal é o consentimento específico e destacado (LGPD, art. 11, I). As respostas ficam em sistema protegido, acessível apenas à nutricionista responsável, e não são enviadas por e-mail.</p>
 <h2>4. Compartilhamento</h2>
 <p>Os dados não são vendidos. Podem ser processados por fornecedores que viabilizam o funcionamento do site (hospedagem, envio de e-mails e formulários), apenas para essas finalidades.</p>
 <h2>5. Por quanto tempo guardamos</h2>
@@ -1037,6 +1148,7 @@ export function todasAsPaginas(artigos) {
     ['emagrecimento-blindado/', programa],
     ['atendimento/', atendimento],
     ['raio-x/', raioX],
+    ['raio-x/questionario/', raioXQuestionario],
     ['conteudos/', () => conteudos(artigos)],
     ...artigos.map((a) => [`conteudos/${a.slug}/`, () => artigo(a, artigos.filter((r) => r !== a).slice(0, 3))]),
     ['imprensa/', imprensa],

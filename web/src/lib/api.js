@@ -76,4 +76,7 @@ export const api = {
   waterRemove: (id) => request(`/water/${id}`, { method: 'DELETE' }),
   waterSetGoal: (goal_ml) => request('/water/goal', { method: 'PUT', body: JSON.stringify({ goal_ml }) }),
   adminClientTracking: (userId) => request(`/admin/users/${userId}/tracking`),
+  adminRaioX: () => request('/admin/raiox'),
+  adminRaioXDetail: (id) => request(`/admin/raiox/${id}`),
+  adminRaioXRemove: (id) => request(`/admin/raiox/${id}`, { method: 'DELETE' }),
 };

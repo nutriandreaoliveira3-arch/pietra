@@ -50,7 +50,8 @@ export function whatsappUrl(mensagem = C.contato.whatsappMensagem) {
 // Destino do botão "começar o Raio-X": link do questionário; se ainda não
 // existir, WhatsApp; se também não existir, página de contato.
 export function raioXInicio() {
-  if (C.raioX.url) return { href: C.raioX.url, externo: true };
+  if (C.raioX.url && /^https?:/.test(C.raioX.url)) return { href: C.raioX.url, externo: true };
+  if (C.raioX.url) return { href: u(C.raioX.url), externo: false };
   pend('Link do Questionário Raio-X (config.raioX.url)');
   const wa = whatsappUrl('Olá, Andréa. Vim pelo site e quero fazer o Raio-X do Emagrecimento.');
   if (wa) return { href: wa, externo: true };
