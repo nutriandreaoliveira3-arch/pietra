@@ -11,8 +11,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 - [ ] Revisar e aprovar o artigo "Constância não é perfeição: como manter o processo nas semanas difíceis" (publicado: false) — /conteudos/constancia-nao-e-perfeicao/
 - [ ] Revisar e aprovar o artigo "Por que tantas tentativas de emagrecer terminam em recomeço" (publicado: false) — /conteudos/por-que-tantas-tentativas-de-emagrecer-terminam-em-recomeco/
-- [ ] Link do Questionário Raio-X (config.raioX.url) — todas as páginas
-- [ ] Nomes oficiais das 7 áreas do Raio-X (config.raioX.areas) — /, /raio-x/
 - [ ] Depoimentos reais e autorizados (config.depoimentos) — /
 - [ ] Fotos antigas da trajetória como Andréa Marim, com legenda, veículo e ano (config.acervo) — /sobre/
 - [ ] Imagem institucional do método (horizontal, ambiente de atendimento) — config.imagens.atendimento — /emagrecimento-blindado/

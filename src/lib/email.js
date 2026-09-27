@@ -112,4 +112,34 @@ async function sendSiteContactEmail({ nome, email, whatsapp, assunto, mensagem }
   });
 }
 
-module.exports = { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl, sendSiteContactEmail };
+// Aviso de Raio-X concluído. De propósito, sem respostas nem resultado no
+// e-mail (dados de saúde ficam só no sistema, acessados pela área admin).
+async function sendRaioxEmail({ nome, email, whatsapp }) {
+  const to = (process.env.SITE_CONTATO_EMAIL || '')
+    .split(',')
+    .map((e) => e.trim())
+    .filter(Boolean);
+  if (to.length === 0 || !resend) {
+    console.warn('SITE_CONTATO_EMAIL ou RESEND_API_KEY não configurado — Raio-X salvo só no banco (tabela raiox_respostas).');
+    return;
+  }
+  const painel = `${process.env.APP_URL || 'http://localhost:3000'}/admin/raio-x`;
+  await resend.emails.send({
+    from: process.env.EMAIL_FROM || 'BLINDADA <onboarding@resend.dev>',
+    to,
+    replyTo: email,
+    subject: `Novo Raio-X 360º concluído — ${nome}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; color:#2F3330;">
+        <h2 style="font-weight:600;">Novo Raio-X 360º do Emagrecimento</h2>
+        <p><strong>Nome:</strong> ${escapeHtml(nome)}</p>
+        <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
+        ${whatsapp ? `<p><strong>WhatsApp:</strong> ${escapeHtml(whatsapp)}</p>` : ''}
+        <p>As respostas e o painel estão na área administrativa (por segurança, não vão por e-mail):</p>
+        <p><a href="${painel}" style="display:inline-block;background:#2F3330;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;">Abrir Raio-X no painel</a></p>
+      </div>
+    `,
+  });
+}
+
+module.exports = { sendActivationEmail, sendManipuladoOrderEmail, manipuladoWhatsappUrl, sendSiteContactEmail, sendRaioxEmail };

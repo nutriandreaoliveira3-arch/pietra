@@ -24,6 +24,7 @@ const supplementRoutes = require('./routes/supplements');
 const waterRoutes = require('./routes/water');
 const userRoutes = require('./routes/users');
 const siteContactRoutes = require('./routes/siteContact');
+const raioxRoutes = require('./routes/raiox');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,6 +46,8 @@ app.use('/api/supplements', supplementRoutes);
 app.use('/api/water', waterRoutes);
 app.use('/api/admin/users', userRoutes);
 app.use('/api/site', siteContactRoutes);
+app.use('/api/raiox', raioxRoutes.publico);
+app.use('/api/admin/raiox', raioxRoutes.admin);
 
 const LANDING_HOSTS = new Set(['emagrecimentoblindado.com.br', 'www.emagrecimentoblindado.com.br']);
 const landingDir = path.join(__dirname, '..', 'landing-pages', 'emagrecimento-blindado-elite');

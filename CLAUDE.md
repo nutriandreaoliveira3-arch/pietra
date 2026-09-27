@@ -49,12 +49,25 @@ conteúdo editável em `site/content/config.mjs`. Veja `site/README.md`.
 - Pendências (CRN, CNPJ, domínio, WhatsApp, link do Raio-X...) em `site/PENDENCIAS.md`
   (gerado por `npm run site:previa`). Nunca inventar esses dados.
 
+## Raio-X 360º do Emagrecimento™ (questionário do site)
+
+- Perguntas, dimensões e textos do resultado: `src/lib/raioxPerguntas.js` (fonte única — o
+  servidor calcula e o site embute a mesma definição em `/raio-x/questionario/`).
+- Motor: `src/lib/raiox.js` (status por dimensão, 3 prioridades, pontos fortes, barreiras, perfil,
+  sinais de encaminhamento). Nada de diagnóstico, prescrição ou promessa — linguagem cuidadosa.
+- API: `POST /api/raiox` (início + consentimento LGPD art. 11), `PUT /api/raiox/:token` (salva cada
+  etapa), `POST /api/raiox/:token/concluir`. Tabela `raiox_respostas`. Admin: `/admin/raio-x`
+  (lista, detalhe, exclusão). O e-mail de aviso não leva respostas (dados de saúde ficam no sistema).
+- Visual preto/branco/dourado só nas seções do Raio-X (tokens `preto`, `dourado`, `douradoClaro`,
+  `douradoTexto` em `site/content/config.mjs`). "™" é marca em uso; não usar "®" sem registro no INPI.
+
 ## Área de administração (dentro do próprio app)
 
-Usuários com `role = 'admin'` veem duas abas extras no menu:
+Usuários com `role = 'admin'` veem três abas extras no menu:
 
 - **Conteúdo** (`/admin/conteudo`) — criar/editar/apagar módulos e aulas (título, texto,
   link de vídeo opcional). Rotas backend: `POST/PUT/DELETE /api/modules[...]`.
+- **Raio-X** (`/admin/raio-x`) — respostas e painel do Raio-X 360º enviados pelo site.
 - **Clientes** (`/admin/clientes`) — cadastrar cliente manualmente (fora do fluxo da Greenn, pra
   venda direta ou cortesia — dispara o mesmo e-mail de ativação), revogar/reativar acesso. Rotas
   backend: `/api/admin/users[...]`.

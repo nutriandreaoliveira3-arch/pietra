@@ -192,10 +192,10 @@ export default {
   // Textos dos botões. Hierarquia: principal (Raio-X) > secundário (método,
   // trajetória) > relacionamento (WhatsApp, Instagram, contato).
   ctas: {
-    raioX: 'Faça seu Raio-X do Emagrecimento',
-    raioXCurto: 'Fazer meu Raio-X',
-    raioXTopo: 'Fazer Raio-X', // botão do cabeçalho (curto, cabe no celular)
-    raioXAlternativo: 'Descubra onde seu processo está travando',
+    raioX: 'Quero fazer meu Raio-X 360º',
+    raioXCurto: 'Fazer meu Raio-X 360º',
+    raioXTopo: 'Raio-X 360º', // botão do cabeçalho (curto, cabe no celular)
+    raioXAlternativo: 'Quero entender o que está dificultando minha evolução',
     metodo: 'Conheça o método',
     trajetoria: 'Conheça a trajetória de Andréa',
     comoFunciona: 'Veja como funciona',
@@ -250,24 +250,22 @@ export default {
     // },
   ],
 
+  // Raio-X 360º do Emagrecimento™. As perguntas ficam em
+  // src/lib/raioxPerguntas.js (o mesmo arquivo usado pelo servidor).
+  // "™" indica marca em uso, sem registro; não usar "®" enquanto não houver
+  // registro no INPI.
   raioX: {
-    nome: 'Raio-X do Emagrecimento',
-    // PENDENTE: link do questionário (Typeform, Tally, Google Forms, página
-    // própria...). Enquanto for null, os botões levam para o WhatsApp (se
-    // houver) ou para a página de contato.
-    url: null,
-    // PENDENTE: confirmar os nomes oficiais das 7 áreas do questionário.
-    // Provisoriamente espelham os pilares do método.
-    areasConfirmadas: false,
-    areas: [
-      'Alimentação',
-      'Rotina',
-      'Comportamento alimentar',
-      'Consistência',
-      'Estratégia',
-      'Acompanhamento',
-      'Manutenção',
-    ],
+    nome: 'Raio-X 360º do Emagrecimento™',
+    nomeCurto: 'Raio-X 360º',
+    // Questionário próprio do site (caminho interno). Pode ser trocado por um
+    // link externo (https://...) se um dia usar outra ferramenta.
+    url: 'raio-x/questionario/',
+    formula: ['Corpo', 'Comportamento', 'Rotina', 'Ambiente', 'Adesão'],
+    metodo: ['Avaliar', 'Identificar gargalos', 'Definir prioridades', 'Criar estratégia', 'Acompanhar', 'Ajustar'],
+    // Pilares do círculo (a ordem define a posição, começando no topo).
+    areasConfirmadas: true,
+    areas: ['Alimentação', 'Corpo', 'Rotina', 'Comportamento', 'Adesão', 'Ambiente'],
+    tempo: 'de 15 a 20 minutos',
   },
 
   programa: {
@@ -339,6 +337,11 @@ export default {
       terracotaTexto: '#874F3C', // versão legível da terracota para textos pequenos (≥4,5:1 em off-white e areia)
       salviaNoite: '#4E5B52', // fundo da seção do Raio-X (texto claro por cima)
       grafite: '#2F3330', // textos principais e títulos
+      // Raio-X 360º: preto, branco e dourado (só nas seções do Raio-X).
+      preto: '#1C1E1D', // fundo das seções do Raio-X 360º
+      dourado: '#C2A36B', // linhas, ícones e textos sobre o preto (≈7:1)
+      douradoClaro: '#DCC596', // títulos em destaque sobre o preto
+      douradoTexto: '#7A5F2C', // dourado legível sobre fundo claro (≥4,5:1)
     },
     fontes: {
       titulos: 'Cormorant Garamond',
@@ -362,8 +365,8 @@ export default {
       descricao: 'Conheça o Emagrecimento Blindado, metodologia criada por Andréa Augusto de Oliveira para emagrecer com estratégia, consistência e foco na manutenção.',
     },
     raioX: {
-      titulo: 'Raio-X do Emagrecimento | Descubra onde seu processo trava',
-      descricao: 'Questionário em 7 áreas para entender em que pontos o seu processo de emagrecimento está mais vulnerável antes de tentar mais uma estratégia.',
+      titulo: 'Raio-X 360º do Emagrecimento | Andréa Augusto de Oliveira',
+      descricao: 'Avaliação estratégica de alimentação, comportamento, rotina, ambiente e adesão para entender o que pode estar dificultando o seu emagrecimento antes de definir a estratégia.',
     },
     conteudos: {
       titulo: 'Conteúdos sobre emagrecimento sustentável | Andréa Augusto de Oliveira',

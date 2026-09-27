@@ -17,15 +17,15 @@ export const faqHome = [
   },
   {
     p: `Como funciona o ${R}?`,
-    r: `<p>É um questionário que passa por 7 áreas do seu processo de emagrecimento. As respostas ajudam a identificar em quais pontos o seu momento atual está mais vulnerável e servem de ponto de partida para decidir os próximos passos.</p>`,
+    r: `<p>É um questionário em 8 etapas, que leva ${C.raioX.tempo}. Ele passa por alimentação, fome e saciedade, comportamento, rotina, sono, estresse, ambiente, atividade física, saúde e prontidão para mudar. As respostas são salvas a cada etapa, e ao final você recebe um painel com os pontos que merecem mais atenção no seu contexto.</p>`,
   },
   {
     p: 'O que acontece depois que eu preencher o Raio-X?',
-    r: '<p>Você recebe uma leitura do seu momento atual e conhece a estratégia indicada para ele. A partir daí, decide se quer seguir para o acompanhamento. Os detalhes de como essa devolutiva é entregue serão informados na própria página do questionário.</p>',
+    r: '<p>Na hora, você vê um painel com o status de cada área (favorável, atenção, precisa de estratégia ou prioridade), os 3 principais pontos para trabalhar agora, seus pontos fortes, as principais barreiras e um resumo do seu perfil. As respostas ficam disponíveis para a Andréa, que usa essas informações para personalizar a estratégia no atendimento.</p>',
   },
   {
     p: 'O Raio-X substitui uma consulta?',
-    r: '<p>Não. O Raio-X é uma ferramenta de percepção e orientação inicial. Ele não é diagnóstico e não substitui avaliação nutricional ou médica individual.</p>',
+    r: '<p>Não. O Raio-X 360º é uma ferramenta estratégica de avaliação nutricional, comportamental e de estilo de vida. Não é diagnóstico médico, exame clínico nem avaliação psicológica, não gera prescrição e não substitui a consulta individual.</p>',
   },
   {
     p: 'O processo é baseado em dietas restritivas?',
@@ -66,6 +66,12 @@ export const faqPrograma = [
 ];
 
 export const faqRaioX = [faqHome[2], faqHome[3], faqHome[4], {
+  p: 'Preciso responder tudo de uma vez?',
+  r: '<p>Não. As respostas são salvas a cada etapa. Se precisar parar, é só voltar ao questionário pelo mesmo aparelho e navegador para continuar de onde parou.</p>',
+}, {
+  p: 'O Raio-X promete algum resultado?',
+  r: '<p>Não. Ele organiza as informações para entender o que pode estar dificultando o seu processo. Não há promessa de prazo, de quilos ou de resultado.</p>',
+}, {
   p: 'Meus dados ficam protegidos?',
-  r: '<p>As respostas são usadas apenas para a leitura do seu momento e para o contato sobre o acompanhamento, conforme a <a href="{{privacidade}}">Política de Privacidade</a>.</p>',
+  r: '<p>Sim. Algumas perguntas envolvem dados de saúde, que são tratados com o seu consentimento específico e usados apenas para a análise nutricional e para o contato sobre o acompanhamento. Só a Andréa tem acesso às respostas, e você pode pedir a exclusão a qualquer momento, conforme a <a href="{{privacidade}}">Política de Privacidade</a>.</p>',
 }];

@@ -116,6 +116,25 @@ CREATE TABLE IF NOT EXISTS supplement_plans (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Raio-X 360º do Emagrecimento (questionário do site). Contém dados de
+-- saúde (sensíveis, LGPD art. 11): acesso só pela área admin; o token é o
+-- único acesso da paciente às próprias respostas.
+CREATE TABLE IF NOT EXISTS raiox_respostas (
+  id TEXT PRIMARY KEY,
+  token TEXT UNIQUE NOT NULL,
+  nome TEXT NOT NULL,
+  email TEXT NOT NULL,
+  whatsapp TEXT,
+  respostas TEXT NOT NULL DEFAULT '{}',
+  etapa INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'em_andamento',
+  resultado TEXT,
+  consentimento_em TEXT NOT NULL,
+  concluido_em TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS site_contacts (
   id TEXT PRIMARY KEY,
   nome TEXT NOT NULL,

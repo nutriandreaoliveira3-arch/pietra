@@ -192,6 +192,7 @@ ${p.corpo}
 ${footer()}
 ${whatsappFlutuante(p)}
 <script src="${u('js/site.js')}" defer></script>
+${(p.scripts || []).map((sc) => `<script src="${u(sc)}" defer></script>`).join('\n')}
 </body>
 </html>
 `;

@@ -34,6 +34,7 @@ export default function Layout() {
         <NavLink to="/agua">Água</NavLink>
         {user.role === 'admin' && <NavLink to="/admin/conteudo">Conteúdo</NavLink>}
         {user.role === 'admin' && <NavLink to="/admin/clientes">Clientes</NavLink>}
+        {user.role === 'admin' && <NavLink to="/admin/raio-x">Raio-X</NavLink>}
       </nav>
     </div>
   );
