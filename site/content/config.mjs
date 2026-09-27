@@ -95,7 +95,11 @@ export default {
     // E-mail para pedidos de titulares de dados (LGPD). PENDENTE.
     emailPrivacidade: 'contato@andreaaugustodeoliveira.com.br',
     // Data da última revisão dos textos legais (preencher após revisão jurídica).
-    revisaoPolitica: null,
+    // Política de Privacidade: texto enviado pela Andréa em 27/09/2026.
+    revisaoPolitica: '27 de setembro de 2026',
+    // Nome do provedor de IA usado pelo BLIM (ex.: fornecedor do modelo). null =
+    // a Política cita "provedor de inteligência artificial" sem nome. PENDENTE.
+    provedorIA: null,
     revisaoTermos: null,
   },
 
