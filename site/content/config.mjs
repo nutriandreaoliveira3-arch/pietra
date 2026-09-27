@@ -69,7 +69,7 @@ export default {
     especializacoes: [
       { titulo: 'Pós-graduação em Nutrição Esportiva', instituicao: 'CEFIT', ano: 2017 },
       { titulo: 'Especialização em Nutrição Esportiva', instituicao: 'Universidade São Judas Tadeu', ano: null },
-      { titulo: 'Pós-graduação em Fitoterapia', instituicao: 'VP', ano: 2019 },
+      { titulo: 'Pós-graduação em Fitoterapia', instituicao: 'VP Instituto Valéria Paschoal', ano: 2019 },
     ],
     // Marcos profissionais (linha do tempo da página Sobre). Confirmados pela
     // Andréa em 27/09/2026.
@@ -78,7 +78,7 @@ export default {
       { periodo: '2010', titulo: 'Consultório próprio', texto: 'Início do atendimento nutricional em consultório próprio.' },
       { periodo: '2017', titulo: 'Nutrição Esportiva', texto: 'Pós-graduação em Nutrição Esportiva pelo CEFIT.' },
       { periodo: '2018', titulo: 'Projeto Nutrir Sonhos', texto: 'Criação do projeto Nutrir Sonhos, com conteúdos de nutrição no YouTube e no Instagram, ainda como Andréa Marim.' },
-      { periodo: '2019', titulo: 'Fitoterapia', texto: 'Pós-graduação em Fitoterapia pela VP.' },
+      { periodo: '2019', titulo: 'Fitoterapia', texto: 'Pós-graduação em Fitoterapia pelo VP Instituto Valéria Paschoal.' },
       { periodo: '2026', titulo: 'Emagrecimento Blindado', texto: 'Como Andréa Augusto de Oliveira, lança o Emagrecimento Blindado, método para emagrecer com estratégia e hábitos sustentáveis.' },
     ],
   },
