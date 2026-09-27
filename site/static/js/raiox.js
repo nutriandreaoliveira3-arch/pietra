@@ -85,7 +85,7 @@
         '<div class="rxq__intro">' +
           '<p>O Raio-X 360º organiza informações sobre alimentação, comportamento, rotina, ambiente, saúde e adesão para identificar quais pontos merecem mais atenção no seu processo.</p>' +
           '<ul class="rxq__fatos"><li><strong>' + CFG.total + ' etapas</strong> · de 15 a 20 minutos</li><li><strong>Salva a cada etapa</strong> · dá para continuar depois neste aparelho</li><li><strong>Sem respostas certas</strong> · responda pensando na sua rotina real</li></ul>' +
-          '<p class="nota">Não é diagnóstico médico, exame clínico nem avaliação psicológica, não gera prescrição e não promete resultados.</p>' +
+          '<p class="nota">Não é diagnóstico médico, exame clínico nem avaliação psicológica, não gera prescrição e não promete resultados. O resumo final é gerado automaticamente por regras definidas pela nutricionista (sem inteligência artificial), e as respostas completas são analisadas individualmente por ela.</p>' +
         '</div>' +
         (erro ? '<p class="rxq__erro" role="alert">' + esc(erro) + '</p>' : '') +
         '<div class="campo"><label for="rxq-nome">Nome <span aria-hidden="true">*</span></label><input id="rxq-nome" name="nome" autocomplete="name" required maxlength="120"></div>' +

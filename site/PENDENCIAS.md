@@ -17,6 +17,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 - [ ] Sem registros confirmados em "Rádio" (content/imprensa.mjs) — /imprensa/
 - [ ] Horário de atendimento (config.contato.horario) — /contato/
 - [ ] Prazo de resposta (config.contato.prazoResposta) — /contato/
-- [ ] Revisão jurídica da Política de Privacidade e dos Termos de Uso — /politica-de-privacidade/
-- [ ] Data de revisão da Política (config.legal.revisaoPolitica) — /politica-de-privacidade/
+- [ ] Provedor de inteligência artificial usado pelo BLIM (config.legal.provedorIA) — /politica-de-privacidade/
+- [ ] Revisão jurídica dos Termos de Uso — /termos-de-uso/
 - [ ] Data de revisão dos Termos (config.legal.revisaoTermos) — /termos-de-uso/

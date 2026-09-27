@@ -1067,43 +1067,124 @@ function legalCampo(valor, rotulo) {
 function privacidade() {
   const crumbs = [HOME, { nome: 'Política de Privacidade', path: 'politica-de-privacidade/' }];
   const L = C.legal;
-  pend('Revisão jurídica da Política de Privacidade e dos Termos de Uso');
   const email = L.emailPrivacidade || C.contato.email;
+  const emailHtml = email ? `<a href="mailto:${esc(email)}">${esc(email)}</a>` : legalCampo(null, 'E-mail para pedidos de privacidade/LGPD (config.legal.emailPrivacidade)');
+  const RXN = esc(C.raioX.nome);
+  const ul = (itens) => `<ul>${itens.map((t) => `<li>${t}</li>`).join('')}</ul>`;
+  const temMedicao = C.analytics.ga4 || C.analytics.metaPixel;
+  if (!L.provedorIA) pend('Provedor de inteligência artificial usado pelo BLIM (config.legal.provedorIA)');
+  const controladora = L.pessoaFisica
+    ? `${esc(N)}<br>${esc(C.pessoa.profissao)} — ${esc(C.pessoa.crn)}<br>Profissional autônoma — pessoa física<br>Brasil`
+    : `${esc(N)}${L.razaoSocial ? `<br>${esc(L.razaoSocial)}` : ''}${L.cnpj ? `<br>CNPJ ${esc(L.cnpj)}` : ''}<br>Brasil`;
   const corpo = `${cabecalhoInterno({ crumbs, h1: 'Política de Privacidade', lead: `Última atualização: ${L.revisaoPolitica ? esc(L.revisaoPolitica) : legalCampo(null, 'Data de revisão da Política (config.legal.revisaoPolitica)')}` })}
 <div class="container container--texto prosa legal">
-<p>Esta política explica como os dados pessoais enviados por este site são tratados, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD).</p>
-<h2>1. Quem é a controladora dos dados</h2>
-<p>${L.pessoaFisica ? `${esc(N)}, ${assinaturaProfissional()}, profissional autônoma (pessoa física).` : `${esc(N)}${L.razaoSocial ? `, por meio de ${esc(L.razaoSocial)}` : ''}${L.cnpj ? `, CNPJ ${esc(L.cnpj)}` : ''}. ${!L.razaoSocial || !L.cnpj ? pend('Razão social e CNPJ na Política (config.legal)') : ''}`}</p>
-<h2>2. Quais dados coletamos</h2>
-<ul>
-<li><strong>Formulário de contato:</strong> nome, e-mail, WhatsApp (opcional), assunto e mensagem.</li>
-<li><strong>${esc(C.raioX.nomeCurto)}:</strong> nome, e-mail, WhatsApp (opcional) e as respostas do questionário, que incluem informações sobre alimentação, rotina, sono, comportamento alimentar e saúde (por exemplo, sintomas, medicamentos e fase hormonal). Informações de saúde são <strong>dados pessoais sensíveis</strong> e só são coletadas com o seu consentimento específico, dado antes de começar o questionário.</li>
-<li><strong>Navegação:</strong> dados técnicos básicos (como endereço IP e tipo de navegador), registrados pelo servidor para segurança e funcionamento do site${C.analytics.ga4 || C.analytics.metaPixel ? ', e dados de medição de audiência por meio de ferramentas de terceiros' : ''}.</li>
-</ul>
-<p>Não solicite nem envie pelo formulário informações de saúde detalhadas. Elas serão tratadas apenas no contexto de uma avaliação individual, com os cuidados que a lei exige para dados sensíveis.</p>
-<h2>3. Para que usamos os dados</h2>
-<ul>
-<li>Responder ao seu contato e esclarecer dúvidas.</li>
-<li>Organizar as respostas do ${esc(C.raioX.nomeCurto)} em um painel, apoiar a análise nutricional individual e apresentar a estratégia indicada. O painel não é diagnóstico e não gera prescrição automática.</li>
-<li>Cumprir obrigações legais e manter a segurança do site.</li>
-</ul>
-<p>A base legal é o seu consentimento e, quando aplicável, os procedimentos preliminares a um contrato que você solicitou. Para os dados de saúde do ${esc(C.raioX.nomeCurto)}, a base legal é o consentimento específico e destacado (LGPD, art. 11, I). As respostas ficam em sistema protegido, acessível apenas à nutricionista responsável, e não são enviadas por e-mail.</p>
-<h2>4. Compartilhamento</h2>
-<p>Os dados não são vendidos. Podem ser processados por fornecedores que viabilizam o funcionamento do site (hospedagem, envio de e-mails e formulários), apenas para essas finalidades.</p>
-<h2>5. Por quanto tempo guardamos</h2>
-<p>Pelo tempo necessário para cumprir as finalidades acima ou exigências legais. Depois disso, os dados são excluídos ou anonimizados.</p>
-<h2>6. Seus direitos</h2>
-<p>Você pode pedir a confirmação do tratamento, acesso, correção, anonimização, portabilidade ou exclusão dos seus dados, além de revogar o consentimento a qualquer momento.</p>
-<p>Para exercer esses direitos, escreva para ${email ? `<a href="mailto:${esc(email)}">${esc(email)}</a>` : legalCampo(null, 'E-mail para pedidos de privacidade/LGPD (config.legal.emailPrivacidade)')}.</p>
-<h2>7. Cookies</h2>
-<p>${C.analytics.ga4 || C.analytics.metaPixel ? 'Este site utiliza cookies de medição de audiência. Você pode bloqueá-los nas configurações do seu navegador.' : 'Este site não utiliza cookies de publicidade nem de medição de audiência. Apenas preferências locais do navegador podem ser usadas para melhorar a sua experiência (por exemplo, lembrar que você minimizou um botão).'}</p>
-<h2>8. Alterações</h2>
-<p>Esta política pode ser atualizada. A data da última revisão fica sempre no topo desta página.</p>
+<p>Esta Política de Privacidade explica como os dados pessoais são coletados, utilizados, armazenados, compartilhados e protegidos no site <a href="${abs('')}">${esc(C.site.url.replace(/^https?:\/\//, ''))}</a> e nos serviços digitais relacionados.</p>
+<p>O tratamento dos dados é realizado de acordo com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD) — e demais normas aplicáveis.</p>
+
+<h2>1. Controladora dos dados</h2>
+<p>A controladora dos dados pessoais tratados neste site é:</p>
+<p>${controladora}</p>
+<p>Canal para assuntos relacionados à privacidade e proteção de dados: ${emailHtml}</p>
+
+<h2>2. Quais dados podem ser coletados</h2>
+<p>Dependendo da interação realizada, poderão ser coletados:</p>
+<h3>Formulário de contato</h3>
+${ul(['nome;', 'e-mail;', 'WhatsApp, quando informado;', 'assunto;', 'conteúdo da mensagem enviada.'])}
+<p>Solicita-se que informações detalhadas de saúde não sejam encaminhadas pelo formulário geral de contato.</p>
+<h3>${RXN}</h3>
+<p>Caso a pessoa opte por preencher o questionário, poderão ser fornecidas informações relacionadas a:</p>
+${ul(['hábitos alimentares;', 'rotina;', 'sono;', 'atividade física;', 'histórico de peso;', 'fome e saciedade;', 'comportamento alimentar;', 'medicamentos e suplementos;', 'sintomas e condições de saúde relatadas;', 'fase hormonal;', 'perimenopausa ou menopausa;', 'funcionamento intestinal;', 'histórico de tentativas de emagrecimento;', 'aspectos sociais e comportamentais relacionados à alimentação;', 'outras informações necessárias à avaliação nutricional inicial.'])}
+<p>Algumas dessas informações podem ser consideradas dados pessoais sensíveis referentes à saúde.</p>
+<p>Antes da coleta desses dados, o titular receberá informações específicas sobre o tratamento e, quando aplicável, será solicitado consentimento específico e destacado.</p>
+<h3>Atendimento nutricional</h3>
+<p>Quando houver contratação de atendimento, poderão ser coletadas as informações necessárias à avaliação, assistência nutricional, elaboração e manutenção do prontuário, acompanhamento clínico e cumprimento das obrigações profissionais e legais.</p>
+<h3>Dados técnicos</h3>
+<p>O site e os fornecedores de infraestrutura poderão registrar informações técnicas necessárias ao funcionamento e à segurança, como:</p>
+${ul(['endereço IP;', 'tipo de navegador;', 'informações do dispositivo;', 'data e horário de acesso;', 'registros técnicos e de segurança.'])}
+
+<h2>3. Finalidades do tratamento</h2>
+<p>Os dados poderão ser utilizados para:</p>
+${ul(['responder solicitações de contato;', 'prestar informações sobre os serviços;', 'realizar procedimentos solicitados antes de eventual contratação;', `operacionalizar o ${RXN};`, 'organizar informações fornecidas voluntariamente pelo usuário;', 'realizar atendimento nutricional individualizado;', 'manter registros e prontuários quando aplicável;', 'prestar acompanhamento contratado;', 'disponibilizar ferramentas complementares ao atendimento;', 'cumprir obrigações legais, regulatórias, profissionais, fiscais ou administrativas;', 'prevenir fraudes, incidentes de segurança e utilização indevida dos serviços;', 'exercer regularmente direitos em processos judiciais, administrativos ou extrajudiciais;', 'manter o funcionamento e a segurança da infraestrutura tecnológica.'])}
+<p>Os dados não serão utilizados para finalidades incompatíveis com aquelas informadas ao titular.</p>
+
+<h2>4. Bases legais</h2>
+<p>As bases legais utilizadas dependerão da natureza e da finalidade de cada tratamento e poderão incluir:</p>
+${ul(['consentimento do titular;', 'procedimentos preliminares relacionados a contrato solicitado pelo próprio titular;', 'execução de contrato;', 'cumprimento de obrigação legal ou regulatória;', 'exercício regular de direitos;', 'tutela da saúde em procedimentos realizados por profissional de saúde, quando aplicável;', 'outras hipóteses previstas na LGPD.'])}
+<p>Para dados pessoais sensíveis coletados fora do contexto de assistência nutricional já estabelecida, poderá ser solicitado consentimento específico e destacado para finalidades determinadas.</p>
+
+<h2>5. ${RXN}</h2>
+<p>O ${RXN} é uma ferramenta de avaliação inicial e organização de informações.</p>
+<p>Ele não constitui exame médico, diagnóstico médico, diagnóstico psicológico ou promessa de resultado.</p>
+<p>As respostas poderão ser utilizadas para identificar áreas que merecem maior atenção e auxiliar na compreensão do contexto alimentar, comportamental e de estilo de vida da participante.</p>
+<p>Resultados ou classificações geradas automaticamente não substituem avaliação profissional individual.</p>
+<p>Quando houver utilização de sistemas automatizados ou inteligência artificial para auxiliar na organização ou análise das informações, isso será informado ao titular e serão mantidos mecanismos de supervisão profissional quando necessários.</p>
+<p>Atualmente, o resumo exibido ao final do questionário é gerado automaticamente a partir das respostas, por regras definidas pela nutricionista, sem uso de inteligência artificial, e as respostas completas são analisadas individualmente pela profissional.</p>
+
+<h2>6. BLIM e inteligência artificial</h2>
+<p>Pacientes que contratarem modalidades de acompanhamento que incluam o BLIM poderão utilizar uma ferramenta digital com recursos de inteligência artificial.</p>
+<p>O BLIM tem caráter educativo e complementar.</p>
+<p>Ele não substitui consulta, avaliação clínica, diagnóstico médico, prescrição profissional ou atendimento de emergência.</p>
+<p>Informações enviadas ao BLIM poderão ser processadas por fornecedores tecnológicos necessários ao funcionamento da ferramenta.</p>
+<p>Quando esses fornecedores tiverem acesso a dados pessoais ou dados de saúde, serão adotadas medidas destinadas à proteção, confidencialidade e utilização limitada às finalidades informadas.</p>
+<p>A paciente não deve utilizar o BLIM para situações de urgência ou emergência nem alterar medicamentos ou tratamentos médicos com base exclusivamente em respostas produzidas pela ferramenta.</p>
+
+<h2>7. Compartilhamento com fornecedores</h2>
+<p>Os dados não são vendidos.</p>
+<p>Determinados dados poderão ser processados por prestadores de serviços utilizados para operação do site e dos serviços digitais, incluindo:</p>
+${ul([
+  `Railway — infraestrutura e hospedagem, inclusive do ${RXN};`,
+  'Resend — infraestrutura de envio de e-mails;',
+  'Cloudflare — infraestrutura de domínio, desempenho e segurança;',
+  L.provedorIA ? `${esc(L.provedorIA)} — inteligência artificial utilizada pelo BLIM;` : 'provedor de inteligência artificial utilizado pelo BLIM;',
+  'outros prestadores tecnológicos estritamente necessários à operação dos serviços.',
+])}
+<p>Esses fornecedores recebem somente os dados necessários ao desempenho de suas respectivas funções, de acordo com as condições aplicáveis e medidas de segurança disponíveis.</p>
+
+<h2>8. Transferência internacional de dados</h2>
+<p>Alguns fornecedores tecnológicos utilizados poderão operar infraestrutura localizada fora do Brasil, inclusive nos Estados Unidos.</p>
+<p>Por essa razão, determinados dados pessoais poderão ser objeto de transferência internacional ou acesso a partir do exterior.</p>
+<p>Quando houver transferência internacional, serão adotadas medidas compatíveis com a LGPD e com a regulamentação da Autoridade Nacional de Proteção de Dados — ANPD, incluindo os mecanismos aplicáveis à transferência internacional de dados.</p>
+
+<h2>9. Prazo de armazenamento</h2>
+<p>Os dados serão conservados somente pelo período necessário para cumprir as finalidades para as quais foram coletados, respeitando obrigações legais, regulatórias e profissionais.</p>
+<p>Como regra operacional:</p>
+${ul(['dados de pessoas que apenas entrarem em contato e não se tornarem pacientes poderão ser mantidos por até 12 meses após o último contato, salvo necessidade legítima de manutenção por período diferente;', 'dados do Raio-X de pessoas que não contratarem atendimento serão mantidos apenas pelo período necessário à entrega, análise e eventual continuidade do contato, de acordo com a finalidade informada no momento da coleta;', 'dados de pacientes e informações integrantes de prontuário obedecerão aos prazos de guarda previstos na legislação e nas normas profissionais aplicáveis;', 'dados necessários ao cumprimento de obrigações fiscais, legais, regulatórias ou ao exercício de direitos poderão ser conservados durante os respectivos prazos legais.'])}
+<p>Ao término da necessidade de tratamento, os dados serão eliminados, anonimizados ou conservados somente nas hipóteses permitidas pela legislação.</p>
+
+<h2>10. Segurança</h2>
+<p>São adotadas medidas técnicas e administrativas razoáveis para proteger os dados contra acessos não autorizados, destruição, perda, alteração, comunicação ou tratamento inadequado.</p>
+<p>Nenhum sistema eletrônico é absolutamente imune a incidentes.</p>
+<p>Caso seja identificado incidente de segurança que possa gerar risco ou dano relevante aos titulares, serão adotadas as providências exigidas pela legislação aplicável.</p>
+
+<h2>11. Direitos dos titulares</h2>
+<p>Nos termos da LGPD, o titular poderá solicitar, quando aplicável:</p>
+${ul(['confirmação da existência de tratamento;', 'acesso aos dados;', 'correção de dados incompletos, inexatos ou desatualizados;', 'anonimização, bloqueio ou eliminação de dados desnecessários ou tratados em desconformidade;', 'portabilidade, nos termos da regulamentação;', 'informações sobre compartilhamento;', 'informações sobre a possibilidade de não fornecer consentimento e suas consequências;', 'revogação do consentimento;', 'eliminação de dados tratados com base em consentimento, ressalvadas as hipóteses legais de conservação;', 'oposição ao tratamento nas hipóteses previstas em lei;', 'informações relativas a decisões tomadas unicamente com base em tratamento automatizado, quando aplicável;', 'revisão de decisões automatizadas nas hipóteses legalmente aplicáveis;', 'peticionamento perante a Autoridade Nacional de Proteção de Dados.'])}
+<p>As solicitações poderão ser encaminhadas para: ${emailHtml}</p>
+<p>Antes de fornecer determinadas informações, poderá ser solicitada confirmação da identidade do titular.</p>
+
+<h2>12. Cookies e tecnologias similares</h2>
+${temMedicao
+    ? '<p>Este site utiliza ferramentas de medição de audiência, que podem usar cookies. Você pode bloqueá-los nas configurações do seu navegador.</p>'
+    : '<p>Este site não utiliza cookies para publicidade comportamental nem ferramentas de medição de audiência como Google Analytics, salvo se isso vier a ser expressamente alterado e informado nesta Política.</p>'}
+<p>Poderão existir tecnologias estritamente necessárias ao funcionamento, segurança ou armazenamento de preferências locais do usuário.</p>
+
+<h2>13. Menores de idade</h2>
+<p>O Raio-X e os serviços destinados a adultos não devem ser preenchidos diretamente por menores sem participação ou autorização de responsável legal quando esta for necessária.</p>
+<p>Nos atendimentos de menores, serão observadas as normas profissionais e legais pertinentes.</p>
+
+<h2>14. Alterações desta Política</h2>
+<p>Esta Política poderá ser atualizada em razão de mudanças nos serviços, fornecedores, tecnologias utilizadas ou legislação aplicável.</p>
+<p>A data da versão mais recente será indicada no início da página.</p>
+
+<h2>15. Contato</h2>
+<p>Para dúvidas ou solicitações relacionadas à privacidade e proteção de dados:</p>
+<p>${esc(N)}<br>${esc(C.pessoa.profissao)} — ${esc(C.pessoa.crn)}<br>${emailHtml}</p>
 </div>`;
   return { path: 'politica-de-privacidade/', titulo: C.seo.privacidade.titulo, descricao: C.seo.privacidade.descricao, schema: [crumbSchema(crumbs)], corpo };
 }
 
 function termos() {
+  pend('Revisão jurídica dos Termos de Uso');
   const crumbs = [HOME, { nome: 'Termos de Uso', path: 'termos-de-uso/' }];
   const L = C.legal;
   const corpo = `${cabecalhoInterno({ crumbs, h1: 'Termos de Uso', lead: `Última atualização: ${L.revisaoTermos ? esc(L.revisaoTermos) : legalCampo(null, 'Data de revisão dos Termos (config.legal.revisaoTermos)')}` })}
