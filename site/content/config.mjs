@@ -93,7 +93,7 @@ export default {
     cnpj: null,
     enderecoComercial: null, // PENDENTE (se houver)
     // E-mail para pedidos de titulares de dados (LGPD). PENDENTE.
-    emailPrivacidade: null,
+    emailPrivacidade: 'contato@andreaaugustodeoliveira.com.br',
     // Data da última revisão dos textos legais (preencher após revisão jurídica).
     revisaoPolitica: null,
     revisaoTermos: null,
@@ -104,8 +104,9 @@ export default {
     whatsapp: '5511999003259',
     // Mensagem que já aparece escrita quando a visitante abre o WhatsApp.
     whatsappMensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber mais sobre o Emagrecimento Blindado.',
-    email: null, // PENDENTE
-    emailImprensa: null, // PENDENTE (pode ser o mesmo)
+    // Encaminhado pelo Cloudflare Email Routing para o Gmail da Andréa.
+    email: 'contato@andreaaugustodeoliveira.com.br',
+    emailImprensa: 'contato@andreaaugustodeoliveira.com.br',
     instagram: 'https://www.instagram.com/nutriandreaoliveira/',
     youtube: null,
     // Não inventar: só preencher quando definido.
