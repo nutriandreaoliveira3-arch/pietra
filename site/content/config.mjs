@@ -54,27 +54,32 @@ export default {
     profissao: 'Nutricionista',
     // Confirmado pela Andréa em 26/09/2026 (mesmo registro usado como Andréa Marim).
     crn: 'CRN-3 15233',
-    anosDeExperiencia: null, // ex.: 20 — PENDENTE (número, sem arredondar pra cima)
+    // Formada em 2003 (confirmado pela Andréa em 27/09/2026). Usamos 20+ para
+    // não arredondar pra cima (houve um período afastada da atividade).
+    anosDeExperiencia: 20,
     cidade: null, // ex.: 'São Paulo, SP' — PENDENTE
     // Confirmado pela Andréa em 26/09/2026.
     atendimento: '100% online, com hora marcada',
-    // ENCONTRADO EM FONTES PÚBLICAS (entrevista no blog E de Repente 50,
-    // 15/02/2019, e ficha de fontes da Revista SuplementAção nº 56, 2019):
-    //   - Graduação em Nutrição — Universidade Bandeirantes de São Paulo
-    //   - Especialização em Nutrição Esportiva — Universidade São Judas Tadeu
-    //   - Formação complementar: fitoterápicos e suplementação para
-    //     emagrecimento; nutrição funcional; probióticos e prebióticos;
-    //     nutrição e estética
-    // Só descomentar depois que a Andréa confirmar (e, se possível, com ano).
+    // Formação confirmada pela Andréa em 27/09/2026.
+    // Obs.: fontes públicas de 2019 citam a especialização em Nutrição
+    // Esportiva pela Universidade São Judas Tadeu; a Andréa informou CEFIT
+    // (2017). Vale o que ela informou; perguntar se as duas existem.
     formacoes: [
-      // { titulo: 'Graduação em Nutrição', instituicao: 'Universidade Bandeirantes de São Paulo', ano: null },
+      { titulo: 'Graduação em Nutrição', instituicao: 'Universidade Bandeirantes', ano: 2003 },
     ],
     especializacoes: [
-      // { titulo: 'Especialização em Nutrição Esportiva', instituicao: 'Universidade São Judas Tadeu', ano: null },
+      { titulo: 'Pós-graduação em Nutrição Esportiva', instituicao: 'CEFIT', ano: 2017 },
+      { titulo: 'Pós-graduação em Fitoterapia', instituicao: 'VP', ano: 2019 },
     ],
-    // Marcos profissionais (linha do tempo da página Sobre).
+    // Marcos profissionais (linha do tempo da página Sobre). Confirmados pela
+    // Andréa em 27/09/2026.
     trajetoria: [
-      // { periodo: '2005–2012', titulo: 'Atendimento clínico', texto: '...' }
+      { periodo: '2003', titulo: 'Formação em Nutrição', texto: 'Graduação em Nutrição pela Universidade Bandeirantes.' },
+      { periodo: '2010', titulo: 'Consultório próprio', texto: 'Início do atendimento nutricional em consultório próprio.' },
+      { periodo: '2017', titulo: 'Nutrição Esportiva', texto: 'Pós-graduação em Nutrição Esportiva pelo CEFIT.' },
+      { periodo: '2018', titulo: 'Projeto Nutrir Sonhos', texto: 'Criação do projeto Nutrir Sonhos, com conteúdos de nutrição no YouTube e no Instagram, ainda como Andréa Marim.' },
+      { periodo: '2019', titulo: 'Fitoterapia', texto: 'Pós-graduação em Fitoterapia pela VP.' },
+      { periodo: '2026', titulo: 'Emagrecimento Blindado', texto: 'Como Andréa Augusto de Oliveira, lança o Emagrecimento Blindado, método para emagrecer com estratégia e hábitos sustentáveis.' },
     ],
   },
 
