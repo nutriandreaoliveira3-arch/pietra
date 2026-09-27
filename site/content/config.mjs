@@ -60,15 +60,15 @@ export default {
     cidade: null, // ex.: 'São Paulo, SP' — PENDENTE
     // Confirmado pela Andréa em 26/09/2026.
     atendimento: '100% online, com hora marcada',
-    // Formação confirmada pela Andréa em 27/09/2026.
-    // Obs.: fontes públicas de 2019 citam a especialização em Nutrição
-    // Esportiva pela Universidade São Judas Tadeu; a Andréa informou CEFIT
-    // (2017). Vale o que ela informou; perguntar se as duas existem.
+    // Formação confirmada pela Andréa em 27/09/2026: pós-graduação no CEFIT
+    // e, além dela, especialização em Nutrição Esportiva na São Judas Tadeu
+    // (ano não informado).
     formacoes: [
       { titulo: 'Graduação em Nutrição', instituicao: 'Universidade Bandeirantes', ano: 2003 },
     ],
     especializacoes: [
       { titulo: 'Pós-graduação em Nutrição Esportiva', instituicao: 'CEFIT', ano: 2017 },
+      { titulo: 'Especialização em Nutrição Esportiva', instituicao: 'Universidade São Judas Tadeu', ano: null },
       { titulo: 'Pós-graduação em Fitoterapia', instituicao: 'VP', ano: 2019 },
     ],
     // Marcos profissionais (linha do tempo da página Sobre). Confirmados pela
