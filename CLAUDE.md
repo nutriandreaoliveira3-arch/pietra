@@ -42,7 +42,9 @@ mesmo Express quando o host é `emagrecimentoblindado.com.br` / `www.` (`LANDING
 - **Endereço oficial: `https://www.emagrecimentoblindado.com.br`** (só o `www` está em Railway →
   Networking → Custom Domains; o plano atual bateu o limite de domínios customizados).
 - Cloudflare (DNS do domínio): `www` CNAME → alvo do Railway, **Proxied**; raiz (`@`) CNAME
-  **Proxied** + Redirect Rule **raiz → www** (301). SSL/TLS em **Full**.
+  **Proxied** + **Page Rule** (Rules → Page Rules) `emagrecimentoblindado.com.br/*` → Forwarding URL
+  301 → `https://www.emagrecimentoblindado.com.br/$1`. SSL/TLS em **Full**. (A tela de Redirect Rules
+  travava com "action is required for action parameters"; por isso ficou no Page Rules.)
 - **Nunca** criar Redirect Rule "WWW to root" nesse domínio: manda todo mundo para a raiz, que o
   Railway não conhece → 404 (`x-railway-fallback: true`). Foi a causa das quedas de set/2026.
 - O Express também redireciona raiz → www, caso algum pedido sem `www` chegue ao servidor.
