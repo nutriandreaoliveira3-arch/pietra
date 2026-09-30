@@ -55,6 +55,11 @@ const landingStatic = express.static(landingDir);
 
 app.use((req, res, next) => {
   if (!LANDING_HOSTS.has(req.hostname)) return next();
+  // Endereço oficial é o com "www" (é o único cadastrado no Railway). Se um
+  // pedido sem "www" chegar aqui, manda para o endereço certo.
+  if (!req.hostname.startsWith('www.')) {
+    return res.redirect(301, `https://www.${req.hostname}${req.originalUrl}`);
+  }
   landingStatic(req, res, () => res.status(404).send('Página não encontrada.'));
 });
 
