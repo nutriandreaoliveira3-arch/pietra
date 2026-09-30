@@ -34,6 +34,20 @@ operacional pra retomar o projeto rápido em conversas novas.
 - Variáveis de ambiente reais (JWT_SECRET, RESEND_API_KEY, GREENN_WEBHOOK_TOKEN etc.) ficam **só**
   no Railway → Variables. Nunca commitar valores reais no repo.
 
+## Domínio da landing page (`emagrecimentoblindado.com.br`)
+
+Landing "Emagrecimento Blindado Elite" (`landing-pages/emagrecimento-blindado-elite/`), servida pelo
+mesmo Express quando o host é `emagrecimentoblindado.com.br` / `www.` (`LANDING_HOSTS` em `src/index.js`).
+
+- **Endereço oficial: `https://www.emagrecimentoblindado.com.br`** (só o `www` está em Railway →
+  Networking → Custom Domains; o plano atual bateu o limite de domínios customizados).
+- Cloudflare (DNS do domínio): `www` CNAME → alvo do Railway, **Proxied**; raiz (`@`) CNAME
+  **Proxied** + Redirect Rule **raiz → www** (301). SSL/TLS em **Full**.
+- **Nunca** criar Redirect Rule "WWW to root" nesse domínio: manda todo mundo para a raiz, que o
+  Railway não conhece → 404 (`x-railway-fallback: true`). Foi a causa das quedas de set/2026.
+- O Express também redireciona raiz → www, caso algum pedido sem `www` chegue ao servidor.
+- Links em e-mails, anúncios e bio devem usar sempre o endereço com `www`.
+
 ## Site institucional (`site/`)
 
 Site da marca pessoal **Andréa Augusto de Oliveira** (antes conhecida como Andréa Marim), com o
