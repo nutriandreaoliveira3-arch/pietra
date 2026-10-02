@@ -150,7 +150,7 @@ export const midia = [
     status: 'sem link',
     verificacao: 'confirmada',
     evidencia: 'Fotos enviadas por Andréa (stories arquivados): fachada com o logo da Band, redação com #BANDTERRAVIVA e estúdio com a apresentadora.',
-    obs: 'Falta confirmar o nome do programa (o canal é o Terra Viva, da Band), o tema e um link do vídeo.',
+    obs: 'Andréa confirmou o programa Terra Viva (Band). Falta o tema e um link do vídeo.',
     exibirNoSite: true,
     destaque: false,
   },
@@ -750,6 +750,16 @@ export const pistas = [
     descricao: 'Revistas citadas no perfil do Minha Vida: Segredos da Mente, Ana Maria, Pense Leve, Máxima, Capricho, Viva Saúde; portais Mãe com Prosa, Alto Astral, Daqui Dali',
     fonte: 'https://www.minhavida.com.br/especialistas/33996-andrea-marim',
     situacao: 'Buscar edição por edição (acervos das editoras, clipping da Six e arquivos pessoais).',
+  },
+  {
+    descricao: 'Jornal da Cultura (TV Cultura) — entrevista informada por Andréa',
+    fonte: null,
+    situacao: 'Busca na internet em 02/10/2026 não encontrou o vídeo nem matéria com o nome Andréa Marim. Pedir data aproximada/tema a Andréa e procurar no acervo/YouTube da TV Cultura.',
+  },
+  {
+    descricao: 'Programa do Ronnie Von (RedeTV!) — participação informada por Andréa',
+    fonte: null,
+    situacao: 'Há só foto do apresentador no story; falta uma foto de Andréa no programa, tema e link para publicar.',
   },
   {
     descricao: 'Rádio',
