@@ -244,14 +244,37 @@ export default {
   // contexto: legenda + veículo + ano, para ficar claro que é a mesma
   // profissional. Arquivos em site/static/img/trajetoria/.
   acervo: [
-    // {
-    //   src: 'img/trajetoria/tv-2012.webp',
-    //   alt: 'Andréa, então Andréa Marim, em entrevista no estúdio do programa X',
-    //   legenda: 'Entrevista sobre alimentação e rotina',
-    //   veiculo: 'Programa X — Emissora Y',
-    //   ano: '2012',
-    //   url: 'https://...',
-    // },
+    // Fotos de bastidores enviadas por Andréa (stories arquivados do Instagram,
+    // recortados sem os ícones). `posicao` = enquadramento da foto no card.
+    {
+      src: 'img/midia/tv-gazeta-de-a-a-zuca.webp',
+      alt: 'Andréa, então Andréa Marim, no estúdio do programa De A a Zuca, na bancada com alimentos',
+      legenda: 'Convidada do programa De A a Zuca',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+      posicao: '62% 50%',
+    },
+    {
+      src: 'img/midia/tv-gazeta-bastidores.webp',
+      alt: 'Andréa, então Andréa Marim, nos bastidores de um estúdio da TV Gazeta',
+      legenda: 'Bastidores no estúdio',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-gazeta-estudio.webp',
+      alt: 'Andréa, então Andréa Marim, sentada na recepção da TV Gazeta',
+      legenda: 'Dia de gravação',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-record-entrevista.webp',
+      alt: 'Andréa, então Andréa Marim, dando entrevista para uma repórter da Record, com câmera e microfone',
+      legenda: 'Entrevista para a Record',
+      veiculo: 'Record',
+      ano: '2019',
+    },
   ],
 
   // Raio-X 360º do Emagrecimento™. As perguntas ficam em
