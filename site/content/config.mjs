@@ -415,7 +415,7 @@ export default {
       inteira: true,
     },
     {
-      src: 'img/midia/tv-rede-gospel.webp',
+      src: 'img/midia/tv-rede-gospel-v2.webp',
       alt: 'Andréa, então Andréa Marim, em frente ao logo da Rede Gospel',
       legenda: 'Alimentos para o coração',
       veiculo: 'Rede Gospel',
@@ -431,7 +431,7 @@ export default {
       inteira: true,
     },
     {
-      src: 'img/midia/tv-gospel-keila-lima.webp',
+      src: 'img/midia/tv-gospel-keila-lima-v2.webp',
       alt: 'Andréa, então Andréa Marim, com a apresentadora Keila Lima no cenário de Natal do programa, na Rede Gospel',
       legenda: 'Com Keila Lima',
       veiculo: 'Rede Gospel',
