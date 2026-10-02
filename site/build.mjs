@@ -126,7 +126,7 @@ async function gerarLevantamentoMidia() {
     ['Tema', (m) => m.tema],
     ['Papel de Andréa', (m) => PAPEIS[m.papel] || m.papel],
     ['Nome usado', () => C.pessoa.nomeAnterior],
-    ['Link da fonte', (m) => m.url],
+    ['Link da fonte', (m) => m.url || ''],
     ['Link do vídeo', (m) => m.urlVideo || ''],
     ['Vídeo / imagem / PDF', (m) => m.formatos.join(', ')],
     ['Status do link', (m) => m.status],
@@ -164,7 +164,7 @@ async function gerarLevantamentoMidia() {
         '',
         '| Data | Veículo / programa | Título | Papel | Mídia | Status | Verificação | No site |',
         '|---|---|---|---|---|---|---|---|',
-        ...itens.map((m) => `| ${dataBR(m.data)} | ${m.veiculo}${m.programa ? ' — ' + m.programa : ''} | [${m.titulo.replace(/\|/g, '/')}](${m.url}) | ${PAPEIS[m.papel]} | ${m.formatos.join(', ')} | ${m.status} | ${verif[m.verificacao]} | ${m.exibirNoSite ? (m.destaque ? 'Sim (destaque)' : 'Sim') : 'Não'} |`),
+        ...itens.map((m) => `| ${dataBR(m.data)} | ${m.veiculo}${m.programa ? ' — ' + m.programa : ''} | ${m.url ? `[${m.titulo.replace(/\|/g, '/')}](${m.url})` : m.titulo.replace(/\|/g, '/')} | ${PAPEIS[m.papel]} | ${m.formatos.join(', ')} | ${m.status} | ${verif[m.verificacao]} | ${m.exibirNoSite ? (m.destaque ? 'Sim (destaque)' : 'Sim') : 'Não'} |`),
         '',
       ];
     }),

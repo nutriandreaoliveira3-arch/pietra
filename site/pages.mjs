@@ -221,9 +221,13 @@ function cardImprensa(m, { comCategoria = true } = {}) {
   <p class="midia__veiculo">${esc(m.veiculo)}${m.programa ? `<span class="midia__programa"> · ${esc(m.programa)}</span>` : ''}</p>
   <h3 class="midia__titulo">${esc(m.titulo)}</h3>
   <p class="midia__papel">${esc(papel)} <span class="midia__nome">como ${esc(NA)}</span></p>
-  <a class="midia__link" href="${esc(m.url)}" target="_blank" rel="noopener" data-cta="midia-${esc(m.id)}">${ehVideo ? icons.play : icons.externo}<span>${rotuloLink}</span><span class="sr-only">: ${esc(m.titulo)}, ${esc(m.veiculo)} (abre em nova aba)</span></a>
+  ${m.url ? `<a class="midia__link" href="${esc(m.url)}" target="_blank" rel="noopener" data-cta="midia-${esc(m.id)}">${ehVideo ? icons.play : icons.externo}<span>${rotuloLink}</span><span class="sr-only">: ${esc(m.titulo)}, ${esc(m.veiculo)} (abre em nova aba)</span></a>` : ''}
 </article></li>`;
 }
+
+// Fotos de bastidores (config.acervo): página Sobre e página Na mídia.
+const galeriaAcervo = () =>
+  `<ul class="acervo">${C.acervo.map((a) => `<li><figure><img src="${u(a.src)}" alt="${esc(a.alt)}" loading="lazy" decoding="async"${a.posicao ? ` style="object-position:${esc(a.posicao)}"` : ''}><figcaption><strong>${esc(a.legenda)}</strong><span>${esc(a.veiculo)}${a.ano ? ` · ${esc(a.ano)}` : ''} · como ${esc(NA)}</span>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">Ver original<span class="sr-only"> (abre em nova aba)</span></a>` : ''}</figcaption></figure></li>`).join('')}</ul>`;
 
 function gradeImprensa(lista) {
   if (lista.length) return `<ul class="midias">${lista.map((m) => cardImprensa(m)).join('')}</ul>`;
@@ -399,7 +403,7 @@ function sobre() {
   const formacaoConteudo = listaForm(P_.formacoes, 'Formação acadêmica (config.pessoa.formacoes)') + listaForm(P_.especializacoes, 'Especializações e cursos (config.pessoa.especializacoes)');
   const temFormacao = P_.formacoes.length || P_.especializacoes.length || ctx.preview;
   const acervo = C.acervo.length
-    ? `<ul class="acervo">${C.acervo.map((a) => `<li><figure><img src="${u(a.src)}" alt="${esc(a.alt)}" loading="lazy" decoding="async"><figcaption><strong>${esc(a.legenda)}</strong><span>${esc(a.veiculo)}${a.ano ? ` · ${esc(a.ano)}` : ''} · como ${esc(NA)}</span>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">Ver original<span class="sr-only"> (abre em nova aba)</span></a>` : ''}</figcaption></figure></li>`).join('')}</ul>`
+    ? galeriaAcervo()
     : ctx.preview ? `<div class="acervo acervo--vazio">${fotoPendente('Fotos antigas da trajetória como Andréa Marim, com legenda, veículo e ano (config.acervo)', '16 / 9')}</div>` : (pend('Fotos antigas da trajetória (config.acervo)'), '');
   const principios = [
     ['Estratégia antes de regra', 'Cada decisão parte do momento da pessoa, não de um modelo pronto.'],
@@ -923,6 +927,7 @@ ${secao({
 ${resumo}
 ${indice}`,
 })}
+${C.acervo.length ? secao({ classe: 'secao--sem-topo', rotulo: 'titulo-bastidores', conteudo: `<div class="cab-secao">${eyebrow('Bastidores')}<h2 id="titulo-bastidores">Nos estúdios de TV</h2></div>${galeriaAcervo()}` }) : ''}
 ${secao({ classe: 'secao--sem-topo', conteudo: grupos || '<div class="vazio"><p>O acervo de participações está sendo reunido e será publicado aqui em breve.</p></div>' })}
 ${secao({
   classe: 'secao--areia',
@@ -946,7 +951,7 @@ ${secao({
       item: {
         '@type': m.formatos.includes('vídeo') ? 'VideoObject' : 'Article',
         name: m.titulo,
-        url: m.url,
+        ...(m.url ? { url: m.url } : {}),
         ...(m.data && m.data.length === 10 ? { datePublished: m.data } : {}),
         publisher: { '@type': 'Organization', name: m.veiculo },
         mentions: { '@id': PERSON_ID() },
