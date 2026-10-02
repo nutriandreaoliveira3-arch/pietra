@@ -380,6 +380,28 @@ export default {
       inteira: true,
     },
     {
+      src: 'img/midia/tv-gospel-de-bem-com-a-vida.webp',
+      alt: 'Andréa, então Andréa Marim, ao vivo no programa De Bem com a Vida, da Rede Gospel, com a tarja Alimentos que fazem bem para o coração',
+      legenda: 'Ao vivo no De Bem com a Vida',
+      veiculo: 'Rede Gospel',
+      ano: '2019',
+      inteira: true,
+    },
+    {
+      src: 'img/midia/tv-papo-em-dia-faccioli.webp',
+      alt: 'Andréa, então Andréa Marim, no estúdio do programa Papo em Dia com o apresentador Luciano Faccioli e a apresentadora',
+      legenda: 'No Papo em Dia, com Luciano Faccioli',
+      veiculo: 'Papo em Dia',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-papo-em-dia-estudio.webp',
+      alt: 'Andréa, então Andréa Marim, gravando no estúdio do programa Papo em Dia, com câmera em primeiro plano',
+      legenda: 'Gravação no estúdio do Papo em Dia',
+      veiculo: 'Papo em Dia',
+      ano: '2019',
+    },
+    {
       src: 'img/midia/tv-record-entrevista.webp',
       alt: 'Andréa, então Andréa Marim, dando entrevista para uma repórter da Record, com câmera e microfone',
       legenda: 'Entrevista para a Record',
