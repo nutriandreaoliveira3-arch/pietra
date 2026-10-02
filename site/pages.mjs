@@ -227,7 +227,7 @@ function cardImprensa(m, { comCategoria = true } = {}) {
 
 // Fotos de bastidores (config.acervo): página Sobre e página Na mídia.
 const galeriaAcervo = () =>
-  `<ul class="acervo">${C.acervo.map((a) => `<li><figure><img src="${u(a.src)}" alt="${esc(a.alt)}" loading="lazy" decoding="async"${a.posicao ? ` style="object-position:${esc(a.posicao)}"` : ''}><figcaption><strong>${esc(a.legenda)}</strong><span>${esc(a.veiculo)}${a.ano ? ` · ${esc(a.ano)}` : ''} · como ${esc(NA)}</span>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">Ver original<span class="sr-only"> (abre em nova aba)</span></a>` : ''}</figcaption></figure></li>`).join('')}</ul>`;
+  `<ul class="acervo">${C.acervo.map((a) => `<li><figure><img src="${u(a.src)}" alt="${esc(a.alt)}" loading="lazy" decoding="async"${a.inteira ? ' class="acervo__inteira"' : a.posicao ? ` style="object-position:${esc(a.posicao)}"` : ''}><figcaption><strong>${esc(a.legenda)}</strong><span>${esc(a.veiculo)}${a.ano ? ` · ${esc(a.ano)}` : ''} · como ${esc(NA)}</span>${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">Ver original<span class="sr-only"> (abre em nova aba)</span></a>` : ''}</figcaption></figure></li>`).join('')}</ul>`;
 
 function gradeImprensa(lista) {
   if (lista.length) return `<ul class="midias">${lista.map((m) => cardImprensa(m)).join('')}</ul>`;

@@ -5,9 +5,9 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 
 ## Resumo
 
-- Registros: **32** · confirmados: **29** · parciais: **2** · não verificados: **1**
-- Publicados no site: **22** · destaques na home/Sobre: **8**
-- TV: 5
+- Registros: **33** · confirmados: **30** · parciais: **2** · não verificados: **1**
+- Publicados no site: **23** · destaques na home/Sobre: **9**
+- TV: 6
 - Rádio: 0
 - Revistas: 8
 - Jornais: 4
@@ -19,6 +19,7 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 | Data | Veículo / programa | Título | Papel | Mídia | Status | Verificação | No site |
 |---|---|---|---|---|---|---|---|
 | 2019 | Record | Entrevista para a Record | Entrevistada | foto | sem link | Confirmada | Sim |
+| 2019 | RedeTV! — Olga | Participação no programa Olga, com Olga Bongiovanni | Nutricionista convidada | foto | sem link | Confirmada | Sim (destaque) |
 | — | TV Gazeta — Você Bonita | [Benefícios das batatas](https://www.tvgazeta.com.br/videos/beneficios-das-batatas/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
 | — | TV Gazeta — De A a Zuca | [Como armazenar alimentos](https://www.tvgazeta.com.br/videos/como-armazenar-alimentos/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim |
 | — | TV Gazeta — De A a Zuca | [Descubra qual é a melhor farinha para sua saúde](https://www.tvgazeta.com.br/?p=272807) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
