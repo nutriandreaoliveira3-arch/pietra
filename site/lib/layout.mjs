@@ -1,4 +1,18 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
 import C from '../content/config.mjs';
+
+// Versão dos arquivos estáticos (hash do conteúdo). Muda a cada alteração,
+// para o navegador e o Cloudflare não servirem CSS/JS antigo do cache.
+const versao = (rel) => {
+  try {
+    return crypto.createHash('sha1').update(fs.readFileSync(new URL(`../static/${rel}`, import.meta.url))).digest('hex').slice(0, 10);
+  } catch {
+    return '';
+  }
+};
+const V_CSS = versao('css/site.css');
+const V_JS = versao('js/site.js');
 import { ctx, esc, u, abs, icons, btn, btnRaioX, whatsappUrl, pend, assinaturaProfissional } from './ui.mjs';
 
 export const NAV = [
@@ -95,7 +109,7 @@ ${p.noCanonical ? '' : `<link rel="canonical" href="${canonical}">`}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${t.fontes.googleFontsUrl}">
 ${p.preload || ''}
-<link rel="stylesheet" href="${u('css/site.css')}">
+<link rel="stylesheet" href="${u('css/site.css')}${V_CSS ? `?v=${V_CSS}` : ''}">
 <style>:root{${cores};--fonte-titulo:'${t.fontes.titulos}',Georgia,'Times New Roman',serif;--fonte-texto:'${t.fontes.textos}',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}</style>
 <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 ${analytics}
@@ -191,7 +205,7 @@ ${p.corpo}
 </main>
 ${footer()}
 ${whatsappFlutuante(p)}
-<script src="${u('js/site.js')}" defer></script>
+<script src="${u('js/site.js')}${V_JS ? `?v=${V_JS}` : ''}" defer></script>
 ${(p.scripts || []).map((sc) => `<script src="${u(sc)}" defer></script>`).join('\n')}
 </body>
 </html>
