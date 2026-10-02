@@ -5,9 +5,9 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 
 ## Resumo
 
-- Registros: **35** · confirmados: **32** · parciais: **2** · não verificados: **1**
-- Publicados no site: **25** · destaques na home/Sobre: **9**
-- TV: 8
+- Registros: **37** · confirmados: **34** · parciais: **2** · não verificados: **1**
+- Publicados no site: **27** · destaques na home/Sobre: **9**
+- TV: 10
 - Rádio: 0
 - Revistas: 8
 - Jornais: 4
@@ -22,6 +22,8 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 | 2019 | RedeTV! — Olga | Participação no programa Olga, com Olga Bongiovanni | Nutricionista convidada | foto | sem link | Confirmada | Sim (destaque) |
 | 2019 | Band — Terra Viva | Participação como nutricionista convidada | Nutricionista convidada | foto | sem link | Confirmada | Sim |
 | 2019 | Programa Vida Plena (emissora a confirmar) | Entrevista sobre chás para bebês e ervas medicinais | Entrevistada | foto | sem link | Confirmada | Sim |
+| 2019 | RedeTV! — Olga | Dieta proteica, com Olga Bongiovanni e Edu Guedes | Nutricionista convidada | foto | sem link | Confirmada | Sim |
+| 2019 | Rede Gospel | Alimentos para o coração | Nutricionista convidada | foto | sem link | Confirmada | Sim |
 | — | TV Gazeta — Você Bonita | [Benefícios das batatas](https://www.tvgazeta.com.br/videos/beneficios-das-batatas/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
 | — | TV Gazeta — De A a Zuca | [Como armazenar alimentos](https://www.tvgazeta.com.br/videos/como-armazenar-alimentos/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim |
 | — | TV Gazeta — De A a Zuca | [Descubra qual é a melhor farinha para sua saúde](https://www.tvgazeta.com.br/?p=272807) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
