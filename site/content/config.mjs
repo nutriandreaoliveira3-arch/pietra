@@ -270,6 +270,20 @@ export default {
       ano: '2019',
     },
     {
+      src: 'img/midia/tv-gazeta-voce-bonita.webp',
+      alt: 'Andréa, então Andréa Marim, com a apresentadora no estúdio do programa Você Bonita, da TV Gazeta, com câmera em primeiro plano',
+      legenda: 'No estúdio do Você Bonita',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-gazeta-voce-bonita-2.webp',
+      alt: 'Andréa, então Andréa Marim, conversando com a apresentadora na bancada do programa Você Bonita',
+      legenda: 'Na bancada do Você Bonita',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+    },
+    {
       src: 'img/midia/tv-gazeta-bastidores.webp',
       alt: 'Andréa, então Andréa Marim, nos bastidores de um estúdio da TV Gazeta',
       legenda: 'Bastidores no estúdio',
@@ -399,6 +413,20 @@ export default {
       alt: 'Andréa, então Andréa Marim, gravando no estúdio do programa Papo em Dia, com câmera em primeiro plano',
       legenda: 'Gravação no estúdio do Papo em Dia',
       veiculo: 'Papo em Dia',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-rit-nosso-programa-entrevista.webp',
+      alt: 'Andréa, então Andréa Marim, sendo entrevistada no estúdio do Nosso Programa sobre o que comer antes e depois do treino',
+      legenda: 'O que comer no pré e pós-treino',
+      veiculo: 'RIT TV · Nosso Programa',
+      ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-rit-nosso-programa-estudio.webp',
+      alt: 'Bastidores do Nosso Programa, com câmera em primeiro plano e Andréa, então Andréa Marim, no cenário',
+      legenda: 'Bastidores do Nosso Programa',
+      veiculo: 'RIT TV · Nosso Programa',
       ano: '2019',
     },
     {
