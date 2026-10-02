@@ -116,6 +116,16 @@ primeira execução de uma skill `ig-*` na conversa, caso ele ainda não esteja 
 
 @.claude/instagram-marca.md
 
+## Posicionamento padrão de TODO conteúdo (desde 02/10/2026)
+
+Público e ângulo padrão: mulheres de alta responsabilidade 35+ (executivas, CEOs, fundadoras,
+empresárias, médicas, advogadas, líderes), comunicação high ticket que começa pela cena real da
+rotina dela, nunca pela dieta. Regras completas, filtro obrigatório e formato de entrega em
+`.claude/posicionamento-high-ticket.md` — vale para qualquer conteúdo, salvo pedido explícito em
+contrário.
+
+@.claude/posicionamento-high-ticket.md
+
 ## Fluxo de trabalho neste repo
 
 - Branch de trabalho: `claude/app-window-recovery-guc1zt` (branch designada da sessão). Ao voltar
