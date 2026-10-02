@@ -255,6 +255,21 @@ export default {
       posicao: '62% 50%',
     },
     {
+      src: 'img/midia/tv-gazeta-de-a-a-zuca-2.webp',
+      alt: 'Andréa, então Andréa Marim, apresentando alimentos na bancada do programa De A a Zuca',
+      legenda: 'De volta ao De A a Zuca',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+      posicao: '50% 50%',
+    },
+    {
+      src: 'img/midia/tv-gazeta-recepcao-2.webp',
+      alt: 'Andréa, então Andréa Marim, de vestido estampado na recepção da TV Gazeta',
+      legenda: 'Antes de mais uma gravação',
+      veiculo: 'TV Gazeta',
+      ano: '2019',
+    },
+    {
       src: 'img/midia/tv-gazeta-bastidores.webp',
       alt: 'Andréa, então Andréa Marim, nos bastidores de um estúdio da TV Gazeta',
       legenda: 'Bastidores no estúdio',
@@ -324,6 +339,14 @@ export default {
       legenda: 'Dia de gravação na emissora',
       veiculo: 'Band',
       ano: '2019',
+    },
+    {
+      src: 'img/midia/tv-vida-plena-estudio.webp',
+      alt: 'Andréa, então Andréa Marim, sendo entrevistada no estúdio do programa Vida Plena, com câmera em primeiro plano',
+      legenda: 'Entrevista no programa Vida Plena',
+      veiculo: 'Vida Plena',
+      ano: '2019',
+      inteira: true,
     },
     {
       src: 'img/midia/tv-record-entrevista.webp',
