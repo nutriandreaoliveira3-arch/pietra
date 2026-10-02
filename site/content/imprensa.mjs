@@ -241,7 +241,7 @@ export const midia = [
     status: 'ativo',
     verificacao: 'confirmada',
     evidencia: 'Clipping da assessoria Six: "Cliente: Dra. Andrea Marim · Veículo: RIT TV · Seção: Nosso Programa — Andrea Marim, nutricionista, fala sobre nutrição esportiva."',
-    obs: 'Encontrado na varredura de segunda camada (não estava no levantamento inicial). O vídeo no YouTube não foi aberto na checagem.',
+    obs: 'Encontrado na varredura de segunda camada. Andréa enviou fotos de bastidores (@nossoprograma, tema "O que comer no pré e pós-treino" / "Alimentos não recomendáveis antes e depois das atividades").',
     exibirNoSite: true,
     destaque: false,
   },
