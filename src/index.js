@@ -74,7 +74,16 @@ const SITE_HOSTS = new Set(
     .filter(Boolean),
 );
 const siteDir = path.join(__dirname, '..', 'site', 'dist');
-const siteStatic = express.static(siteDir, { maxAge: '1h' });
+// Páginas HTML sempre revalidam (no-cache): assim uma correção no site aparece
+// na hora, sem o navegador mostrar a versão antiga por até 1h. CSS/JS são
+// versionados pelo hash (?v=) e imagens novas ganham nome novo, então esses
+// podem continuar em cache por 1h.
+const siteStatic = express.static(siteDir, {
+  maxAge: '1h',
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache');
+  },
+});
 const site404 = (req, res) => res.status(404).sendFile(path.join(siteDir, '404.html'));
 
 app.use((req, res, next) => {
