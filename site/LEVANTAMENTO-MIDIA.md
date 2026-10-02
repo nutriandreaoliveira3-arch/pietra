@@ -5,9 +5,9 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 
 ## Resumo
 
-- Registros: **38** · confirmados: **35** · parciais: **2** · não verificados: **1**
-- Publicados no site: **28** · destaques na home/Sobre: **9**
-- TV: 11
+- Registros: **39** · confirmados: **36** · parciais: **2** · não verificados: **1**
+- Publicados no site: **29** · destaques na home/Sobre: **9**
+- TV: 12
 - Rádio: 0
 - Revistas: 8
 - Jornais: 4
@@ -18,6 +18,8 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 
 | Data | Veículo / programa | Título | Papel | Mídia | Status | Verificação | No site |
 |---|---|---|---|---|---|---|---|
+| 2021 | Rede Gospel — Programa de Keila Lima | Convidada de Keila Lima | Nutricionista convidada | foto | sem link | Confirmada | Sim |
+| 2020 | TV Gazeta — Você Bonita | [Benefícios das batatas](https://www.tvgazeta.com.br/videos/beneficios-das-batatas/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
 | 2019 | Record | Entrevista para a Record | Entrevistada | foto | sem link | Confirmada | Sim |
 | 2019 | RedeTV! — Olga | Participação no programa Olga, com Olga Bongiovanni | Nutricionista convidada | foto | sem link | Confirmada | Sim (destaque) |
 | 2019 | Band — Terra Viva | Participação como nutricionista convidada | Nutricionista convidada | foto | sem link | Confirmada | Sim |
@@ -25,7 +27,6 @@ Planilha completa: `site/LEVANTAMENTO-MIDIA.csv` (abre no Excel ou no Google Pla
 | 2019 | RedeTV! — Olga | Dieta proteica, com Olga Bongiovanni e Edu Guedes | Nutricionista convidada | foto | sem link | Confirmada | Sim |
 | 2019 | Rede Gospel — De Bem com a Vida | Alimentos que fazem bem para o coração | Nutricionista convidada | foto | sem link | Confirmada | Sim |
 | 2019 | Programa Papo em Dia (emissora a confirmar) | Participação no Papo em Dia, com Luciano Faccioli | Nutricionista convidada | foto | sem link | Confirmada | Sim |
-| — | TV Gazeta — Você Bonita | [Benefícios das batatas](https://www.tvgazeta.com.br/videos/beneficios-das-batatas/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
 | — | TV Gazeta — De A a Zuca | [Como armazenar alimentos](https://www.tvgazeta.com.br/videos/como-armazenar-alimentos/) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim |
 | — | TV Gazeta — De A a Zuca | [Descubra qual é a melhor farinha para sua saúde](https://www.tvgazeta.com.br/?p=272807) | Nutricionista convidada | vídeo | ativo | Confirmada | Sim (destaque) |
 | — | RIT TV — Nosso Programa | [Nutrição esportiva](https://fabricadasartes.com.br/six/clipping/rit-tv-nosso-programa-nutricao-esportiva/) | Entrevistada | vídeo | ativo | Confirmada | Sim |
