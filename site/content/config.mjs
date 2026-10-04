@@ -108,9 +108,13 @@ export default {
     whatsapp: '5511999003259',
     // Mensagem que já aparece escrita quando a visitante abre o WhatsApp.
     whatsappMensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber mais sobre o Emagrecimento Blindado.',
-    // Encaminhado pelo Cloudflare Email Routing para o Gmail da Andréa.
-    email: 'contato@andreaaugustodeoliveira.com.br',
-    emailImprensa: 'contato@andreaaugustodeoliveira.com.br',
+    // Número como aparece escrito no site (página Contato).
+    whatsappExibicao: '(11) 99900-3259',
+    // E-mail exibido no site: pedido da Andréa em 04/10/2026.
+    // (contato@andreaaugustodeoliveira.com.br continua ativo, encaminhado pelo
+    // Cloudflare Email Routing, e segue como e-mail de privacidade/LGPD.)
+    email: 'blindadokp@gmail.com',
+    emailImprensa: 'blindadokp@gmail.com',
     instagram: 'https://www.instagram.com/nutriandreaoliveira/',
     youtube: null,
     // Não inventar: só preencher quando definido.

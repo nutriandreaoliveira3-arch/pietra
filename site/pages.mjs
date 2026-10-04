@@ -972,7 +972,7 @@ function contato() {
   const F = C.formulario;
   const wa = whatsappUrl();
   const canais = [
-    wa && `<li><a class="canal" href="${esc(wa)}" target="_blank" rel="noopener" data-cta="contato-whatsapp">${icons.whatsapp}<span><strong>WhatsApp</strong>${esc(C.ctas.whatsapp)}</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
+    wa && `<li><a class="canal" href="${esc(wa)}" target="_blank" rel="noopener" data-cta="contato-whatsapp">${icons.whatsapp}<span><strong>WhatsApp</strong>${esc(C.contato.whatsappExibicao || C.ctas.whatsapp)}</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
     C.contato.email && `<li><a class="canal" href="mailto:${esc(C.contato.email)}" data-cta="contato-email">${icons.email}<span><strong>E-mail</strong>${esc(C.contato.email)}</span></a></li>`,
     C.contato.instagram && `<li><a class="canal" href="${esc(C.contato.instagram)}" target="_blank" rel="noopener" data-cta="contato-instagram">${icons.instagram}<span><strong>Instagram</strong>Acompanhe os conteúdos</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
   ].filter(Boolean);
