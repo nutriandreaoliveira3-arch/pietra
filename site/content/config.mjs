@@ -110,11 +110,15 @@ export default {
     whatsappMensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber mais sobre o Emagrecimento Blindado.',
     // Número como aparece escrito no site (página Contato).
     whatsappExibicao: '(11) 99900-3259',
-    // E-mail exibido no site: pedido da Andréa em 04/10/2026.
-    // (contato@andreaaugustodeoliveira.com.br continua ativo, encaminhado pelo
-    // Cloudflare Email Routing, e segue como e-mail de privacidade/LGPD.)
-    email: 'blindadokp@gmail.com',
-    emailImprensa: 'blindadokp@gmail.com',
+    // Pedido da Andréa em 04/10/2026: contato SOMENTE pelo WhatsApp. Com isso
+    // a página Contato mostra só o WhatsApp (sem formulário, sem e-mail) e o
+    // rodapé/imprensa não exibem e-mail. Para voltar a mostrar e-mail e
+    // formulário: somenteWhatsApp: false e preencher `email` (ex.:
+    // 'blindadokp@gmail.com'). O e-mail de privacidade/LGPD (legal.emailPrivacidade)
+    // continua na Política de Privacidade, como a lei exige.
+    somenteWhatsApp: true,
+    email: null,
+    emailImprensa: null,
     instagram: 'https://www.instagram.com/nutriandreaoliveira/',
     youtube: null,
     // Não inventar: só preencher quando definido.
@@ -606,7 +610,7 @@ export default {
     },
     contato: {
       titulo: 'Contato | Andréa Augusto de Oliveira',
-      descricao: 'Fale com a equipe de Andréa Augusto de Oliveira pelo WhatsApp, e-mail ou formulário, ou comece pelo Raio-X do Emagrecimento.',
+      descricao: 'Fale com a equipe de Andréa Augusto de Oliveira pelo WhatsApp ou comece pelo Raio-X do Emagrecimento.',
     },
     privacidade: {
       titulo: 'Política de Privacidade | Andréa Augusto de Oliveira',
