@@ -936,7 +936,7 @@ ${secao({
   ${eyebrow('Para jornalistas e produtores')}
   <h2 id="titulo-para-imprensa">Pautas e entrevistas</h2>
   <p>Temas: emagrecimento sustentável, comportamento alimentar, alimentação da mulher após os 35, rotina, consistência e manutenção de resultados.</p>
-  ${emailImp ? `<div class="acoes acoes--centro">${btn('Contato para imprensa', `mailto:${emailImp}`, { tipo: 'secundario', icone: 'seta', track: 'imprensa-email' })}</div>` : `<div class="acoes acoes--centro">${btn('Fale com a equipe', u('contato/'), { tipo: 'secundario', icone: 'seta', track: 'imprensa-contato' })}</div>${pend('E-mail para imprensa (config.contato.emailImprensa)')}`}
+  ${C.contato.somenteWhatsApp && whatsappUrl() ? `<div class="acoes acoes--centro">${btnWhatsApp('Contato para imprensa pelo WhatsApp', { mensagem: 'Olá, Andréa. Sou da imprensa e gostaria de falar sobre uma pauta.', track: 'imprensa-whatsapp' })}</div>` : emailImp ? `<div class="acoes acoes--centro">${btn('Contato para imprensa', `mailto:${emailImp}`, { tipo: 'secundario', icone: 'seta', track: 'imprensa-email' })}</div>` : `<div class="acoes acoes--centro">${btn('Fale com a equipe', u('contato/'), { tipo: 'secundario', icone: 'seta', track: 'imprensa-contato' })}</div>${pend('E-mail para imprensa (config.contato.emailImprensa)')}`}
 </div>`,
 })}`;
   // Cada participação vira um item "que menciona" a mesma Person do site:
@@ -972,14 +972,14 @@ function contato() {
   const F = C.formulario;
   const wa = whatsappUrl();
   const canais = [
-    wa && `<li><a class="canal" href="${esc(wa)}" target="_blank" rel="noopener" data-cta="contato-whatsapp">${icons.whatsapp}<span><strong>WhatsApp</strong>${esc(C.contato.whatsappExibicao || C.ctas.whatsapp)}</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
+    wa && `<li><a class="canal" href="${esc(wa)}" target="_blank" rel="noopener" data-cta="contato-whatsapp">${icons.whatsapp}<span><strong>WhatsApp</strong>${esc(C.contato.whatsappExibicao || C.ctas.whatsapp)}${C.contato.somenteWhatsApp ? ' · somente mensagens' : ''}</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
     C.contato.email && `<li><a class="canal" href="mailto:${esc(C.contato.email)}" data-cta="contato-email">${icons.email}<span><strong>E-mail</strong>${esc(C.contato.email)}</span></a></li>`,
-    C.contato.instagram && `<li><a class="canal" href="${esc(C.contato.instagram)}" target="_blank" rel="noopener" data-cta="contato-instagram">${icons.instagram}<span><strong>Instagram</strong>Acompanhe os conteúdos</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
+    !C.contato.somenteWhatsApp && C.contato.instagram && `<li><a class="canal" href="${esc(C.contato.instagram)}" target="_blank" rel="noopener" data-cta="contato-instagram">${icons.instagram}<span><strong>Instagram</strong>Acompanhe os conteúdos</span><span class="sr-only"> (abre em nova aba)</span></a></li>`,
   ].filter(Boolean);
   const pendCanais = [
     !wa && pend('Número do WhatsApp (config.contato.whatsapp)', { bloco: true }),
-    !C.contato.email && pend('E-mail de contato (config.contato.email)', { bloco: true }),
-    !C.contato.instagram && pend('Link do Instagram (config.contato.instagram)', { bloco: true }),
+    !C.contato.somenteWhatsApp && !C.contato.email && pend('E-mail de contato (config.contato.email)', { bloco: true }),
+    !C.contato.somenteWhatsApp && !C.contato.instagram && pend('Link do Instagram (config.contato.instagram)', { bloco: true }),
   ].filter(Boolean).join('');
   const infos = [
     C.contato.horario ? `<li><strong>Horário:</strong> ${esc(C.contato.horario)}</li>` : pend('Horário de atendimento (config.contato.horario)', { bloco: true }),
@@ -988,15 +988,7 @@ function contato() {
     C.contato.endereco ? `<li><strong>Endereço:</strong> ${esc(C.contato.endereco)}</li>` : '',
   ].filter(Boolean).join('');
   const inicio = raioXInicio();
-  const corpo = `${cabecalhoInterno({
-    crumbs,
-    eyebrowTxt: 'Contato',
-    h1: 'Vamos conversar',
-    lead: 'Tire suas dúvidas sobre o acompanhamento, o Raio-X ou o método. Se preferir começar entendendo o seu momento, o Raio-X é o primeiro passo.',
-  })}
-${secao({
-  conteudo: `<div class="contato">
-  <div class="contato__form" data-sem-flutuante>
+  const formHtml = `  <div class="contato__form" data-sem-flutuante>
     <h2 id="titulo-form">Envie uma mensagem</h2>
     <p class="nota">Campos com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
     <div class="form-status" data-form-status tabindex="-1" role="status" aria-live="polite"></div>
@@ -1039,6 +1031,23 @@ ${secao({
       <button class="btn btn--primario btn--largo" type="submit" data-form-botao><span>${esc(C.ctas.contato)}</span></button>
     </form>
   </div>
+`;
+  const soWhats = `  <div class="contato__form" data-sem-flutuante>
+    <h2 id="titulo-form">Fale pelo WhatsApp</h2>
+    <p>O contato é feito somente por mensagem no WhatsApp, com a equipe de Andréa. Conte um pouco sobre a sua rotina e o que você procura, e retornamos por lá.</p>
+    <p class="nota"><strong>WhatsApp:</strong> ${esc(C.contato.whatsappExibicao || '')} · somente mensagens (não atendemos ligações)</p>
+    <div class="acoes">${btnWhatsApp(C.ctas.whatsapp, { track: 'contato-whatsapp-principal' })}</div>
+  </div>
+`;
+  const corpo = `${cabecalhoInterno({
+    crumbs,
+    eyebrowTxt: 'Contato',
+    h1: 'Vamos conversar',
+    lead: 'Tire suas dúvidas sobre o acompanhamento, o Raio-X ou o método. Se preferir começar entendendo o seu momento, o Raio-X é o primeiro passo.',
+  })}
+${secao({
+  conteudo: `<div class="contato">
+${C.contato.somenteWhatsApp ? soWhats : formHtml}
   <aside class="contato__lado" aria-label="Outros canais">
     <div class="caixa caixa--destaque">
       <p class="eyebrow">Primeiro passo recomendado</p>
