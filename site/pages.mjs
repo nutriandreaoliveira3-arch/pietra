@@ -527,7 +527,7 @@ const btnAgendar = (texto, mensagem, track) => btnWhatsApp(texto, { mensagem, tr
 function cardPlano(pl) {
   const valor = A.exibirValores
     ? `<p class="plano__valor"><span class="sr-only">Investimento: </span>${reais(pl.valor)}</p>`
-    : '<p class="plano__valor plano__valor--sob">Investimento informado no agendamento</p>';
+    : '<p class="plano__valor plano__valor--sob">Investimento informado pelo WhatsApp</p>';
   return `<article class="plano${pl.destaque ? ' plano--destaque' : ''}" aria-labelledby="plano-${pl.id}">
   ${pl.destaque ? '<p class="plano__selo">Acompanhamento completo</p>' : ''}
   <h3 id="plano-${pl.id}" class="plano__nome">${esc(pl.nome)}</h3>
@@ -538,7 +538,7 @@ function cardPlano(pl) {
   ${lista(pl.avalia)}
   <p>${esc(pl.recebe)}</p>
   ${pl.naoInclui ? `<p class="nota">${esc(pl.naoInclui)}</p>` : ''}
-  <div class="plano__acao">${btnAgendar(pl.destaque ? 'Quero o acompanhamento' : 'Quero agendar a consulta', pl.mensagem, `atendimento-${pl.id}`)}</div>
+  <div class="plano__acao">${btnAgendar(A.exibirValores ? (pl.destaque ? 'Quero o acompanhamento' : 'Quero agendar a consulta') : 'Consultar investimento no WhatsApp', pl.mensagem, `atendimento-${pl.id}`)}</div>
 </article>`;
 }
 

@@ -132,7 +132,7 @@ export default {
   // jurídica ou o CRN pedir), troque `exibirValores` para false: a página
   // continua no ar e o botão leva ao WhatsApp para consultar o investimento.
   atendimento: {
-    exibirValores: true,
+    exibirValores: false, // 07/10/2026: valores retirados a pedido da Andréa (investimento só pelo WhatsApp)
     agendarMensagem: 'Olá, Andréa. Vim pelo site e quero agendar meu atendimento nutricional online.',
     planos: [
       {
@@ -156,7 +156,7 @@ export default {
         ],
         recebe: 'Você recebe um plano alimentar individualizado, orientações práticas, estratégias nutricionais e recomendações de acordo com o que for identificado durante a consulta.',
         naoInclui: 'A consulta avulsa não inclui retornos semanais nem acesso ao BLIM.',
-        mensagem: 'Olá, Andréa. Vim pelo site e quero agendar uma consulta avulsa online.',
+        mensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber o investimento e agendar uma consulta avulsa online.',
       },
       {
         id: 'trimestral',
@@ -181,7 +181,7 @@ export default {
           'mudanças de estratégia conforme sua evolução',
         ],
         recebe: 'Inclui plano alimentar individualizado, acompanhamento das medidas, receitas e estratégias práticas e acesso ao BLIM.',
-        mensagem: 'Olá, Andréa. Vim pelo site e quero agendar o acompanhamento trimestral online.',
+        mensagem: 'Olá, Andréa. Vim pelo site e gostaria de saber o investimento e agendar o acompanhamento trimestral online.',
       },
     ],
   },
