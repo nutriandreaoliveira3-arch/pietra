@@ -1,6 +1,6 @@
 # Pendências do site
 
-Gerado automaticamente por `node site/build.mjs` em 2026-10-04. Não editar à mão:
+Gerado automaticamente por `node site/build.mjs` em 2026-10-11. Não editar à mão:
 preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 ## Críticas (antes de divulgar o site)
@@ -9,8 +9,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 ## Conteúdo e dados
 
-- [ ] Revisar e aprovar o artigo "Constância não é perfeição: como manter o processo nas semanas difíceis" (publicado: false) — /conteudos/constancia-nao-e-perfeicao/
-- [ ] Revisar e aprovar o artigo "Por que tantas tentativas de emagrecer terminam em recomeço" (publicado: false) — /conteudos/por-que-tantas-tentativas-de-emagrecer-terminam-em-recomeco/
 - [ ] Depoimentos reais e autorizados (config.depoimentos) — /
 - [ ] Imagem institucional do método (horizontal, ambiente de atendimento) — config.imagens.atendimento — /emagrecimento-blindado/
 - [ ] Sem registros confirmados em "Rádio" (content/imprensa.mjs) — /imprensa/
