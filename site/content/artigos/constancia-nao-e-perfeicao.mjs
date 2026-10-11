@@ -3,9 +3,9 @@ export default {
   titulo: 'Constância não é perfeição: como manter o processo nas semanas difíceis',
   descricao: 'Semanas difíceis vão acontecer. Veja como pensar a constância de um jeito mais realista, para que um deslize não vire um novo recomeço.',
   categoria: 'Rotina',
-  data: '2026-09-25',
+  data: '2026-10-11',
   atualizado: null,
-  publicado: false, // PENDENTE: revisão e aprovação da Andréa
+  publicado: true, // aprovado pela Andréa em 11/10/2026
   imagem: null,
   corpo: `
 <p>Existe uma ideia comum de que ser constante é fazer tudo certo, todos os dias. Com essa régua, quase ninguém consegue. E quem tenta costuma se frustrar logo na primeira semana que foge do planejado.</p>
