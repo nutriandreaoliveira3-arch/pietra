@@ -259,7 +259,7 @@ export default {
     atendimento: null,
     // Imagem de compartilhamento (WhatsApp, Facebook, LinkedIn): 1200×630.
     og: { src: 'img/og-andrea.jpg', largura: 1200, altura: 630, alt: 'Andréa Augusto de Oliveira' },
-    monograma: { src: 'img/monograma-aao.webp', largura: 360, altura: 186, alt: '' },
+    monograma: { src: 'img/monograma-aao-v2.webp', largura: 420, altura: 213, alt: '' }, // fundo transparente (11/10/2026)
   },
 
   // Fotos antigas da trajetória (com o nome Andréa Marim). SEMPRE com

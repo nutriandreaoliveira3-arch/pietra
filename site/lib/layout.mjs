@@ -145,8 +145,8 @@ ${p.noCanonical ? '' : `<link rel="canonical" href="${canonical}">`}
 <meta property="og:image:height" content="${og.altura}">
 <meta property="og:image:alt" content="${esc(og.alt)}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="${u('img/icon-32.png')}" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="${u('img/icon-180.png')}">
+<link rel="icon" href="${u('img/icon-aao-32.png')}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="${u('img/icon-aao-180.png')}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${t.fontes.googleFontsUrl}">
@@ -167,7 +167,7 @@ ${ctx.preview ? '<div class="faixa-previa" role="note">Versão de prévia — it
 <header class="topo" data-topo>
   <div class="container topo__in">
     <a class="marca" href="${u('')}" aria-label="${esc(C.pessoa.nome)} — página inicial">
-      <img class="marca__mono" src="${u(C.imagens.monograma.src)}" width="72" height="37" alt="">
+      <img class="marca__mono" src="${u(C.imagens.monograma.src)}" width="68" height="35" alt="">
       <span class="marca__nome">${esc(C.pessoa.nome).replace(/ de (\S+)$/, ' de&nbsp;$1')}</span>
     </a>
     <nav class="nav" aria-label="Principal">
