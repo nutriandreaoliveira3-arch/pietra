@@ -5,7 +5,7 @@ export default {
   categoria: 'Menopausa',
   data: '2026-10-11',
   atualizado: null,
-  publicado: false, // PENDENTE: revisão e aprovação da Andréa
+  publicado: true, // aprovado pela Andréa em 11/10/2026
   imagem: null,
   corpo: `
 <p><strong>Resposta curta:</strong> na transição para a menopausa, a queda do estrogênio está associada a uma mudança na forma como o corpo distribui a gordura, que tende a se concentrar mais no abdômen. A nutrição não “desliga” esse processo, mas pode ajudar bastante — preservando massa muscular, organizando fome e saciedade e tornando a rotina alimentar sustentável. O resultado vem do conjunto, não de um alimento específico.</p>

@@ -9,7 +9,6 @@ preencha os dados em `site/content/config.mjs` e rode o build de novo.
 
 ## Conteúdo e dados
 
-- [ ] Revisar e aprovar o artigo "Menopausa e barriga: o que a nutrição consegue (e não consegue) fazer" (publicado: false) — /conteudos/menopausa-e-barriga-o-que-a-nutricao-consegue-fazer/
 - [ ] Depoimentos reais e autorizados (config.depoimentos) — /
 - [ ] Imagem institucional do método (horizontal, ambiente de atendimento) — config.imagens.atendimento — /emagrecimento-blindado/
 - [ ] Sem registros confirmados em "Rádio" (content/imprensa.mjs) — /imprensa/
