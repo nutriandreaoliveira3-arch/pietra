@@ -3,9 +3,9 @@ export default {
   titulo: 'Por que tantas tentativas de emagrecer terminam em recomeço',
   descricao: 'Começar costuma ser a parte mais fácil. Entenda por que muitas tentativas de emagrecer se perdem no meio do caminho — e o que muda quando o processo tem estrutura.',
   categoria: 'Consistência',
-  data: '2026-09-25',
+  data: '2026-10-11',
   atualizado: null,
-  publicado: false, // PENDENTE: revisão e aprovação da Andréa
+  publicado: true, // aprovado pela Andréa em 11/10/2026
   imagem: null,
   corpo: `
 <p>Segunda-feira, plano novo, geladeira organizada. Nas primeiras semanas, tudo parece funcionar. Depois vem uma semana mais corrida, um evento, uma noite mal dormida — e, sem perceber, você está de volta ao ponto de partida, esperando a próxima segunda para começar de novo.</p>
@@ -31,7 +31,7 @@ export default {
 </ul>
 
 <h2>Um primeiro passo</h2>
-<p>Antes de buscar mais uma estratégia, pode ser mais útil entender onde o seu processo costuma travar. É para isso que existe o Raio-X do Emagrecimento: uma leitura do seu momento em 7 áreas, como ponto de partida para decisões mais precisas.</p>
+<p>Antes de buscar mais uma estratégia, pode ser mais útil entender onde o seu processo costuma travar. É para isso que existe o Raio-X do Emagrecimento: uma leitura do seu momento em 6 áreas, como ponto de partida para decisões mais precisas.</p>
 <p class="nota">Este conteúdo é educativo e não substitui avaliação nutricional ou médica individual.</p>
 `,
 };

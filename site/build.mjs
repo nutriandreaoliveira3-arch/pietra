@@ -71,10 +71,15 @@ async function build() {
   // sitemap.xml e robots.txt
   const hoje = new Date().toISOString().slice(0, 10);
   const indexaveis = geradas.filter((g) => !g.p.noindex && !g.p.arquivo);
-  const prioridade = (r) => (r === '' ? '1.0' : ['sobre/', 'emagrecimento-blindado/', 'raio-x/'].includes(r) ? '0.9' : r.startsWith('conteudos/') ? '0.7' : '0.5');
+  // lastmod só onde a data é real (artigos). Data de build em todas as páginas
+  // faz o Google passar a ignorar o campo; priority é ignorado pelo Google.
+  const lastmod = (rota) => {
+    const a = artigos.find((x) => rota === `conteudos/${x.slug}/`);
+    return a ? `<lastmod>${a.atualizado || a.data}</lastmod>` : '';
+  };
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${indexaveis.map((g) => `  <url><loc>${abs(g.rota)}</loc><lastmod>${artigos.find((a) => g.rota === `conteudos/${a.slug}/`)?.atualizado || hoje}</lastmod><priority>${prioridade(g.rota)}</priority></url>`).join('\n')}
+${indexaveis.map((g) => `  <url><loc>${abs(g.rota)}</loc>${lastmod(g.rota)}</url>`).join('\n')}
 </urlset>
 `;
   await fs.writeFile(path.join(DIST, 'sitemap.xml'), sitemap);
@@ -82,6 +87,10 @@ ${indexaveis.map((g) => `  <url><loc>${abs(g.rota)}</loc><lastmod>${artigos.find
     path.join(DIST, 'robots.txt'),
     ctx.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${abs('sitemap.xml')}\n`,
   );
+
+  // llms.txt: resumo do site em texto simples para assistentes de IA
+  // (proposta llmstxt.org). Só na versão publicada.
+  if (!ctx.preview) await fs.writeFile(path.join(DIST, 'llms.txt'), llmsTxt(indexaveis));
 
   // Relatório de pendências (sempre gerado da versão completa).
   const criticas = verificarPendenciasCriticas();
@@ -107,6 +116,36 @@ ${linhas.join('\n') || '- Nenhuma'}
   console.log(`Site gerado em ${path.relative(process.cwd(), DIST) || DIST} (${ctx.preview ? 'PRÉVIA' : 'produção'}): ${geradas.length} páginas, ${(total / 1024).toFixed(0)} KB de HTML, ${Date.now() - t0} ms.`);
   if (criticas.length) console.warn('Atenção:\n' + criticas.map((c) => '  • ' + c).join('\n'));
   console.log(`${ctx.pendencias.size} pendências de conteúdo${ctx.preview ? ' — veja site/PENDENCIAS.md' : ' (rode com --previa para atualizar site/PENDENCIAS.md)'}.`);
+}
+
+function llmsTxt(paginas) {
+  const P = C.pessoa;
+  const formacao = [...P.formacoes, ...P.especializacoes].map((f) => `- ${f.titulo} — ${f.instituicao}${f.ano ? ` (${f.ano})` : ''}`);
+  const contatos = [
+    C.contato.whatsapp && `- WhatsApp: ${C.contato.whatsappExibicao || C.contato.whatsapp} (https://wa.me/${C.contato.whatsapp})`,
+    C.contato.instagram && `- Instagram: ${C.contato.instagram}`,
+    C.contato.linkedin && `- LinkedIn: ${C.contato.linkedin}`,
+  ].filter(Boolean);
+  return `# ${P.nome}
+
+> ${P.profissao}${P.crn ? ` (${P.crn})` : ''} ${P.atuacao}, com atendimento 100% online para ${P.publico}. Criadora do método ${C.programa.nome}. Anteriormente conhecida profissionalmente como ${P.nomeAnterior}.
+
+- Nome atual: ${P.nome}. Outros nomes: ${[P.nomeAnterior, ...(P.outrosNomes || [])].join(', ')} (mesma profissional${P.crn ? `, mesmo registro ${P.crn}` : ''}).
+- Atendimento: ${P.atendimento}. Formatos: consulta avulsa e acompanhamento trimestral com consultas semanais. Investimento informado pelo WhatsApp.
+${P.mulheresAcompanhadas ? `- Mais de ${P.mulheresAcompanhadas} mulheres acompanhadas.\n` : ''}- Os conteúdos do site são educativos, não substituem a avaliação individual e não prometem prazo nem resultado.
+
+## Formação
+
+${formacao.join('\n')}
+
+## Páginas
+
+${paginas.map((g) => `- [${g.p.ogTitulo || g.p.titulo}](${abs(g.rota)}): ${g.p.descricao}`).join('\n')}
+
+## Contato
+
+${contatos.join('\n')}
+`;
 }
 
 // Planilha (CSV para Excel/Google Planilhas) e relatório do acervo de mídia,

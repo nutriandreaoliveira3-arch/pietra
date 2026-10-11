@@ -1,7 +1,7 @@
 // Todas as páginas do site. Textos editoriais ficam aqui; dados (contatos,
 // pilares, imprensa, depoimentos, imagens) ficam em content/config.mjs.
 import C from './content/config.mjs';
-import { faqHome, faqPrograma, faqRaioX } from './content/faq.mjs';
+import { faqHome, faqPrograma, faqRaioX, faqFeminino } from './content/faq.mjs';
 import {
   ctx, esc, u, abs, icons, btn, btnRaioX, btnWhatsApp, whatsappUrl, raioXInicio, pend, foto, fotoPendente,
   eyebrow, secao, faq, breadcrumbs, assinaturaProfissional, textoPuro,
@@ -28,6 +28,11 @@ const crumbSchema = (itens) => ({
   itemListElement: itens.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.nome, item: abs(it.path) })),
 });
 const HOME = { nome: 'Início', path: '' };
+// Público do atendimento (dados estruturados de Service).
+const PUBLICO = { '@type': 'PeopleAudience', audienceType: 'Mulheres a partir dos 35 anos', suggestedGender: 'female', suggestedMinAge: 35 };
+// Frase de credenciais usada no Sobre e na home.
+const credenciais = () => `${esc(C.pessoa.profissao)}, pós-graduada em Nutrição Esportiva e em Fitoterapia, ${esc(C.pessoa.atuacao)}.`;
+const acompanhadas = () => (C.pessoa.mulheresAcompanhadas ? ` Já acompanhou mais de ${esc(C.pessoa.mulheresAcompanhadas)} mulheres.` : '');
 
 function cabecalhoInterno({ crumbs, eyebrowTxt, h1, lead, extra = '' }) {
   return `<header class="cab-interno"><div class="container"><div class="cab-interno__in">
@@ -195,8 +200,8 @@ function blocoSobre() {
     ${eyebrow('Quem conduz o processo')}
     <h2 id="titulo-sobre">${esc(N)}</h2>
     <p class="nome-anterior">Anteriormente conhecida profissionalmente como ${esc(NA)}.</p>
-    <p>${esc(C.pessoa.profissao)}, com uma trajetória construída no atendimento clínico e na comunicação em saúde, incluindo participações em televisão, rádio e jornais.</p>
-    <p>Agora, inicia uma nova fase profissional com o seu nome atual e uma proposta clara: ajudar mulheres a emagrecer com estratégia, construir hábitos sustentáveis e parar de viver recomeçando.</p>
+    <p>${credenciais()} Uma trajetória construída no atendimento clínico e na comunicação em saúde, incluindo participações em televisão, rádio e jornais.${acompanhadas()}</p>
+    <p>Agora, inicia uma nova fase profissional com o seu nome atual e uma proposta clara: ajudar mulheres — principalmente a partir dos 35 anos — a emagrecer com estratégia, construir hábitos sustentáveis e parar de viver recomeçando.</p>
     ${anos}
     <div class="acoes">${btn(C.ctas.trajetoria, u('sobre/'), { tipo: 'secundario', icone: 'seta', track: 'home-sobre' })}</div>
   </div>
@@ -272,11 +277,12 @@ function blocoParaQuem() {
   <div>
     ${eyebrow('Para quem é')}
     <h2 id="titulo-para-quem">Para quem este processo pode fazer sentido</h2>
-    <p class="lead">Para mulheres adultas que querem um caminho mais claro — e sustentável — para emagrecer.</p>
+    <p class="lead">Para mulheres, principalmente a partir dos 35 anos e com rotina exigente, que querem um caminho mais claro — e sustentável — para emagrecer.</p>
   </div>
   <ul class="checks">${paraQuem.map((t) => `<li>${icons.check}<span>${esc(t)}</span></li>`).join('')}</ul>
 </div>
-<p class="fecho fecho--suave">Se você faz algum tratamento de saúde, tem uma condição clínica ou usa medicamentos, a avaliação individual é ainda mais importante — e o processo deve respeitar as orientações da sua equipe de saúde.</p>`,
+<p class="fecho fecho--suave">Se você faz algum tratamento de saúde, tem uma condição clínica ou usa medicamentos, a avaliação individual é ainda mais importante — e o processo deve respeitar as orientações da sua equipe de saúde.</p>
+<p class="nota centro"><a href="${u('emagrecimento-feminino/')}">Dúvidas comuns sobre emagrecer depois dos 35 anos</a></p>`,
   });
 }
 
@@ -348,7 +354,7 @@ function home() {
     <div class="hero__texto">
       <p class="eyebrow">${esc(N)} · ${esc(C.pessoa.profissao)}</p>
       <h1 id="titulo-hero">Emagrecer não deveria significar viver <em>recomeçando</em>.</h1>
-      <p class="lead">Um processo estruturado para entender o que trava o seu emagrecimento, construir hábitos que cabem na vida real e manter o que você conquistou.</p>
+      <p class="lead">Acompanhamento nutricional para mulheres a partir dos 35 anos: um processo estruturado para entender o que trava o seu emagrecimento, construir hábitos que cabem na vida real e manter o que você conquistou.</p>
       <div class="acoes" data-hero-cta>
         ${btnRaioX(C.ctas.raioX, { track: 'hero-raio-x' })}
         ${btn(C.ctas.trajetoria, u('sobre/'), { tipo: 'secundario', track: 'hero-sobre' })}
@@ -412,7 +418,7 @@ function sobre() {
     ['Ciência em linguagem simples', 'Informação de qualidade, explicada com clareza e sem sensacionalismo.'],
     ['Manutenção desde o início', 'O resultado só faz sentido se puder ser mantido.'],
   ];
-  const corpo = `${cabecalhoInterno({ crumbs, eyebrowTxt: 'Sobre', h1: esc(N), lead: `${assinaturaProfissional()}. Anteriormente conhecida profissionalmente como ${esc(NA)}.` })}
+  const corpo = `${cabecalhoInterno({ crumbs, eyebrowTxt: 'Sobre', h1: esc(N), lead: `${assinaturaProfissional()}, ${esc(C.pessoa.atuacao)}. Anteriormente conhecida profissionalmente como ${esc(NA)}.` })}
 ${secao({
   rotulo: 'titulo-historia',
   conteudo: `<div class="dupla dupla--foto">
@@ -424,6 +430,7 @@ ${secao({
     <p>${esc(NA)}, Andréa Oliveira e ${esc(N)} são a mesma profissional${C.pessoa.crn ? `, com o mesmo registro: ${esc(C.pessoa.crn)}` : ''}.</p>
     <p>Depois de um período afastada da atividade profissional, ela retoma o trabalho com o seu nome atual, ${esc(N)} — com a mesma essência e uma proposta amadurecida pela experiência.</p>
     <p>Nessa nova fase, criou o <a href="${u('emagrecimento-blindado/')}">${esc(P)}</a>, uma metodologia para ajudar mulheres a emagrecer com estratégia, construir hábitos sustentáveis e parar de viver recomeçando.</p>
+    <p>Hoje é ${credenciais().replace(/^./, (c) => c.toLowerCase())} O foco do atendimento são mulheres a partir dos 35 anos, com rotina exigente, em atendimento 100% online.${acompanhadas()}</p>
     ${C.pessoa.anosDeExperiencia ? `<p class="destaque-num"><strong>${esc(C.pessoa.anosDeExperiencia)}+</strong> anos de trajetória profissional</p>` : pend('Anos de experiência (config.pessoa.anosDeExperiencia)', { bloco: true })}
   </div>
 </div>`,
@@ -510,7 +517,7 @@ ${blocoCtaFinal()}`;
     descricao: C.seo.programa.descricao,
     ogImagem: C.imagens.og,
     schema: [
-      { '@type': 'Service', '@id': abs('emagrecimento-blindado/#servico'), name: P, description: C.seo.programa.descricao, provider: { '@id': PERSON_ID() }, serviceType: 'Acompanhamento nutricional para emagrecimento', url: abs('emagrecimento-blindado/'), areaServed: 'BR' },
+      { '@type': 'Service', '@id': abs('emagrecimento-blindado/#servico'), name: P, description: C.seo.programa.descricao, provider: { '@id': PERSON_ID() }, serviceType: 'Acompanhamento nutricional para emagrecimento feminino', url: abs('emagrecimento-blindado/'), areaServed: 'BR', audience: PUBLICO },
       faqSchema(faqPrograma),
       crumbSchema(crumbs),
     ],
@@ -684,6 +691,7 @@ ${secao({
         provider: { '@id': PERSON_ID() },
         areaServed: 'BR',
         availableChannel: { '@type': 'ServiceChannel', name: 'Online, com hora marcada' },
+        audience: PUBLICO,
         url: abs('atendimento/'),
         offers: A.planos.map(oferta),
       },
@@ -832,6 +840,9 @@ ${secao({ conteudo: lista })}`;
     path: 'conteudos/',
     titulo: C.seo.conteudos.titulo,
     descricao: C.seo.conteudos.descricao,
+    // Sem artigo publicado, a página fica fora do Google (página vazia pesa
+    // contra o site). Volta sozinha para o índice no primeiro artigo publicado.
+    noindex: !artigos.some((a) => a.publicado),
     schema: [{ '@type': 'CollectionPage', '@id': abs('conteudos/#pagina'), url: abs('conteudos/'), name: C.seo.conteudos.titulo, isPartOf: { '@id': WEBSITE_ID() } }, crumbSchema(crumbs)],
     corpo,
   };
@@ -889,6 +900,56 @@ ${a.imagem ? `<div class="container container--texto"><img class="artigo__img" s
         inLanguage: C.site.idioma,
         articleSection: a.categoria,
       },
+      crumbSchema(crumbs),
+    ],
+    corpo,
+  };
+}
+
+// ------------------------------------------------------------- emagrecimento feminino 35+
+// Página de perguntas e respostas para o público principal. Ao mudar as
+// respostas (content/faq.mjs → faqFeminino), atualizar REVISADO_FEMININO.
+const REVISADO_FEMININO = '2026-10-11';
+function emagrecimentoFeminino() {
+  const crumbs = [HOME, { nome: 'Emagrecimento feminino', path: 'emagrecimento-feminino/' }];
+  const S = C.seo.emagrecimentoFeminino;
+  const dataBR = REVISADO_FEMININO.split('-').reverse().join('/');
+  const corpo = `${cabecalhoInterno({
+    crumbs,
+    eyebrowTxt: 'Emagrecimento feminino',
+    h1: 'Emagrecer depois dos 35: respostas diretas',
+    lead: 'O corpo muda, a rotina fica mais exigente e o que funcionava antes deixa de funcionar. Aqui estão as dúvidas que mais aparecem no consultório — respondidas com clareza, sem promessa e sem fórmula pronta.',
+    extra: `<p class="nota">Respostas de ${esc(N)}, ${assinaturaProfissional()}. Revisado em ${dataBR}.</p>`,
+  })}
+${blocoFaq(faqFeminino, 'Perguntas frequentes')}
+${secao({
+  classe: 'secao--areia',
+  rotulo: 'titulo-aviso-feminino',
+  conteudo: `<div class="container--estreito prosa"><h2 id="titulo-aviso-feminino">Cada mulher, uma estratégia</h2>
+<p>Estas respostas têm caráter educativo e não substituem a avaliação individual. Histórico, exames, medicamentos, rotina e objetivos mudam a estratégia — por isso o atendimento começa entendendo o seu momento.</p>
+<p>Conheça o <a href="${u('emagrecimento-blindado/')}">${esc(P)}</a>, os <a href="${u('atendimento/')}">formatos de atendimento</a> ou a <a href="${u('sobre/')}">trajetória de ${esc(C.pessoa.nomeCurto)}</a>.</p></div>`,
+})}
+${blocoCtaFinal()}`;
+  return {
+    path: 'emagrecimento-feminino/',
+    titulo: S.titulo,
+    descricao: S.descricao,
+    schema: [
+      {
+        '@type': 'WebPage',
+        '@id': abs('emagrecimento-feminino/#pagina'),
+        url: abs('emagrecimento-feminino/'),
+        name: S.titulo,
+        description: S.descricao,
+        isPartOf: { '@id': WEBSITE_ID() },
+        about: { '@type': 'Thing', name: 'Emagrecimento feminino depois dos 35 anos' },
+        audience: PUBLICO,
+        author: { '@id': PERSON_ID() },
+        reviewedBy: { '@id': PERSON_ID() },
+        lastReviewed: REVISADO_FEMININO,
+        inLanguage: C.site.idioma,
+      },
+      faqSchema(faqFeminino),
       crumbSchema(crumbs),
     ],
     corpo,
@@ -1243,6 +1304,7 @@ export function todasAsPaginas(artigos) {
     ['emagrecimento-blindado/', programa],
     ['atendimento/', atendimento],
     ['raio-x/', raioX],
+    ['emagrecimento-feminino/', emagrecimentoFeminino],
     ['raio-x/questionario/', raioXQuestionario],
     ['conteudos/', () => conteudos(artigos)],
     ...artigos.map((a) => [`conteudos/${a.slug}/`, () => artigo(a, artigos.filter((r) => r !== a).slice(0, 3))]),
