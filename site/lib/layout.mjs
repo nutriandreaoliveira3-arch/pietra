@@ -29,20 +29,62 @@ export const PERSON_ID = () => abs('#andrea');
 export const WEBSITE_ID = () => abs('#site');
 
 export function schemaBase() {
-  const sameAs = [C.contato.instagram, C.contato.youtube, ...(C.pessoa.perfisAnteriores || [])].filter(Boolean);
+  const P_ = C.pessoa;
+  const sameAs = [C.contato.instagram, C.contato.linkedin, C.contato.youtube, ...(P_.perfisAnteriores || [])].filter(Boolean);
+  // Formação vira credencial (hasCredential) e instituição de ensino (alumniOf).
+  const instituicoes = [...new Set([...P_.formacoes, ...P_.especializacoes].map((f) => f.instituicao).filter(Boolean))];
+  const credenciais = [
+    ...P_.formacoes.map((f) => ({ ...f, categoria: 'degree' })),
+    ...P_.especializacoes.map((f) => ({ ...f, categoria: 'postgraduate' })),
+  ].map((f) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: f.titulo,
+    credentialCategory: f.categoria,
+    recognizedBy: { '@type': 'EducationalOrganization', name: f.instituicao },
+    ...(f.ano ? { dateCreated: String(f.ano) } : {}),
+  }));
+  if (P_.crn) {
+    credenciais.unshift({
+      '@type': 'EducationalOccupationalCredential',
+      name: `Registro profissional de nutricionista — ${P_.crn}`,
+      credentialCategory: 'license',
+      recognizedBy: { '@type': 'Organization', name: 'Conselho Regional de Nutricionistas da 3ª Região (CRN-3)' },
+    });
+  }
   const person = {
     '@type': 'Person',
     '@id': PERSON_ID(),
-    name: C.pessoa.nome,
-    alternateName: [C.pessoa.nomeAnterior, ...(C.pessoa.outrosNomes || [])],
-    jobTitle: C.pessoa.profissao,
+    name: P_.nome,
+    alternateName: [P_.nomeAnterior, ...(P_.outrosNomes || [])],
+    gender: 'Female',
+    jobTitle: P_.profissao,
+    hasOccupation: {
+      '@type': 'Occupation',
+      name: 'Nutricionista',
+      ...(P_.especialidade ? { skills: P_.especialidade } : {}),
+      occupationLocation: { '@type': 'Country', name: 'Brasil' },
+    },
     url: abs(''),
+    mainEntityOfPage: abs('sobre/'),
     image: abs(C.imagens.sobre.src),
-    description: `${C.pessoa.profissao}, criadora do método ${C.programa.nome}. Anteriormente conhecida profissionalmente como ${C.pessoa.nomeAnterior}.`,
-    knowsAbout: ['Emagrecimento sustentável', 'Comportamento alimentar', 'Nutrição', 'Hábitos alimentares', 'Manutenção de peso'],
+    description: `${P_.profissao}${P_.crn ? ` (${P_.crn})` : ''}${P_.atuacao ? ` ${P_.atuacao}` : ''}${P_.publico ? ` para ${P_.publico}` : ''}, com atendimento online. Pós-graduada em Nutrição Esportiva e em Fitoterapia. Criadora do método ${C.programa.nome}. Anteriormente conhecida profissionalmente como ${P_.nomeAnterior}.`,
+    knowsAbout: [
+      'Emagrecimento feminino',
+      'Nutrição clínica',
+      'Nutrição para mulheres acima dos 35 anos',
+      'Nutrição na perimenopausa e na menopausa',
+      'Nutrição esportiva',
+      'Fitoterapia',
+      'Comportamento alimentar',
+      'Emagrecimento sustentável',
+      'Manutenção de peso',
+    ],
+    knowsLanguage: C.site.idioma,
+    ...(instituicoes.length ? { alumniOf: instituicoes.map((name) => ({ '@type': 'EducationalOrganization', name })) } : {}),
+    ...(credenciais.length ? { hasCredential: credenciais } : {}),
   };
   if (sameAs.length) person.sameAs = sameAs;
-  if (C.pessoa.crn) person.identifier = { '@type': 'PropertyValue', propertyID: 'CRN', value: C.pessoa.crn };
+  if (P_.crn) person.identifier = { '@type': 'PropertyValue', propertyID: 'CRN', value: P_.crn };
   const pa = C.pessoa.projetoAnterior;
   const projeto = pa && {
     '@type': 'Organization',
@@ -147,7 +189,8 @@ ${ctx.preview ? '<div class="faixa-previa" role="note">Versão de prévia — it
 function footer() {
   const wa = whatsappUrl();
   const redes = [
-    C.contato.instagram && `<a class="rede" href="${esc(C.contato.instagram)}" target="_blank" rel="noopener" aria-label="Instagram de ${esc(C.pessoa.nome)} (abre em nova aba)">${icons.instagram}</a>`,
+    C.contato.instagram && `<a class="rede" href="${esc(C.contato.instagram)}" target="_blank" rel="noopener me" aria-label="Instagram de ${esc(C.pessoa.nome)} (abre em nova aba)">${icons.instagram}</a>`,
+    C.contato.linkedin && `<a class="rede" href="${esc(C.contato.linkedin)}" target="_blank" rel="noopener me" aria-label="LinkedIn de ${esc(C.pessoa.nome)} (abre em nova aba)">${icons.linkedin}</a>`,
     C.contato.youtube && `<a class="rede" href="${esc(C.contato.youtube)}" target="_blank" rel="noopener" aria-label="YouTube de ${esc(C.pessoa.nome)} (abre em nova aba)">${icons.youtube}</a>`,
     wa && `<a class="rede" href="${esc(wa)}" target="_blank" rel="noopener" aria-label="Fale com Andréa pelo WhatsApp (abre em nova aba)" data-cta="rodape-whatsapp">${icons.whatsapp}</a>`,
     C.contato.email && `<a class="rede" href="mailto:${esc(C.contato.email)}" aria-label="Enviar e-mail para ${esc(C.contato.email)}">${icons.email}</a>`,

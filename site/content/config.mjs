@@ -51,7 +51,19 @@ export default {
     // ATENÇÃO: o Código de Ética do Nutricionista exige nome + nº de CRN em
     // qualquer divulgação profissional. Confirmar a situação do CRN antes de
     // publicar o site com o título "Nutricionista".
-    profissao: 'Nutricionista',
+    // 11/10/2026: Andréa se apresenta como nutricionista clínica.
+    profissao: 'Nutricionista clínica',
+    // Foco de atuação (usado em títulos, Sobre, dados estruturados e llms.txt).
+    // Andréa se descreve como "especialista em emagrecimento feminino". No site
+    // publicamos "com atuação em" porque o Código de Ética do Nutricionista
+    // restringe o uso de "especialista" a quem tem título de especialista
+    // registrado; confirmar com o CRN-3 antes de trocar o texto.
+    atuacao: 'com atuação em emagrecimento feminino',
+    especialidade: 'Emagrecimento feminino',
+    publico: 'mulheres a partir dos 35 anos',
+    // Informado pela Andréa em 11/10/2026. Número de mulheres acompanhadas
+    // (não é promessa nem dado de resultado). null = não exibe.
+    mulheresAcompanhadas: 200,
     // Confirmado pela Andréa em 26/09/2026 (mesmo registro usado como Andréa Marim).
     crn: 'CRN-3 15233',
     // Formada em 2003 (confirmado pela Andréa em 27/09/2026). Usamos 20+ para
@@ -120,6 +132,8 @@ export default {
     email: null,
     emailImprensa: null,
     instagram: 'https://www.instagram.com/nutriandreaoliveira/',
+    // Informado pela Andréa em 11/10/2026.
+    linkedin: 'https://www.linkedin.com/in/andr%C3%A9a-oliveira-2899353a0/',
     youtube: null,
     // Não inventar: só preencher quando definido.
     horario: null, // ex.: 'Segunda a sexta, das 9h às 18h'
@@ -585,20 +599,20 @@ export default {
   // SEO: título e descrição de cada página (até ~60 e ~155 caracteres).
   seo: {
     home: {
-      titulo: 'Andréa Augusto de Oliveira | Nutricionista — emagrecer com estratégia',
-      descricao: 'Nutricionista, criadora do Emagrecimento Blindado: um processo estruturado para emagrecer com estratégia, com hábitos sustentáveis e sem viver recomeçando.',
+      titulo: 'Andréa Augusto de Oliveira | Nutricionista · Emagrecimento Feminino',
+      descricao: 'Nutricionista clínica (CRN-3 15233) com atuação em emagrecimento feminino para mulheres 35+. Atendimento online e o método Emagrecimento Blindado.',
     },
     sobre: {
-      titulo: 'Sobre Andréa Augusto de Oliveira (Andréa Marim) | Nutricionista',
-      descricao: 'Conheça a trajetória de Andréa Augusto de Oliveira, nutricionista anteriormente conhecida profissionalmente como Andréa Marim, e a nova fase do seu trabalho.',
+      titulo: 'Andréa Augusto de Oliveira (Andréa Marim) | Nutricionista clínica',
+      descricao: 'Nutricionista clínica, CRN-3 15233, pós-graduada em Nutrição Esportiva e Fitoterapia, com atuação em emagrecimento feminino. Antes, Andréa Marim.',
     },
     programa: {
       titulo: 'Emagrecimento Blindado | Método de Andréa Augusto de Oliveira',
-      descricao: 'Conheça o Emagrecimento Blindado, metodologia criada por Andréa Augusto de Oliveira para emagrecer com estratégia, consistência e foco na manutenção.',
+      descricao: 'Emagrecimento Blindado: método da nutricionista Andréa Augusto de Oliveira para mulheres 35+ emagrecerem com estratégia, constância e foco na manutenção.',
     },
     raioX: {
       titulo: 'Raio-X 360º do Emagrecimento | Andréa Augusto de Oliveira',
-      descricao: 'Avaliação estratégica de alimentação, comportamento, rotina, ambiente e adesão para entender o que pode estar dificultando o seu emagrecimento antes de definir a estratégia.',
+      descricao: 'Avaliação de alimentação, comportamento, rotina, ambiente e adesão para entender o que pode estar dificultando o seu emagrecimento antes da estratégia.',
     },
     conteudos: {
       titulo: 'Conteúdos sobre emagrecimento sustentável | Andréa Augusto de Oliveira',
@@ -617,8 +631,12 @@ export default {
       descricao: 'Como os dados pessoais enviados pelo site são coletados, usados e protegidos, de acordo com a LGPD.',
     },
     atendimento: {
-      titulo: 'Atendimento nutricional online | Andréa Augusto de Oliveira',
-      descricao: 'Consulta avulsa e acompanhamento trimestral com consultas semanais, 100% online e com hora marcada, com a nutricionista Andréa Augusto de Oliveira.',
+      titulo: 'Nutricionista online para mulheres 35+ | Andréa Augusto de Oliveira',
+      descricao: 'Consulta avulsa e acompanhamento trimestral com consultas semanais, 100% online, com a nutricionista Andréa Augusto de Oliveira (CRN-3 15233).',
+    },
+    emagrecimentoFeminino: {
+      titulo: 'Emagrecimento feminino depois dos 35 | Andréa Augusto de Oliveira',
+      descricao: 'Respostas da nutricionista Andréa Augusto de Oliveira sobre emagrecer depois dos 35: metabolismo, menopausa, rotina intensa e canetas emagrecedoras.',
     },
     termos: {
       titulo: 'Termos de Uso | Andréa Augusto de Oliveira',
