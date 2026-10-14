@@ -123,9 +123,9 @@ h1 em, h2 em { font-style: italic; color: var(--salvia); }
 .topo.is-rolado { border-bottom-color: rgba(90, 74, 66, .14); }
 .topo__in { display: flex; align-items: center; gap: 1rem; min-height: 68px; }
 .marca { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--grafite); margin-right: auto; min-height: 44px; }
-.marca__mono { width: 52px; height: auto; flex: none; }
+.marca__mono { width: 62px; height: auto; flex: none; }
 @media (max-width: 419px) { .marca__mono { display: none; } .marca__nome { max-width: 7em; } }
-@media (min-width: 560px) { .marca__mono { width: 68px; } }
+@media (min-width: 560px) { .marca__mono { width: 84px; } }
 .marca__nome { font-family: var(--fonte-titulo); font-size: 1.08rem; font-weight: 600; line-height: 1.1; letter-spacing: .01em; max-width: 8.5em; }
 .topo__acoes { display: flex; align-items: center; gap: .5rem; }
 .menu-botao {
