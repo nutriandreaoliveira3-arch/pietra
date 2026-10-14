@@ -167,7 +167,7 @@ ${ctx.preview ? '<div class="faixa-previa" role="note">Versão de prévia — it
 <header class="topo" data-topo>
   <div class="container topo__in">
     <a class="marca" href="${u('')}" aria-label="${esc(C.pessoa.nome)} — página inicial">
-      <img class="marca__mono" src="${u(C.imagens.monograma.src)}" width="68" height="35" alt="">
+      <img class="marca__mono" src="${u(C.imagens.monograma.src)}" width="84" height="42" alt="">
       <span class="marca__nome">${esc(C.pessoa.nome).replace(/ de (\S+)$/, ' de&nbsp;$1')}</span>
     </a>
     <nav class="nav" aria-label="Principal">
