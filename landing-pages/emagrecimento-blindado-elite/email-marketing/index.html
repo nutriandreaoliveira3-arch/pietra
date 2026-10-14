@@ -171,7 +171,7 @@
 
   .body-copy{
     padding:30px 40px 8px;
-    font-size:15.5px;
+    font-size:16px;
     line-height:1.72;
     color:var(--ink);
   }
@@ -183,30 +183,40 @@
   }
 
   .quote{
-    margin:22px 40px;
-    padding:16px 20px;
+    margin:24px 40px;
+    padding:20px 24px;
     background:var(--tag-bg);
-    border-left:3px solid var(--gold);
+    border-left:4px solid var(--gold-bright);
     font-family:"Fraunces", Georgia, serif;
-    font-style:italic;
-    font-size:16px;
+    font-size:19px;
+    line-height:1.45;
     color:var(--ink);
   }
+  .quote strong{color:var(--gold); font-weight:600;}
 
   .cta-wrap{
     padding:4px 40px 34px;
   }
   .cta{
     display:inline-block;
-    background:var(--gold);
-    color:var(--navy);
+    background:#C8A24B;
+    color:#122246;
     font-family:"Karla", sans-serif;
     font-weight:700;
-    font-size:14px;
+    font-size:15px;
     letter-spacing:.03em;
     text-decoration:none;
-    padding:14px 28px;
-    border-radius:2px;
+    padding:16px 30px;
+    border-radius:3px;
+  }
+  .cta:focus-visible{outline:3px solid var(--navy); outline-offset:3px;}
+  @media (max-width:600px){
+    .quote{margin:22px 22px; font-size:18px;}
+    .cta{display:block; text-align:center; padding:16px 12px; font-size:14px;}
+    .band,.subject-block,.photo-wrap,.body-copy,.cta-wrap,.footer{padding-left:22px; padding-right:22px;}
+    .sign{margin:0 22px; padding-left:0; padding-right:0;}
+    .body-copy{font-size:16px;}
+    .footer{flex-direction:column; align-items:flex-start; gap:8px;}
   }
 
   .sign{
@@ -281,42 +291,42 @@
   </div>
 
   <div class="body-copy">
-    <p class="lede">Oi! Eu sou a Andréa.</p>
-    <p>Eu sou nutricionista, e queria me apresentar de verdade — porque você está na minha lista, mas talvez ainda não saiba quem eu sou nem por que eu faço o que faço.</p>
-    <p>Há alguns anos eu atendo mulheres 35+ que já tentaram de tudo pra emagrecer: dieta restritiva, corte de carboidrato, treino puxado, chá disso, suplemento daquilo. E o que eu mais escuto no consultório é sempre a mesma frase:</p>
+    <p class="lede">Olá, <span class="nome">Mariana</span>!</p>
+    <p>Eu sou <strong>Andréa Oliveira</strong>, nutricionista clínica desde 2003, especializada em acompanhamento nutricional de mulheres acima dos 35 anos.</p>
+    <p>Ao longo da minha trajetória, percebi algo importante: muitas mulheres conseguem administrar empresas, equipes, famílias e agendas exigentes, mas encontram dificuldades para reservar espaço para a própria saúde.</p>
+    <p>E isso nem sempre se resolve com mais uma dieta.</p>
   </div>
 
-  <div class="quote">"Eu sei o que fazer. Eu simplesmente não consigo manter."</div>
+  <div class="quote">Meu trabalho não é entregar uma dieta pronta.<br><strong>É construir uma estratégia com você.</strong></div>
 
   <div class="body-copy">
-    <p>Foi por isso que criei o <em>Emagrecimento Blindado</em>.</p>
-    <p>Não é mais uma dieta. É um método que olha pro que costuma ser ignorado nesse processo: metabolismo, hormônios, comportamento alimentar e a rotina real — não a rotina ideal que só existe em teoria.</p>
-    <p>O trabalho é construir, com acompanhamento, um processo que faça sentido pra sua vida — sem promessa mágica, sem prazo de propaganda. Cada corpo responde de um jeito, e é por isso que o acompanhamento pesa tanto quanto o método.</p>
-    <p>Se você chegou até aqui, provavelmente já cansou de solução genérica. Eu quero te mostrar um caminho diferente.</p>
+    <p>Foi pensando nessa realidade que desenvolvi o <em>Emagrecimento Blindado</em>, um acompanhamento nutricional individualizado para mulheres que desejam cuidar da composição corporal, da saúde e da qualidade de vida com uma estratégia compatível com sua rotina.</p>
+    <p>O programa considera histórico clínico, hábitos alimentares, atividade física, necessidades individuais e ajustes ao longo do acompanhamento.</p>
+    <p>Se quiser conhecer melhor como funciona o Emagrecimento Blindado, preparei uma apresentação do programa.</p>
   </div>
 
   <div class="cta-wrap">
-    <a class="cta" href="#">CONHECER O EMAGRECIMENTO BLINDADO →</a>
+    <a class="cta" href="https://www.emagrecimentoblindado.com.br/apresentacao/" target="_blank" rel="noopener">CONHECER O EMAGRECIMENTO BLINDADO →</a>
   </div>
 
   <div class="sign">
     <div class="name">Andréa Oliveira</div>
-    <div class="role">Nutricionista · Emagrecimento Blindado</div>
+    <div class="role">Nutricionista Clínica | CRN-3 15233<br>Emagrecimento Blindado</div>
   </div>
 
   <div class="footer">
     <div class="fmark">Emagrecimento <b>Blindado</b></div>
-    <div class="funsub">Você recebeu este e-mail por fazer parte da lista Blindada.</div>
+    <div class="funsub">Enviado por Andréa Oliveira · Nutricionista Clínica · CRN-3 15233.<br>Você recebe este e-mail porque se inscreveu ou autorizou contato. <u>Cancelar inscrição</u></div>
   </div>
 </div>
 
 <div class="howto">
-  <h2>Como enviar de verdade</h2>
+  <h2>Como enviar de verdade (Brevo)</h2>
   <ol>
-    <li><b>1.</b> Copie o texto de cada bloco acima (assunto, corpo, frase de destaque) e cole no seu provedor de e-mail (Gmail, RD Station, Mailchimp etc.).</li>
-    <li><b>2.</b> A foto já está aplicada no bloco acima — não precisa trocar nada, só copiar a imagem pro seu editor de e-mail.</li>
-    <li><b>3.</b> Troque o link do botão pela página real do Emagrecimento Blindado antes de disparar.</li>
-    <li><b>4.</b> Se quiser, eu monto o HTML final pronto pra colar direto na ferramenta de disparo — é só me confirmar qual você usa.</li>
+    <li><b>1.</b> O HTML pronto para colar está em <a href="sequencia/email-1.html">sequencia/email-1.html</a>. No Brevo: <b>Campanhas → Criar campanha → E-mail → Design → Colar seu código</b>.</li>
+    <li><b>2.</b> O nome entra sozinho pelo campo <b>FIRSTNAME</b> do contato. Se o contato não tiver nome, o e-mail abre só com "Olá!".</li>
+    <li><b>3.</b> O link de cancelar inscrição é gerado pelo próprio Brevo. Antes de disparar, envie um <b>e-mail de teste</b> para você e clique nele.</li>
+    <li><b>4.</b> Envie <b>somente</b> para quem se inscreveu ou autorizou contato (formulário, aplicação do Elite, Raio-X, clientes). Contatos de prospecção (LinkedIn, indicação de parceiro) recebem mensagem individual sua, não esta campanha.</li>
   </ol>
 </div>
 
